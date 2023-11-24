@@ -1,0 +1,21 @@
+{
+  "entryFile": "./src/back/index.ts",
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "controllerPathGlobs": ["src/back/controllers/*.ts"],
+  "spec": {
+    "outputDirectory": "public",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "Bearer": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "src/back",
+    "authenticationModule": "src/back/services/users/authentication.ts"
+  },
+  "ignore": ["**/node_modules/**", "**/front/**", "**/front/**", "src/front"]
+}

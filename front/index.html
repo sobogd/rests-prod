@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html translate="no">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon-432ea36d.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAAAXNSR0IArs4c6QAAAqBJREFUWEftlVtIVEEYgL/dbXe9rLuuF5Sgl0AwocIE04eELkZZQpQPBpWYJggGhZEWUYpkJNFDoYhS4EYP4YNaaqURBC2VQQUJqXRV87Ltetu7Z/ec2GNQi93egjjzOPwz8833//+M6sj6CYl/OFQKgGLgvzFgjFNT25FIXaGdmcngX/eV3AWGWDXFdSZ6Wl3kHorGNhqk44qTDdsi2FwYjT4CXlv99La4EEXIKzWwLkcvH/LulUB3q5OimljSt0QwNODn46BAV6OT/PIY0rJ0iEF4M+Cnq9G1DEwGMCepuXg/CZ9bZHwkwNMeL+MjAlVtCTxqdzM2HKDwpJE7zU4+DApUtsbL85PvAxjMaqwdXopqTaRm6nlw0834sIDXJVF+2Uz/DTez00G0OhV3r/8B4Fmvl2un52TKguMxbC8ycLvJid8rySZsYwFuNSxwrj2RmamAvLm108uiT5Kt7KmI4VSeDcdEkNVrtVRZEpj+FKDf4uZJt4fA4vLMhBkIHdbdskR54IyJnIIoHnd4kMSlhaHN+ixuUjJ07C4zsGajnrERgfOFdnYcDgcIxadl69lVZiAlXcfbl4s0FDt+n4KuJic93wA27Y3i4FkTrdWzPL/nw5SgRh+lkm+h1YdgguyvNspmTmydJjs/kn3HjFwqcWAbCykHSQL75yAl9bFk7oykImsKwR/+8ocZ+BFAswJKL8SSkRtJUJDQaFVYaueYt4scvRrHoldCF6HixUMfzZWzrErVUm2Jl3M9OiTQZ3FRWm+W06ePVGHt9NBWM/9zA2oNmJM0eJ0iHmc4YVyyhpg4NQsOUS6m0DAnazDGq/HMi3wZ/95yobhQvP1zAPe8RPxKjVykrhkRxy9aU/mMFAOKAcWAYkAxoBhQDCgGvgLcm2xQJUE7AgAAAABJRU5ErkJggg==" />
+    <link rel="icon" type="image/png" sizes="16x16" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAARNJREFUOE9jTNV/9p+BAsA48AZkGD/7r6jDysDFz8Rw/9JvBj17doabp38x/P/PwKBpzsZw5/xvhoAcXoaze74zPLjym0HdlI3hxqlfDG+e/gV7nDHP+vn/xvWiDIubPjLYBnExPLj6m0Hbip3h+f0/DH9//2c4uPobQ1KLAMPaCZ8YLHy4GL5+/Mewd9lXhrfPkAzI6hdk6E19x1A8W5jh5LZvDN8+/Wd4dOM3g2ssN8PHN//Ati5s+MjAzMzA4J7Iw/DywR+G3Yu/QlyQZfbsv3UAF8OBld8YpFVYGGyDuRgeXf/N8Oc3A4OSHivDoTXfGMTkWBgUtFkZXj78wyCvxQpW++LBH4gBAx8Loy4YDrEAAJLIhaFXlXgYAAAAAElFTkSuQmCC" />
+    <link rel="manifest" href="data:application/manifest+json;base64,eyJuYW1lIjoiIiwic2hvcnRfbmFtZSI6IiIsImljb25zIjpbeyJzcmMiOiIvYW5kcm9pZC1jaHJvbWUtMTkyeDE5Mi5wbmciLCJzaXplcyI6IjE5MngxOTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn0seyJzcmMiOiIvYW5kcm9pZC1jaHJvbWUtNTEyeDUxMi5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIn1dLCJ0aGVtZV9jb2xvciI6IiNmZmZmZmYiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiI2ZmZmZmZiIsImRpc3BsYXkiOiJzdGFuZGFsb25lIn0=" />
+    <meta name="msapplication-TileColor" content="#da532c" />
+    <meta name="theme-color" content="#661fe7" />
+    <title>rests.app</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap");
+    </style>
+    <script type="module" crossorigin src="/assets/index-9a5452c4.js"></script>
+  </head>
+  <body>
+    <div id="root">
+      <style>
+        .lds-ellipsis {
+          display: inline-block;
+          position: relative;
+          width: 80px;
+          height: 80px;
+        }
+        .lds-ellipsis div {
+          position: absolute;
+          top: 33px;
+          width: 13px;
+          height: 13px;
+          border-radius: 50%;
+          background: #fff;
+          animation-timing-function: cubic-bezier(0, 1, 1, 0);
+        }
+        .lds-ellipsis div:nth-child(1) {
+          left: 8px;
+          animation: lds-ellipsis1 0.6s infinite;
+        }
+        .lds-ellipsis div:nth-child(2) {
+          left: 8px;
+          animation: lds-ellipsis2 0.6s infinite;
+        }
+        .lds-ellipsis div:nth-child(3) {
+          left: 32px;
+          animation: lds-ellipsis2 0.6s infinite;
+        }
+        .lds-ellipsis div:nth-child(4) {
+          left: 56px;
+          animation: lds-ellipsis3 0.6s infinite;
+        }
+        @keyframes lds-ellipsis1 {
+          0% {
+            transform: scale(0);
+          }
+          100% {
+            transform: scale(1);
+          }
+        }
+        @keyframes lds-ellipsis3 {
+          0% {
+            transform: scale(1);
+          }
+          100% {
+            transform: scale(0);
+          }
+        }
+        @keyframes lds-ellipsis2 {
+          0% {
+            transform: translate(0, 0);
+          }
+          100% {
+            transform: translate(24px, 0);
+          }
+        }
+        .background {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: #661fe7;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      </style>
+      <div class="background">
+        <div class="lds-ellipsis">
+          <div></div>
+          <div></div>
+          <div></div>
+          <div></div>
+        </div>
+      </div>
+    </div>
+    
+  </body>
+</html>
