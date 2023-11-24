@@ -1,9 +1,11 @@
 {
   "name": "rests",
   "scripts": {
+    "start": "node ./lib/src/back/index.js",
     "back": "tsoa spec-and-routes && tsc && node ./lib/src/back/index.js",
+    "buildback": "tsoa spec-and-routes && tsc",
     "front": "tsc && vite build && vite",
-    "html": "tsc && vite build"
+    "buildfront": "tsc && vite build"
   },
   "devDependencies": {
     "@capacitor/cli": "^5.0.5",
