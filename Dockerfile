@@ -4,7 +4,7 @@ COPY package.json .
 COPY package-lock.json .
 COPY . .
 RUN npm install
-RUN npm run front
+RUN npm run html
 FROM nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /home/node/app/front /usr/share/nginx/html

@@ -2,7 +2,8 @@
   "name": "rests",
   "scripts": {
     "back": "tsoa spec-and-routes && tsc && node ./lib/src/back/index.js",
-    "front": "tsc && vite build && vite"
+    "front": "tsc && vite build && vite",
+    "html": "tsc && vite build"
   },
   "devDependencies": {
     "@capacitor/cli": "^5.0.5",
