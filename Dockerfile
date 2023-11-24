@@ -9,5 +9,6 @@ FROM nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /home/node/app/front /usr/share/nginx/html
 
-EXPOSE 8176
+FROM node:18
+EXPOSE 4000
 CMD [ "npm", "run", "back" ]
