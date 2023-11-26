@@ -4,8 +4,10 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    outDir: "./front",
+    outDir: "./public/admin",
+    assetsDir: "",
   },
+  base: "admin",
   server: {
     port: 4100,
   },

@@ -50,7 +50,7 @@ export const DayStats: React.FC = () => {
     }
   }, [day]);
   return (
-    <ModalRests title={i18n.t("menu.names.DAY")} isHaveMenu={true}>
+    <ModalRests title={i18n.t("menu.names.DAY_STATS")} isHaveMenu={true}>
       <Loading isLoading={isLoading || isFetching} />
       <Input defaultValue={day} value={day} type="date" onChange={(e) => setDay(e.target.value)} />
       {!orders || orders?.length <= 0 ? (

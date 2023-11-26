@@ -57,11 +57,20 @@ export const DayStatsList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
   const company = useAppSelector((s) => s.common.user?.company);
   const { data: tables, isFetching, isLoading } = useAllTablesQuery();
 
+  const dayTotal = orders.reduce((summ, order) => {
+    const orderSumm = Number(getSummWithDiscount(order.p, order.d).summWithDiscount);
+    return summ + orderSumm;
+  }, 0);
+
   return (
     <UniversalList>
       <Loading isLoading={isFetching || isLoading} />
+      <UniversalListItemBorderedStats>
+        Total: {dayTotal} {company?.currencySymbol}
+      </UniversalListItemBorderedStats>
       {orders?.map((order: IOrder) => {
         const table = tables?.find((t) => Number(t.id) === Number(order.t));
+        const totalOrder = Number(getSummWithDiscount(order.p, order.d).summWithDiscount);
         return (
           <UniversalListItemBorderedStats key={JSON.stringify(order.f)}>
             <p style={{ justifyContent: "space-between" }}>
@@ -76,8 +85,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
               <TbMap /> №{table?.number} {table?.name}
             </p>
             <p>
-              <TbCalculator /> {getSummWithDiscount(order.p, order.d).summWithDiscount}{" "}
-              {company?.currencySymbol}
+              <TbCalculator /> {totalOrder} {company?.currencySymbol}
               {!!order.d ? (
                 <>
                   <TbDiscount2 style={{ marginLeft: 25 }} /> {order.d}%

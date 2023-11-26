@@ -19,11 +19,10 @@ export class DayStatsController {
 
     try {
       const orders = (
-        await client.query(`SELECT * FROM o WHERE cid = $1 AND crt >= $2 AND crt <= $3 ORDER BY crt ASC`, [
-          auth?.user?.companyId,
-          startDayMs,
-          endDayMs,
-        ])
+        await client.query(
+          `SELECT * FROM o WHERE cid = $1 AND crt >= $2 AND crt <= $3 AND f is not NULL ORDER BY crt ASC`,
+          [auth?.user?.companyId, startDayMs, endDayMs]
+        )
       )?.rows;
 
       return orders;

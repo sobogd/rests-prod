@@ -14,9 +14,10 @@ const i18nRu = {
       CASH_REPORT_HISTORY: "История отчетов",
       STATS: "Статистика",
       BILLING: "Баланс",
-      logout: "Выйти",
-      DAY: "Заказы за день",
+      DAY_STATS: "Заказы за день",
       PERIOD: "Заказы за период",
+      logout: "Выйти",
+      fullscreen: "На весь экран",
     },
   },
   orders: {

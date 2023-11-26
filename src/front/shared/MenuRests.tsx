@@ -187,7 +187,15 @@ export const MenuRests: FC<{
             onClose();
           }}
         >
-          Full screen mode
+          {i18n.t("menu.names.fullscreen")}
+        </UniversalListItem>
+        <UniversalListItem
+          style={{ width: "100%", alignItems: "flex-start" }}
+          onClick={() => {
+            dispatch(commonActions.signOut());
+          }}
+        >
+          {i18n.t("menu.names.logout")}
         </UniversalListItem>
       </UniversalList>
     </MenuRestsContainer>

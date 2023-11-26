@@ -14,9 +14,10 @@ const i18nEn = {
       CASH_REPORT_HISTORY: "Cash history",
       STATS: "Statistics",
       BILLING: "Billing",
-      logout: "Log out",
-      DAY: "Orders for day",
+      DAY_STATS: "Orders for day",
       PERIOD: "Orders for period",
+      logout: "Log out",
+      fullscreen: "Fullscreen mode",
     },
   },
   orders: {
