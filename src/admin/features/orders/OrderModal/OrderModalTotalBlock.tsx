@@ -28,12 +28,12 @@ export const getSummWithDiscount = (positions: IPositionForOrder[], orderDiscoun
     summWithDiscount =
       summWithDiscount +
       (itemSum -
-        itemSum * ((position?.d && Number(position?.d) ? position?.d : Number(orderDiscount) ?? 0) / 100));
+        itemSum * ((position?.d && Number(position?.d) ? position?.d : Number(orderDiscount ?? 0)) / 100));
     summWithoutDiscount = summWithoutDiscount + itemSum;
   }, 0);
   return {
-    summWithoutDiscount: Math.round(summWithoutDiscount * 100) / 100,
-    summWithDiscount: Math.round(summWithDiscount * 100) / 100,
+    summWithoutDiscount: summWithoutDiscount ? Math.round(summWithoutDiscount * 100) / 100 : 0,
+    summWithDiscount: summWithDiscount ? Math.round(summWithDiscount * 100) / 100 : 0,
   };
 };
 
