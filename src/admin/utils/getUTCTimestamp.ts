@@ -11,6 +11,6 @@ export const getUTCTimestamp = (dateString?: string): number => {
 };
 
 export const getTimeFromUTCTimeStamp = (utcTimeStamp: number, offset: number): any => {
-  const newDate = new Date(Number(utcTimeStamp) + 60 * 60 * 1000 * Number(offset)).toLocaleTimeString();
+  const newDate = new Date(Number(utcTimeStamp)).toLocaleTimeString();
   return newDate;
 };

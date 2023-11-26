@@ -62,6 +62,8 @@ export const DayStatsList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
     return summ + orderSumm;
   }, 0);
 
+  console.log("111");
+
   return (
     <UniversalList>
       <Loading isLoading={isFetching || isLoading} />
