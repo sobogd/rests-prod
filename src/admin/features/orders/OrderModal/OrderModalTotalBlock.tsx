@@ -6,7 +6,6 @@ import { IPositionForOrder } from "../../../../back/types/o";
 export const getSummWithDiscount = (positions: IPositionForOrder[], orderDiscount?: number) => {
   let summWithDiscount = 0;
   let summWithoutDiscount = 0;
-  console.log({ positions, orderDiscount });
 
   positions.forEach((position) => {
     let itemSum = 0;
