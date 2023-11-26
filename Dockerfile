@@ -1,12 +1,11 @@
-FROM node:18 as build
+FROM node:18
 WORKDIR /home/node/app
 
 COPY package.json .
 COPY . .
 
 RUN npm install
-RUN npm run buildfront
-RUN npm run buildback
+RUN npm run deploy
 
 EXPOSE 80
 CMD [ "npm", "start" ]

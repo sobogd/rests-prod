@@ -1,11 +1,10 @@
 {
   "name": "rests",
   "scripts": {
+    "deploy": "tsc && vite build --config vite.admin.config.ts && tsoa spec-and-routes && tsc",
     "start": "node ./lib/src/back/index.js",
     "back": "tsoa spec-and-routes && tsc && node ./lib/src/back/index.js",
-    "buildback": "tsoa spec-and-routes && tsc",
-    "front": "tsc && vite build && vite",
-    "buildfront": "tsc && vite build"
+    "front": "vite --config vite.admin.config.ts"
   },
   "devDependencies": {
     "@capacitor/cli": "^5.0.5",

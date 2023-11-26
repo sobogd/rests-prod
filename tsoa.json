@@ -17,5 +17,5 @@
     "routesDir": "src/back",
     "authenticationModule": "src/back/services/users/authentication.ts"
   },
-  "ignore": ["**/node_modules/**", "**/front/**", "**/front/**", "src/front"]
+  "ignore": ["**/node_modules/**", "**/admin/**", "**/admin/**", "src/admin"]
 }

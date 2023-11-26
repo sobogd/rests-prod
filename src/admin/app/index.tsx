@@ -14,7 +14,6 @@ const App: FC = () => {
   const dispatch = useAppDispatch();
   const { user, activePage } = useAppSelector((s) => s.common);
   const { i18n } = useTranslation();
-  const isLoading = useLoading();
 
   useEffect(() => {
     if (!!user) {
@@ -26,7 +25,6 @@ const App: FC = () => {
     if (!!user) {
       i18n.changeLanguage("en");
       dispatch(searchTables());
-      dispatch(categoriesService.searchCategories());
       dispatch(searchPaymentMethods());
     }
   }, [user]);

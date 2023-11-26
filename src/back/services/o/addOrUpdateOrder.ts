@@ -1,6 +1,6 @@
 import pool from "../../db";
 import { IOrder } from "../../types/o";
-import { getUTCTimestamp } from "../../../front/utils/getUTCTimestamp";
+import { getUTCTimestamp } from "../../../admin/utils/getUTCTimestamp";
 
 export default async (orderQuery: IOrder, companyId: number): Promise<number> => {
   const client = await pool.connect();

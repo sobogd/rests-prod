@@ -1,7 +1,0 @@
-{
-  "name": "rests",
-  "integrations": {
-    "capacitor": {}
-  },
-  "type": "react-vite"
-}

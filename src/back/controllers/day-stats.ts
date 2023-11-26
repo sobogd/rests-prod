@@ -3,7 +3,7 @@ import { ErrorResponse } from "./users";
 import type { IAuthRequest } from "../types";
 import pool from "../db";
 import { IOrder } from "../types/o";
-import { getUTCTimestamp } from "../../front/utils/getUTCTimestamp";
+import { getUTCTimestamp } from "../../admin/utils/getUTCTimestamp";
 
 @Route("day-stats")
 export class DayStatsController {

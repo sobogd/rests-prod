@@ -11,7 +11,7 @@ export * from "./api/users";
 export * from "./api/companies";
 
 export const API = createApi({
-  reducerPath: "front/api",
+  reducerPath: "admin/api",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { getState }) => {
