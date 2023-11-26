@@ -6,26 +6,30 @@ import { IPositionForOrder } from "../../../../back/types/o";
 export const getSummWithDiscount = (positions: IPositionForOrder[], orderDiscount?: number) => {
   let summWithDiscount = 0;
   let summWithoutDiscount = 0;
+  console.log({ positions, orderDiscount });
+
   positions.forEach((position) => {
     let itemSum = 0;
 
-    itemSum = Number(position.p) ?? 0;
+    // @ts-expect-error for old price values
+    itemSum = Number(position.p ?? position.price) ?? 0;
 
     if (position?.v) {
-      itemSum = itemSum + (Number(position.v.p) ?? 0);
+      itemSum = itemSum + (Number(position?.v?.p) ?? 0);
     }
 
     if (position?.o) {
       itemSum =
         itemSum +
-        (position.o.reduce((posum, po) => {
+        (position?.o?.reduce((posum, po) => {
           return posum + (Number(po.p) ?? 0) * (Number(po.q) ?? 0);
         }, 0) ?? 0);
     }
 
     summWithDiscount =
       summWithDiscount +
-      (itemSum - itemSum * ((position?.d && Number(position?.d) ? position?.d : orderDiscount ?? 0) / 100));
+      (itemSum -
+        itemSum * ((position?.d && Number(position?.d) ? position?.d : Number(orderDiscount) ?? 0) / 100));
     summWithoutDiscount = summWithoutDiscount + itemSum;
   }, 0);
   return {

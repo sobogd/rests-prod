@@ -22,6 +22,7 @@ const Input = styled.input`
   height: 50px;
   min-height: 50px;
   line-height: 50px;
+  -webkit-appearance: none;
 `;
 
 const NoData = styled.div`

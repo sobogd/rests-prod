@@ -115,7 +115,8 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
               <span>
                 {order.p.map((p) => (
                   <>
-                    {p.n}
+                    {/** @ts-ignore for old names values */}
+                    {p.n ?? p.name}
                     <br />
                   </>
                 ))}
