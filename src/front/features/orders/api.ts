@@ -35,7 +35,7 @@ const ordersApi = API.injectEndpoints({
       query: () => `o/tables-with-orders`,
     }),
     allTables: b.query<ITable[], void>({
-      query: () => ({ url: `tables/search`, method: "POST" }),
+      query: () => ({ url: `/tables/search`, method: "POST" }),
     }),
   }),
   overrideExisting: false,
