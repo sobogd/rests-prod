@@ -27,6 +27,8 @@ import { MenuController } from './controllers/menu';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { OController } from './controllers/o';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { OrderReturnController } from './controllers/order-return';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PaymentMethodsController } from './controllers/paymentMethods';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PositionsController } from './controllers/positions';
@@ -313,6 +315,7 @@ const models: TsoaRoute.Models = {
     "IOrder": {
         "dataType": "refObject",
         "properties": {
+            "id": {"dataType":"double"},
             "n": {"dataType":"double"},
             "t": {"dataType":"double","required":true},
             "p": {"dataType":"array","array":{"dataType":"refObject","ref":"IPositionForOrder"},"required":true},
@@ -1722,6 +1725,32 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.tablesWithOrders.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/order-return',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(OrderReturnController)),
+            ...(fetchMiddlewares<RequestHandler>(OrderReturnController.prototype.orderReturn)),
+
+            function OrderReturnController_orderReturn(request: any, response: any, next: any) {
+            const args = {
+                    undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"double","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new OrderReturnController();
+
+
+              const promise = controller.orderReturn.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

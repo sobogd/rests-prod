@@ -31,6 +31,7 @@ export enum EPositionsStatuses {
 }
 
 export interface IOrder {
+  id?: number;
   n?: number;
   t: number;
   p: IPositionForOrder[];

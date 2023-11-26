@@ -52,7 +52,10 @@ const UniversalListItemBorderedStats = styled(UniversalListItemBordered)`
   }
 `;
 
-export const DayStatsList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
+export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) => void }> = ({
+  orders,
+  onReturn,
+}) => {
   const i18n = useTranslation();
   const company = useAppSelector((s) => s.common.user?.company);
   const { data: tables, isFetching, isLoading } = useAllTablesQuery();
@@ -61,8 +64,6 @@ export const DayStatsList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
     const orderSumm = Number(getSummWithDiscount(order.p, order.d).summWithDiscount);
     return summ + orderSumm;
   }, 0);
-
-  console.log("111");
 
   return (
     <UniversalList>
@@ -120,7 +121,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[] }> = ({ orders }) => {
                 ))}
               </span>
             </p>
-            <OrderAction>Return</OrderAction>
+            <OrderAction onClick={() => onReturn(order?.id ?? 0)}>Return</OrderAction>
           </UniversalListItemBorderedStats>
         );
       })}

@@ -1,3 +1,4 @@
+import { IPaymentMethod } from "../../../back/mappers/paymentMethods";
 import { IOrder } from "../../../back/types/o";
 import { API } from "../../api";
 import { ITable } from "../map/types";
@@ -37,6 +38,9 @@ const ordersApi = API.injectEndpoints({
     allTables: b.query<ITable[], void>({
       query: () => ({ url: `/tables/search`, method: "POST" }),
     }),
+    paymentMethods: b.query<IPaymentMethod[], void>({
+      query: () => ({ url: `/paymentMethods/search`, method: "POST" }),
+    }),
   }),
   overrideExisting: false,
 });
@@ -50,4 +54,5 @@ export const {
   useFinishOrderByNumberMutation,
   useAllTablesQuery,
   useLazyTablesWithOrdersQuery,
+  usePaymentMethodsQuery,
 } = ordersApi;

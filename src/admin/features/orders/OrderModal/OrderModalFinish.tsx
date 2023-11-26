@@ -4,6 +4,8 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../app/store";
 import { WindowRests } from "../../../shared/WindowRests";
 import { prePrimaryColor } from "../../../app/styles";
+import { usePaymentMethodsQuery } from "../api";
+import Loading from "../../../shared/loading";
 
 const DiscountForOrderTitle = styled.div`
   width: 100%;
@@ -79,8 +81,8 @@ export const OrderModalFinish: FC<{
 }> = ({ onClose, onFinish }) => {
   const i18n = useTranslation();
   const [inputtedPaymentMethod, setInputtedPaymentMethod] = useState<string>("");
-  const paymentMethods = useAppSelector((s) => s.paymentMethods.paymentMethods);
   const [isOpenCustomMethod, setIsOpenCustomMethod] = useState<boolean>(false);
+  const { data: paymentMethods, isLoading, isFetching } = usePaymentMethodsQuery();
 
   return (
     <WindowRests
@@ -88,6 +90,7 @@ export const OrderModalFinish: FC<{
         onClose();
       }}
     >
+      <Loading isLoading={isLoading || isFetching} />
       <DiscountForOrderTitle>{i18n.t("orders.selectMethod")}</DiscountForOrderTitle>
       <SplittingList>
         {paymentMethods?.map((paymentMethod) => (

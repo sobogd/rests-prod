@@ -7,7 +7,7 @@ import {} from "date-fns";
 import { format } from "date-fns-tz";
 import { TbFileOff } from "react-icons/tb";
 import { prePrimaryColor } from "../../app/styles";
-import { useLazyDayStatsQuery } from "./api";
+import { useLazyDayStatsQuery, useOrderReturnMutation } from "./api";
 import { DayStatsList } from "./DayStatsList";
 
 const Input = styled.input`
@@ -43,15 +43,23 @@ export const DayStats: React.FC = () => {
   const [day, setDay] = useState<string>(format(new Date(), "yyyy-MM-dd"));
 
   const [load, { data: orders, isLoading, isFetching }] = useLazyDayStatsQuery();
+  const [orderReturn, { isLoading: isLoadingReturn }] = useOrderReturnMutation();
 
   useEffect(() => {
     if (day && day !== "") {
       load({ day });
     }
   }, [day]);
+
+  const orderReturnHandler = (id: number) => {
+    orderReturn({ id }).then(() => {
+      load({ day });
+    });
+  };
+
   return (
     <ModalRests title={i18n.t("menu.names.DAY_STATS")} isHaveMenu={true}>
-      <Loading isLoading={isLoading || isFetching} />
+      <Loading isLoading={isLoading || isFetching || isLoadingReturn} />
       <Input defaultValue={day} value={day} type="date" onChange={(e) => setDay(e.target.value)} />
       {!orders || orders?.length <= 0 ? (
         <NoData>
@@ -59,7 +67,7 @@ export const DayStats: React.FC = () => {
           {i18n.t("dayStats.noItem")}
         </NoData>
       ) : (
-        <DayStatsList orders={orders} />
+        <DayStatsList orders={orders} onReturn={orderReturnHandler} />
       )}
     </ModalRests>
   );

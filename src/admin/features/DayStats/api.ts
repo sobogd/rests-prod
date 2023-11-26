@@ -9,8 +9,15 @@ const dayApi = API.injectEndpoints({
         body: { day },
       }),
     }),
+    orderReturn: b.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `order-return`,
+        method: "POST",
+        body: { id },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLazyDayStatsQuery } = dayApi;
+export const { useLazyDayStatsQuery, useOrderReturnMutation } = dayApi;

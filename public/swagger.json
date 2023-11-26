@@ -645,6 +645,10 @@
 			},
 			"IOrder": {
 				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
 					"n": {
 						"type": "number",
 						"format": "double"
@@ -4088,6 +4092,63 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/order-return": {
+			"post": {
+				"operationId": "OrderReturn",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Response with error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/paymentMethods/search": {
