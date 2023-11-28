@@ -14,7 +14,7 @@ import {
 } from "react-icons/tb";
 import { useAppSelector } from "../../app/store";
 import Loading from "../../shared/loading";
-import { useAllTablesQuery } from "../Orders/api";
+import { useAllTablesQuery } from "../orders/api";
 import { format } from "date-fns";
 import { getTimeFromUTCTimeStamp, getUTCTimestamp } from "../../utils/getUTCTimestamp";
 import getSummForOrder from "../../../utils/getSummForOrder";
