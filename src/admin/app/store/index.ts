@@ -6,7 +6,6 @@ import { reportsSlice } from "../../entities/reports";
 import { discountsSlice } from "../../entities/discounts";
 import { paymentMethodsSlice } from "../../entities/paymentMethods";
 import { billingReducer } from "../../slices/billing";
-import { positionsReducer } from "../../features/positions/slice";
 import { CTablesInitialState } from "../../features/map/consts";
 import { categoriesSlice } from "../../features/categories/slice";
 import { API } from "../../api";
@@ -40,7 +39,6 @@ export const store = configureStore({
     categories: categoriesSlice.reducer,
     elements: elementModel.reducer,
     tables: tablesReducer,
-    positions: positionsReducer,
     users: usersModel.reducer,
     companies: companiesModel.reducer,
     common: commonReducer,

@@ -189,7 +189,7 @@ export const UniversalListItemBordered = styled.div`
   border-radius: 10px;
   border: 1px solid rgb(237, 231, 255);
   :last-child {
-    margin: 15px;
+    margin-bottom: 15px;
   }
   p {
     display: flex;

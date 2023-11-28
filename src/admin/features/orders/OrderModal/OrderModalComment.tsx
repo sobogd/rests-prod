@@ -31,7 +31,7 @@ const TextArea = styled.textarea`
   margin-top: 20px;
   resize: none;
   font-size: 15px;
-  background: ${backgroundDefault};
+  background: white;
 `;
 
 export const OrderModalComment: FC<{

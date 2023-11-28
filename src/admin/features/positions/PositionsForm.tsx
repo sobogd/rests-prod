@@ -1,24 +1,14 @@
 import { FC, useEffect } from "react";
 import { Box, Button, List, Stack } from "@mui/material";
 import { Header } from "../../shared/Header";
-import { useAppDispatch, useAppSelector } from "../../app/store";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { positionsActions } from "./slice";
-import { EPositionsTabs } from "./enums";
+import { useAppDispatch } from "../../app/store";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
 import * as yup from "yup";
-import {
-  useDeletePositionMutation,
-  useCreatePositionMutation,
-  useLazyGetPositionDetailsQuery,
-  useUpdatePositionMutation,
-} from "./api";
+import { useCreatePositionMutation, useLazyGetPositionDetailsQuery, useUpdatePositionMutation } from "./api";
 import { LoadingInside } from "../../shared/LoadingInside";
 import { borderColorDefault } from "../../app/styles";
-import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import { PositionFormGeneral } from "./PositionFormGeneral";
-import { searchPositions } from "../../api/positions";
 import { PositionFormImage } from "./PositionFormImage";
 import { PositionFormTranslation } from "./PositionFormTranslation";
 import { PositionFormVariants } from "./PositionFormVariants";
@@ -32,7 +22,7 @@ import { IMAGE_URL } from "../../config";
 type Form = {
   n?: string;
   p?: string;
-  c?: number;
+  c?: number | string;
   s?: number;
   h?: boolean;
   a?: boolean;
@@ -45,7 +35,7 @@ type Form = {
   }[];
   vt?: {
     l?: string;
-    t?: number;
+    t?: string;
   }[][];
   o?: {
     n?: string;
@@ -53,17 +43,21 @@ type Form = {
   }[];
   ot?: {
     l?: string;
-    t?: number;
+    t?: string;
   }[][];
   t?: {
     l?: string;
-    t?: number;
+    t?: string;
   }[];
   d?: string;
   i?: string;
 };
 
-export const PositionsForm: FC = () => {
+export const PositionsForm: FC<{
+  onSave: () => void;
+  selectedCopyPositionId: number | undefined;
+  selectedPositionId: number | null | undefined;
+}> = ({ onSave, selectedCopyPositionId, selectedPositionId }) => {
   const dispatch = useAppDispatch();
   const i18n = useTranslation();
   const methods = useForm<Form>({
@@ -101,34 +95,22 @@ export const PositionsForm: FC = () => {
     },
   });
   const { handleSubmit, reset, setValue } = methods;
-  const positionId = useAppSelector((s) => s.positions.positionId);
-  const copyPositionId = useAppSelector((s) => s.positions.copyPositionId);
 
   const [loadPosition, { data, isLoading, isFetching }] = useLazyGetPositionDetailsQuery();
   const [createPosition, { isSuccess: createdPosition, isLoading: isCreating }] = useCreatePositionMutation();
   const [updatePosition, { isSuccess: updatedPosition, isLoading: isUpdating }] = useUpdatePositionMutation();
-  const [deletePosition, { isSuccess: deletedPosition, isLoading: isDeleting }] = useDeletePositionMutation();
 
   useEffect(() => {
-    if (positionId) {
-      loadPosition(positionId);
+    if (selectedPositionId) {
+      loadPosition(selectedPositionId);
     }
-  }, [positionId]);
+  }, [selectedPositionId]);
 
   useEffect(() => {
-    if (copyPositionId) {
-      loadPosition(copyPositionId);
+    if (selectedCopyPositionId) {
+      loadPosition(selectedCopyPositionId);
     }
-  }, [copyPositionId]);
-
-  useEffect(() => {
-    if (!!createdPosition || !!updatedPosition || !!deletedPosition) {
-      dispatch(positionsActions.setPositionId(undefined));
-      dispatch(positionsActions.setCopyPositionId(undefined));
-      dispatch(positionsActions.setTab(EPositionsTabs.POSITIONS));
-      dispatch(searchPositions());
-    }
-  }, [createdPosition, updatedPosition, deletedPosition]);
+  }, [selectedCopyPositionId]);
 
   useEffect(() => {
     if (data?.id) {
@@ -141,7 +123,7 @@ export const PositionsForm: FC = () => {
         c: data?.c,
         h: data?.h,
         a: data?.a,
-        fUrl: data?.f && !copyPositionId ? IMAGE_URL + data?.f : undefined,
+        fUrl: data?.f && !selectedCopyPositionId ? IMAGE_URL + data?.f : undefined,
         fChanged: false,
         f: undefined,
         v: data?.v?.map((i) => ({ ...i, id: shortid.generate() })),
@@ -154,9 +136,9 @@ export const PositionsForm: FC = () => {
   }, [data]);
 
   const onSubmit: SubmitHandler<Form> = (form) => {
-    const method = !positionId ? createPosition : updatePosition;
+    const method = !selectedPositionId ? createPosition : updatePosition;
     method({
-      id: positionId || undefined,
+      id: selectedPositionId || undefined,
       n: form?.n,
       d: form?.d,
       i: form?.i,
@@ -175,28 +157,16 @@ export const PositionsForm: FC = () => {
     });
   };
 
-  const handleClickBack = () => {
-    dispatch(positionsActions.setPositionId(undefined));
-    dispatch(positionsActions.setCopyPositionId(undefined));
-    dispatch(positionsActions.setTab(EPositionsTabs.POSITIONS));
-  };
-
-  const handleRemovePosition = () => {
-    if (positionId) {
-      deletePosition(positionId);
-    }
-  };
-
-  const loading = isLoading || isFetching || isCreating || isUpdating || isDeleting;
+  const loading = isLoading || isFetching || isCreating || isUpdating;
 
   return (
     <FormProvider {...methods}>
       <Stack direction="column" width="100%" height="100%" paddingRight={2} paddingTop={2} paddingLeft={2}>
         <Header
-          title={positionId ? i18n.t("positions.form.editTitle") : i18n.t("positions.form.newTitle")}
-          subtitle={positionId ? i18n.t("positions.form.editSubtitle") : i18n.t("positions.form.newSubtitle")}
-          startIcon={<ArrowBackIcon onClick={handleClickBack} />}
-          endIcon={!loading && <DeleteForeverIcon onClick={handleRemovePosition} />}
+          title={selectedPositionId ? i18n.t("positions.form.editTitle") : i18n.t("positions.form.newTitle")}
+          subtitle={
+            selectedPositionId ? i18n.t("positions.form.editSubtitle") : i18n.t("positions.form.newSubtitle")
+          }
           isHaveBorder
         />
         <Stack

@@ -181,6 +181,7 @@ export const ModalRests: FC<{
   moreTitle?: string;
   footerButton?: { title: string; onClick: () => void };
   moreButtons?: ({ title: string; onClick: () => void } | null)[];
+  withPadding?: boolean;
   children?: any;
 }> = ({
   onClose,
@@ -193,6 +194,7 @@ export const ModalRests: FC<{
   isHaveMenu,
   moreButtons,
   moreTitle,
+  withPadding,
 }) => {
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -259,7 +261,7 @@ export const ModalRests: FC<{
           </ModalRestsHeaderMenu>
         ) : null}
       </ModalRestsHeader>
-      <ModalRestsBody>{children}</ModalRestsBody>
+      <ModalRestsBody style={withPadding ? { padding: "15px" } : undefined}>{children}</ModalRestsBody>
       {footerButton ? (
         <ModalRestsFooterButton onClick={footerButton.onClick}>{footerButton.title}</ModalRestsFooterButton>
       ) : null}

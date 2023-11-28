@@ -1119,6 +1119,44 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IPeriodStats": {
+				"properties": {
+					"count": {
+						"type": "number",
+						"format": "double"
+					},
+					"summary": {
+						"items": {
+							"properties": {
+								"paymentMethod": {
+									"type": "string"
+								},
+								"summ": {
+									"type": "number",
+									"format": "double"
+								}
+							},
+							"required": [
+								"paymentMethod",
+								"summ"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					},
+					"total": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"required": [
+					"count",
+					"summary",
+					"total"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
 			"EPositionStatuses": {
 				"enum": [
 					"active",
@@ -3183,7 +3221,7 @@
 				}
 			}
 		},
-		"/items/list-for-category-id": {
+		"/items/list": {
 			"post": {
 				"operationId": "ListForCategoryId",
 				"responses": {
@@ -3231,26 +3269,7 @@
 						]
 					}
 				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"categoryId": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"categoryId"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
+				"parameters": []
 			}
 		},
 		"/items/get": {
@@ -4200,6 +4219,73 @@
 					}
 				],
 				"parameters": []
+			}
+		},
+		"/period-stats": {
+			"post": {
+				"operationId": "PeriodStats",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPeriodStats"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Response with error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"dayEnd": {
+										"type": "string"
+									},
+									"dayStart": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"dayEnd",
+									"dayStart"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/positions/search": {

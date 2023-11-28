@@ -1,6 +1,6 @@
+import { IItem } from "../../../back/mappers/items";
 import { API } from "../../api";
 import { ICategory } from "../categories/types";
-import { IItem } from "./types";
 
 export interface IGetPositionDetails {
   id?: number;
@@ -22,11 +22,10 @@ export interface IGetPositionDetails {
 
 const positionsApi = API.injectEndpoints({
   endpoints: (b) => ({
-    listForCategoryId: b.query<IItem[], number>({
-      query: (categoryId) => ({
-        url: `items/list-for-category-id`,
+    positions: b.query<IItem[], undefined>({
+      query: () => ({
+        url: `items/list`,
         method: "POST",
-        body: { categoryId },
       }),
     }),
     listCategories: b.query<ICategory[], void>({
@@ -74,6 +73,5 @@ export const {
   useUpdatePositionMutation,
   useCreatePositionMutation,
   useDeletePositionMutation,
-  useLazyListForCategoryIdQuery,
-  useListCategoriesQuery,
+  usePositionsQuery,
 } = positionsApi;

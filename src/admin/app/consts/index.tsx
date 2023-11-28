@@ -19,11 +19,11 @@ import { Categories } from "../../features/categories";
 import { Map } from "../../features/map";
 import { Billing } from "../../features/billing";
 import { Positions } from "../../features/positions";
-import { Orders } from "../../features/orders";
-import { Kitchen } from "../../features/kitchen";
+import { Orders } from "../../features/Orders";
+import { Kitchen } from "../../features/Kitchen";
 import { Statistic } from "../../features/statistic";
 import { EPages } from "../../features/common/enums";
-import { Period } from "../../features/period";
+import { PeriodStats } from "../../features/PeriodStats/PeriodStats";
 import { DayStats } from "../../features/DayStats/DayStats";
 
 export const CPageComponents = {
@@ -35,7 +35,7 @@ export const CPageComponents = {
   [EPages.CATEGORIES]: <Categories />,
   [EPages.KITCHEN]: <Kitchen />,
   [EPages.DAY_STATS]: <DayStats />,
-  [EPages.PERIOD]: <Period />,
+  [EPages.PERIOD]: <PeriodStats />,
   [EPages.POSITIONS]: <Positions />,
   [EPages.USERS]: <Users />,
   [EPages.CASH_REPORT_MAKE]: <MakeCashReport />,

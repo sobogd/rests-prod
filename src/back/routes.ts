@@ -31,6 +31,8 @@ import { OrderReturnController } from './controllers/order-return';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PaymentMethodsController } from './controllers/paymentMethods';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { PeriodStatsController } from './controllers/period-stats';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PositionsController } from './controllers/positions';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TablesController } from './controllers/tables';
@@ -434,6 +436,16 @@ const models: TsoaRoute.Models = {
             "title": {"dataType":"string","required":true},
             "description": {"dataType":"string","required":true},
             "companyId": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPeriodStats": {
+        "dataType": "refObject",
+        "properties": {
+            "count": {"dataType":"double","required":true},
+            "summary": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"paymentMethod":{"dataType":"string","required":true},"summ":{"dataType":"double","required":true}}},"required":true},
+            "total": {"dataType":"double","required":true},
         },
         "additionalProperties": false,
     },
@@ -1334,14 +1346,13 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/items/list-for-category-id',
+        app.post('/items/list',
             authenticateMiddleware([{"Bearer":["AuthService"]}]),
             ...(fetchMiddlewares<RequestHandler>(ItemsController)),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.listForCategoryId)),
+            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.list)),
 
-            function ItemsController_listForCategoryId(request: any, response: any, next: any) {
+            function ItemsController_list(request: any, response: any, next: any) {
             const args = {
-                    undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"categoryId":{"dataType":"double","required":true}}},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
@@ -1354,7 +1365,7 @@ export function RegisterRoutes(app: express.Router) {
                 const controller = new ItemsController();
 
 
-              const promise = controller.listForCategoryId.apply(controller, validatedArgs as any);
+              const promise = controller.list.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -1777,6 +1788,33 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.search.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/period-stats',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(PeriodStatsController)),
+            ...(fetchMiddlewares<RequestHandler>(PeriodStatsController.prototype.periodStats)),
+
+            function PeriodStatsController_periodStats(request: any, response: any, next: any) {
+            const args = {
+                    undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"dayEnd":{"dataType":"string","required":true},"dayStart":{"dataType":"string","required":true}}},
+                    auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PeriodStatsController();
+
+
+              const promise = controller.periodStats.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

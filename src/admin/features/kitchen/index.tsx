@@ -13,7 +13,7 @@ import { utcToZonedTime } from "date-fns-tz";
 import { ModalRests } from "../../shared/ModalRests";
 import Loading from "../../shared/loading";
 import { ITable } from "../map/types";
-import { useAllTablesQuery } from "../orders/api";
+import { useAllTablesQuery } from "../Orders/api";
 import { prePrimaryColor } from "../../app/styles";
 import { IAllPositionsForKitchen } from "../../../back/types/k";
 

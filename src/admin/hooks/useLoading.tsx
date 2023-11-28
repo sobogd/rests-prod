@@ -5,7 +5,6 @@ export const useLoading = (): boolean => {
   const { isLoading: isLoadingTables } = useAppSelector((s) => s.tables);
   const { isLoading: isLoadingCats } = useAppSelector((s) => s.categories);
   const { isLoading: isLoadingElements } = useAppSelector((s) => s.elements);
-  const { isLoading: isLoadingPositions } = useAppSelector((s) => s.positions);
   const { isLoading: isLoadingCompanies } = useAppSelector((s) => s.companies);
   const { isLoading: isLoadingReports } = useAppSelector((s) => s.reports);
   const { isLoading: isLoadingDiscounts } = useAppSelector((s) => s.discounts);
@@ -17,7 +16,6 @@ export const useLoading = (): boolean => {
     isLoadingTables ||
     isLoadingCats ||
     isLoadingElements ||
-    isLoadingPositions ||
     isLoadingCompanies ||
     isLoadingReports ||
     isLoadingDiscounts ||

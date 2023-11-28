@@ -5,10 +5,10 @@ import Loading from "../../shared/loading";
 import styled from "@emotion/styled";
 import {} from "date-fns";
 import { format } from "date-fns-tz";
-import { TbFileOff } from "react-icons/tb";
 import { prePrimaryColor } from "../../app/styles";
 import { useLazyDayStatsQuery, useOrderReturnMutation } from "./api";
 import { DayStatsList } from "./DayStatsList";
+import NoData from "../../shared/NoData";
 
 const Input = styled.input`
   width: calc(100% - 30px);
@@ -23,20 +23,6 @@ const Input = styled.input`
   min-height: 50px;
   line-height: 50px;
   -webkit-appearance: none;
-`;
-
-const NoData = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  width: 100%;
-  padding-bottom: 60px;
-  color: rgb(168 168 168);
-  svg {
-    margin-bottom: 10px;
-  }
 `;
 
 export const DayStats: React.FC = () => {
@@ -63,10 +49,7 @@ export const DayStats: React.FC = () => {
       <Loading isLoading={isLoading || isFetching || isLoadingReturn} />
       <Input defaultValue={day} value={day} type="date" onChange={(e) => setDay(e.target.value)} />
       {!orders || orders?.length <= 0 ? (
-        <NoData>
-          <TbFileOff size={100} color={"rgb(210 210 210)"} />
-          {i18n.t("dayStats.noItem")}
-        </NoData>
+        <NoData text={i18n.t("dayStats.noItem")} />
       ) : (
         <DayStatsList orders={orders} onReturn={orderReturnHandler} />
       )}

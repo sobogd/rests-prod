@@ -6,7 +6,7 @@ import deleteItem from "../services/items/deleteItem";
 import updateItem from "../services/items/updateItem";
 import type { IItem } from "../mappers/items";
 import getItem from "../services/items/getItem";
-import listItemsForCategoryId from "../services/items/listItemsForCategoryId";
+import listItems from "../services/items/listItems";
 
 @Route("items")
 export class ItemsController {
@@ -45,12 +45,9 @@ export class ItemsController {
   @Response<ErrorResponse>(500, "Response with error")
   @Response<ErrorResponse>(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
-  @Post("list-for-category-id")
-  public async listForCategoryId(
-    @Body() { categoryId }: { categoryId: number },
-    @Request() req: IAuthRequest
-  ): Promise<IItem[]> {
-    return listItemsForCategoryId(categoryId, req?.user?.companyId);
+  @Post("list")
+  public async list(@Request() req: IAuthRequest): Promise<IItem[]> {
+    return listItems(req?.user?.companyId);
   }
   @Tags("Items")
   @OperationId("Get")

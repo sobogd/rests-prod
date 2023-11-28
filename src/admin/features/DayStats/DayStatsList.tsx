@@ -12,12 +12,12 @@ import {
   TbListDetails,
   TbDiscount2,
 } from "react-icons/tb";
-import { getSummWithDiscount } from "../orders/OrderModal/OrderModalTotalBlock";
 import { useAppSelector } from "../../app/store";
 import Loading from "../../shared/loading";
-import { useAllTablesQuery } from "../orders/api";
+import { useAllTablesQuery } from "../Orders/api";
 import { format } from "date-fns";
 import { getTimeFromUTCTimeStamp, getUTCTimestamp } from "../../utils/getUTCTimestamp";
+import getSummForOrder from "../../../utils/getSummForOrder";
 
 const OrderCretionTime = styled.span`
   background: #ffc858;
@@ -61,7 +61,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
   const { data: tables, isFetching, isLoading } = useAllTablesQuery();
 
   const dayTotal = orders.reduce((summ, order) => {
-    const orderSumm = Number(getSummWithDiscount(order.p, order.d).summWithDiscount);
+    const orderSumm = Number(getSummForOrder(order.p, order.d).summWithDiscount);
     return summ + orderSumm;
   }, 0);
 
@@ -73,7 +73,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
       </UniversalListItemBorderedStats>
       {orders?.map((order: IOrder) => {
         const table = tables?.find((t) => Number(t.id) === Number(order.t));
-        const totalOrder = Number(getSummWithDiscount(order.p, order.d).summWithDiscount);
+        const totalOrder = Number(getSummForOrder(order.p, order.d).summWithDiscount);
         return (
           <UniversalListItemBorderedStats key={JSON.stringify(order.f)}>
             <p style={{ justifyContent: "space-between" }}>

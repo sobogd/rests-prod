@@ -39,7 +39,6 @@ export const OrdersHistory: FC = () => {
   const { discounts } = useAppSelector((s) => s.discounts);
   const { items: tables } = useAppSelector((s) => s.tables);
   const { ordersHistory } = useAppSelector((s) => s.reports);
-  const { items: positions } = useAppSelector((s) => s.positions);
   const [openedId, setOpenedId] = useState<number | undefined>(undefined);
 
   React.useEffect(() => {
