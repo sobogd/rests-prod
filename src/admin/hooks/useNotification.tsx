@@ -18,7 +18,7 @@ export const Notice = {
       }, 1500);
       snackBar.enqueueSnackbar(msg, {
         variant: "success",
-        autoHideDuration: 3000,
+        autoHideDuration: 1000,
       });
     }
   },
@@ -30,7 +30,7 @@ export const Notice = {
       }, 1500);
       snackBar.enqueueSnackbar(msg, {
         variant: "warning",
-        autoHideDuration: 3000,
+        autoHideDuration: 1000,
       });
     }
   },
@@ -42,7 +42,7 @@ export const Notice = {
       }, 700);
       snackBar.enqueueSnackbar(msg, {
         variant: "error",
-        autoHideDuration: 3000,
+        autoHideDuration: 1000,
       });
     }
   },

@@ -770,6 +770,10 @@
 						"type": "number",
 						"format": "double"
 					},
+					"cat": {
+						"type": "number",
+						"format": "double"
+					},
 					"c": {
 						"anyOf": [
 							{
@@ -3059,7 +3063,7 @@
 				"parameters": []
 			}
 		},
-		"/items/create": {
+		"/item-create": {
 			"post": {
 				"operationId": "Create",
 				"responses": {
@@ -3087,9 +3091,6 @@
 						}
 					}
 				},
-				"tags": [
-					"Items"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -3110,58 +3111,7 @@
 				}
 			}
 		},
-		"/items/update": {
-			"post": {
-				"operationId": "Update",
-				"responses": {
-					"204": {
-						"description": "No content"
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Items"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IItem"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/items/delete": {
+		"/item-remove": {
 			"post": {
 				"operationId": "Delete",
 				"responses": {
@@ -3189,9 +3139,6 @@
 						}
 					}
 				},
-				"tags": [
-					"Items"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -3221,9 +3168,121 @@
 				}
 			}
 		},
-		"/items/list": {
+		"/item-update": {
 			"post": {
-				"operationId": "ListForCategoryId",
+				"operationId": "Update",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Response with error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IItem"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/item": {
+			"post": {
+				"operationId": "Item",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IItem"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Response with error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"itemId": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"itemId"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/items": {
+			"post": {
+				"operationId": "Items",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3259,57 +3318,6 @@
 						}
 					}
 				},
-				"tags": [
-					"Items"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/items/get": {
-			"post": {
-				"operationId": "Get",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IItem"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"Items"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -3323,16 +3331,7 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"properties": {
-									"itemId": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"itemId"
-								],
-								"type": "object"
+								"$ref": "#/components/schemas/IItem"
 							}
 						}
 					}

@@ -18,7 +18,7 @@ import { Users } from "../../features/users";
 import { Categories } from "../../features/categories";
 import { Map } from "../../features/map";
 import { Billing } from "../../features/billing";
-import { Positions } from "../../features/positions";
+import { ItemsList } from "../../features/Items/ItemsList";
 import { Orders } from "../../features/orders";
 import { Kitchen } from "../../features/kitchen";
 import { Statistic } from "../../features/statistic";
@@ -36,7 +36,7 @@ export const CPageComponents = {
   [EPages.KITCHEN]: <Kitchen />,
   [EPages.DAY_STATS]: <DayStats />,
   [EPages.PERIOD]: <PeriodStats />,
-  [EPages.POSITIONS]: <Positions />,
+  [EPages.POSITIONS]: <ItemsList />,
   [EPages.USERS]: <Users />,
   [EPages.CASH_REPORT_MAKE]: <MakeCashReport />,
   [EPages.CASH_REPORT_HISTORY]: <HistoryCashReport />,

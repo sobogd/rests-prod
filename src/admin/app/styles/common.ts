@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Alert } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
-import { primaryColor, textDefaultWhiteColor } from "./theme";
+import { borderColorDefault, primaryColor, textDefaultWhiteColor } from "./theme";
 
 export const AlertStyled = styled(Alert)`
   background-color: ${red["900"]};
@@ -223,6 +223,25 @@ export const UniversalListItemBordered = styled.div`
     padding: 2px 5px;
     line-height: 14px;
     margin: 2px 5px 0 0;
+  }
+`;
+
+export const UniversalListCard = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 15px;
+  min-height: 45px;
+  font-size: 17px;
+  font-weight: 600;
+  width: calc(100% - 30px);
+  margin: 15px 15px 0;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid rgb(237, 231, 255);
+  :last-child {
+    margin-bottom: 15px;
   }
 `;
 

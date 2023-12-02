@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { TextField } from "@mui/material";
 import { Controller, useFormContext } from "react-hook-form";
 
 export const InputControlled: FC<{
@@ -7,7 +6,8 @@ export const InputControlled: FC<{
   label: string;
   type?: string;
   rows?: number;
-}> = ({ name, label, type = "text", rows }) => {
+  marginBottom?: number;
+}> = ({ name, label, type = "text", rows, marginBottom = 0 }) => {
   const {
     control,
     formState: { errors },
@@ -17,20 +17,10 @@ export const InputControlled: FC<{
       name={name}
       control={control}
       render={({ field }) => (
-        <TextField
-          label={label}
-          type={type}
-          error={!!errors[name]?.message}
-          helperText={errors[name]?.message?.toString()}
-          variant="outlined"
-          fullWidth
-          rows={rows}
-          multiline={rows != null}
-          {...field}
-          inputProps={{
-            autoComplete: "new-password",
-          }}
-        />
+        <div style={{ marginBottom }}>
+          <input placeholder={label} type={type} {...field} />
+          {!!errors[name]?.message ? errors[name]?.message?.toString() : null}
+        </div>
       )}
     />
   );

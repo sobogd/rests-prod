@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { IItem } from "../../positions/types";
 import { UniversalList, UniversalListItem } from "../../../app/styles";
+import { IItem } from "../../../../back/types";
 
 export const VariantsSelect: FC<{
   handleSelectVariant: (v: { n?: string; p?: number }) => void;

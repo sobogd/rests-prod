@@ -82,14 +82,7 @@ const i18nEn = {
     tabModNoComment: "No comment for order",
     tabModButton: "Add new order",
   },
-  positions: {
-    categories: {
-      title: "Categories",
-      subtitle: "List categories for company",
-      sort: "Sorting",
-      add: "Add category",
-      empty: "No categories for company",
-    },
+  items: {
     list: {
       title: "Positions",
       subtitle: "List of items for category",
@@ -97,6 +90,10 @@ const i18nEn = {
       sort: "Sort",
       add: "Add new position",
       empty: "Category is empty",
+      remove: "Remove",
+      clone: "Clone",
+      edit: "Edit",
+      dialog: "Position actions",
     },
     form: {
       newTitle: "New position",
@@ -112,7 +109,7 @@ const i18nEn = {
         title: "General",
         subtitle: "Information about position",
         n: "Name",
-        c: "Category",
+        c: "Select a category",
         d: "Description",
         i: "Instructions",
         p: "Minimal price",
@@ -123,10 +120,10 @@ const i18nEn = {
       variants: {
         title: "Variants",
         subtitle: "Add variants for your position",
-        name: "Name",
-        price: "Additional price",
+        name: "Variant name",
+        price: "Price",
         countryCode: "Language",
-        translation: "Translation",
+        translation: "Variant translation on ",
         addTranslation: "Add translation",
         addVariant: "Add variant",
       },
@@ -141,10 +138,10 @@ const i18nEn = {
         addOption: "Add option",
       },
       translations: {
-        title: "Translations",
+        title: "Title translation",
         subtitle: "Add translations for your position name",
         countryCode: "Language",
-        translation: "Translation",
+        translation: "Title translation on ",
         addTranslation: "Add translation",
       },
       image: {

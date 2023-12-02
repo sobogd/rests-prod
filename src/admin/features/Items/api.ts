@@ -1,8 +1,8 @@
-import { IItem } from "../../../back/mappers/items";
+import { IItem } from "../../../back/types";
 import { API } from "../../api";
 import { ICategory } from "../categories/types";
 
-export interface IGetPositionDetails {
+export interface IGetItemDetails {
   id?: number;
   name: string;
   description?: string;
@@ -20,11 +20,11 @@ export interface IGetPositionDetails {
   fileName?: string;
 }
 
-const positionsApi = API.injectEndpoints({
+const itemsApi = API.injectEndpoints({
   endpoints: (b) => ({
-    positions: b.query<IItem[], undefined>({
+    items: b.query<IItem[], undefined>({
       query: () => ({
-        url: `items/list`,
+        url: `items`,
         method: "POST",
       }),
     }),
@@ -34,33 +34,33 @@ const positionsApi = API.injectEndpoints({
         method: "POST",
       }),
     }),
-    getPositionDetails: b.query<IItem, number>({
+    getItemDetails: b.query<IItem, number>({
       query: (itemId) => ({
-        url: `items/get`,
+        url: `item`,
         method: "POST",
         body: { itemId },
       }),
     }),
-    updatePosition: b.mutation<void, IItem>({
+    updateItem: b.mutation<void, IItem>({
       query: (body) => ({
-        url: `items/update`,
+        url: `item-update`,
         method: "POST",
         body,
       }),
     }),
-    createPosition: b.mutation<void, IItem>({
+    createItem: b.mutation<void, IItem>({
       query: (body) => ({
-        url: `items/create`,
+        url: `item-create`,
         method: "POST",
         body,
       }),
     }),
-    deletePosition: b.mutation<void, number>({
-      query: (id) => ({
-        url: `items/delete`,
+    deleteItem: b.mutation<void, number>({
+      query: (itemId) => ({
+        url: `item-remove`,
         method: "POST",
         body: {
-          id,
+          itemId,
         },
       }),
     }),
@@ -69,9 +69,10 @@ const positionsApi = API.injectEndpoints({
 });
 
 export const {
-  useLazyGetPositionDetailsQuery,
-  useUpdatePositionMutation,
-  useCreatePositionMutation,
-  useDeletePositionMutation,
-  usePositionsQuery,
-} = positionsApi;
+  useLazyGetItemDetailsQuery,
+  useUpdateItemMutation,
+  useCreateItemMutation,
+  useDeleteItemMutation,
+  useItemsQuery,
+  useListCategoriesQuery,
+} = itemsApi;

@@ -1,7 +1,6 @@
 import { OperationId, Request, Route, Security, Tags, Response, Get, Body, Post } from "tsoa";
 import { ErrorResponse } from "./users";
-import type { IAuthRequest } from "../types";
-import { IItem } from "../mappers/items";
+import type { IAuthRequest, IItem } from "../types";
 import listCategoriesWithPositions from "../services/o/listCategoriesWithPositions";
 import addOrUpdateOrder from "../services/o/addOrUpdateOrder";
 import listOrdersForTable from "../services/o/listOrdersForTable";

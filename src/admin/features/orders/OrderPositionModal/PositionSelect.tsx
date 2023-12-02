@@ -1,7 +1,7 @@
 import { FC, useMemo } from "react";
-import { IItem } from "../../positions/types";
 import { useListCategoriesWithPositionsQuery } from "../api";
 import { UniversalList, UniversalListItem } from "../../../app/styles";
+import { IItem } from "../../../../back/types";
 
 export const PositionSelect: FC<{
   handleSelectPosition: (position: IItem) => void;

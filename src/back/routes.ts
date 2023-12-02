@@ -19,6 +19,14 @@ import { ElementsController } from './controllers/elements';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { GeneralController } from './controllers/general';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ItemCreateController } from './controllers/item-create';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ItemRemoveController } from './controllers/item-remove';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ItemUpdateController } from './controllers/item-update';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { ItemController } from './controllers/item';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { ItemsController } from './controllers/items';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { KController } from './controllers/k';
@@ -365,6 +373,7 @@ const models: TsoaRoute.Models = {
         "properties": {
             "id": {"dataType":"double"},
             "company": {"dataType":"double"},
+            "cat": {"dataType":"double"},
             "c": {"dataType":"union","subSchemas":[{"dataType":"double"},{"dataType":"string"}]},
             "s": {"dataType":"double"},
             "n": {"dataType":"string"},
@@ -1266,12 +1275,12 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/items/create',
+        app.post('/item-create',
             authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController)),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.create)),
+            ...(fetchMiddlewares<RequestHandler>(ItemCreateController)),
+            ...(fetchMiddlewares<RequestHandler>(ItemCreateController.prototype.create)),
 
-            function ItemsController_create(request: any, response: any, next: any) {
+            function ItemCreateController_create(request: any, response: any, next: any) {
             const args = {
                     request: {"in":"body","name":"request","required":true,"ref":"IItem"},
                     undefined: {"in":"request","required":true,"dataType":"object"},
@@ -1283,7 +1292,7 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new ItemsController();
+                const controller = new ItemCreateController();
 
 
               const promise = controller.create.apply(controller, validatedArgs as any);
@@ -1293,12 +1302,39 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/items/update',
+        app.post('/item-remove',
             authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController)),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.update)),
+            ...(fetchMiddlewares<RequestHandler>(ItemRemoveController)),
+            ...(fetchMiddlewares<RequestHandler>(ItemRemoveController.prototype.delete)),
 
-            function ItemsController_update(request: any, response: any, next: any) {
+            function ItemRemoveController_delete(request: any, response: any, next: any) {
+            const args = {
+                    undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"itemId":{"dataType":"double","required":true}}},
+                    auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new ItemRemoveController();
+
+
+              const promise = controller.delete.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/item-update',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(ItemUpdateController)),
+            ...(fetchMiddlewares<RequestHandler>(ItemUpdateController.prototype.update)),
+
+            function ItemUpdateController_update(request: any, response: any, next: any) {
             const args = {
                     request: {"in":"body","name":"request","required":true,"ref":"IItem"},
                     undefined: {"in":"request","required":true,"dataType":"object"},
@@ -1310,7 +1346,7 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new ItemsController();
+                const controller = new ItemUpdateController();
 
 
               const promise = controller.update.apply(controller, validatedArgs as any);
@@ -1320,64 +1356,12 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/items/delete',
+        app.post('/item',
             authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController)),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.delete)),
+            ...(fetchMiddlewares<RequestHandler>(ItemController)),
+            ...(fetchMiddlewares<RequestHandler>(ItemController.prototype.item)),
 
-            function ItemsController_delete(request: any, response: any, next: any) {
-            const args = {
-                    undefined: {"in":"request","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new ItemsController();
-
-
-              const promise = controller.delete.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/items/list',
-            authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController)),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.list)),
-
-            function ItemsController_list(request: any, response: any, next: any) {
-            const args = {
-                    req: {"in":"request","name":"req","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new ItemsController();
-
-
-              const promise = controller.list.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/items/get',
-            authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController)),
-            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.getById)),
-
-            function ItemsController_getById(request: any, response: any, next: any) {
+            function ItemController_item(request: any, response: any, next: any) {
             const args = {
                     undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"itemId":{"dataType":"double","required":true}}},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
@@ -1389,10 +1373,37 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
+                const controller = new ItemController();
+
+
+              const promise = controller.item.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/items',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(ItemsController)),
+            ...(fetchMiddlewares<RequestHandler>(ItemsController.prototype.items)),
+
+            function ItemsController_items(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"ref":"IItem"},
+                    undefined: {"in":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
                 const controller = new ItemsController();
 
 
-              const promise = controller.getById.apply(controller, validatedArgs as any);
+              const promise = controller.items.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

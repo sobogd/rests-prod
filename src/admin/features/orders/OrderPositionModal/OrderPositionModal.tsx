@@ -2,7 +2,6 @@ import { FC, useEffect, useState } from "react";
 import { PositionSelect } from "./PositionSelect";
 import { CategorySelect } from "./CategorySelect";
 import { CommentTab } from "./CommentTab";
-import { IItem } from "../../positions/types";
 import { VariantsSelect } from "./VariantsSelect";
 import { OptionsSelect } from "./OptionsSelect";
 import { useTranslation } from "react-i18next";
@@ -10,6 +9,7 @@ import { ModalRests } from "../../../shared/ModalRests";
 import { useListCategoriesWithPositionsQuery } from "../api";
 import { utcToZonedTime } from "date-fns-tz";
 import { IPositionForOrder, IVariantOrOptionForPosition } from "../../../../back/types/o";
+import { IItem } from "../../../../back/types";
 
 type PositionStep = "category" | "position" | "comment" | "options" | "variants";
 
@@ -192,7 +192,7 @@ export const OrderPositionModal: FC<{
               t: position?.t,
               c: comment,
               i: selectedPosition?.i ?? undefined,
-              cat: position?.c ?? 0,
+              cat: Number(position?.c) ?? 0,
               crt: utcToZonedTime(new Date(), "UTC").valueOf(),
             });
             setOptions(undefined);

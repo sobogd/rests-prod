@@ -3,25 +3,26 @@ import { ErrorResponse } from "./users";
 import type { IAuthRequest, IItem } from "../types";
 import pool from "../db";
 
-@Route("items")
-export class ItemsController {
+@Route("item")
+export class ItemController {
   @Response<ErrorResponse>(500, "Response with error")
   @Response<ErrorResponse>(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("")
-  public async items(@Body() request: IItem, @Request() { user }: IAuthRequest): Promise<IItem[]> {
+  public async item(@Body() { itemId }: { itemId: number }, @Request() req: IAuthRequest): Promise<IItem> {
     const client = await pool.connect();
 
     try {
-      const items = (
-        await client.query(`SELECT id, n, p, s FROM items WHERE company = $1 ORDER BY s, n, id ASC`, [
-          user.companyId,
+      const item = (
+        await client.query(`SELECT * FROM items WHERE id = $1 AND company = $2 LIMIT 1`, [
+          itemId,
+          req.user.companyId,
         ])
-      )?.rows as IItem[] | undefined;
+      )?.rows?.[0] as IItem | undefined;
 
-      if (items?.length === undefined) throw new Error("Items not found");
+      if (!item) throw new Error("Item not found");
 
-      return items ?? [];
+      return item;
     } finally {
       client.release();
     }

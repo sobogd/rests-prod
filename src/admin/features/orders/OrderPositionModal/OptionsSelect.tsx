@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { IItem } from "../../positions/types";
 import styled from "@emotion/styled";
 import { useAppSelector } from "../../../app/store";
+import { IItem } from "../../../../back/types";
 
 type Option = { n?: string; p?: number; q?: number };
 

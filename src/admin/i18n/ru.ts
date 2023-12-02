@@ -82,7 +82,7 @@ const i18nRu = {
     tabModNoComment: "Комментарий не указан",
     tabModButton: "Добавить заказ",
   },
-  positions: {
+  items: {
     list: {
       title: "Позиции",
       subtitle: "Список позиций для категории",
@@ -90,13 +90,10 @@ const i18nRu = {
       sort: "Сортировка",
       add: "Добавить позицию",
       empty: "У данной категории еще нет позиций",
-    },
-    categories: {
-      title: "Категории",
-      subtitle: "Список категорий компании",
-      sort: "Сортировка",
-      add: "Добавить категорию",
-      empty: "У вас еще нет категорий",
+      remove: "Удалить",
+      clone: "Копировать",
+      edit: "Редактировать",
+      dialog: "Дейстивя над позицией",
     },
     form: {
       newTitle: "Новая позиция",
@@ -122,7 +119,7 @@ const i18nRu = {
         title: "Варианты",
         subtitle: "Для добавления в заказ будет доступен только один из добавленных вариантов.",
         name: "Наименование",
-        price: "Добавочная цена",
+        price: "Цена",
         countryCode: "Язык",
         translation: "Перевод",
         addTranslation: "Добавить перевод",
@@ -139,10 +136,10 @@ const i18nRu = {
         addOption: "Добавить опцию",
       },
       translations: {
-        title: "Перевод",
+        title: "Перевод названия",
         subtitle: "Перевод названия позиций на другие языки",
         countryCode: "Язык",
-        translation: "Перевод",
+        translation: "Перевод названия на ",
         addTranslation: "Добавить перевод",
       },
       image: {

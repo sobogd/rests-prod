@@ -179,7 +179,7 @@ export const ModalRests: FC<{
   title: string;
   description?: string;
   moreTitle?: string;
-  footerButton?: { title: string; onClick: () => void };
+  footerButton?: { title: string; onClick?: () => void; isSubmit?: boolean };
   moreButtons?: ({ title: string; onClick: () => void } | null)[];
   withPadding?: boolean;
   children?: any;
@@ -263,7 +263,12 @@ export const ModalRests: FC<{
       </ModalRestsHeader>
       <ModalRestsBody style={withPadding ? { padding: "15px" } : undefined}>{children}</ModalRestsBody>
       {footerButton ? (
-        <ModalRestsFooterButton onClick={footerButton.onClick}>{footerButton.title}</ModalRestsFooterButton>
+        <ModalRestsFooterButton
+          type={footerButton?.isSubmit ? "submit" : undefined}
+          onClick={footerButton.onClick}
+        >
+          {footerButton.title}
+        </ModalRestsFooterButton>
       ) : null}
     </ModalRestsDiv>
   );

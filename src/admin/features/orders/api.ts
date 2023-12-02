@@ -1,8 +1,8 @@
 import { IPaymentMethod } from "../../../back/mappers/paymentMethods";
+import { IItem } from "../../../back/types";
 import { IOrder } from "../../../back/types/o";
 import { API } from "../../api";
 import { ITable } from "../map/types";
-import { IItem } from "../positions/types";
 
 const ordersApi = API.injectEndpoints({
   endpoints: (b) => ({
