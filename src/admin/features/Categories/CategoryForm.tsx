@@ -91,7 +91,7 @@ export const CategoryForm: FC<Props> = (props) => {
           name: values?.name ?? "",
           description: values?.description,
           sort: values?.sort ?? 100,
-          translations: values?.translations?.map((i) => ({ ...i, id: undefined })),
+          translations: values?.translations?.map((i) => ({ ...i, id: undefined })) ?? [],
         }).then(() => {
           props.onBack();
           setSubmitting(false);

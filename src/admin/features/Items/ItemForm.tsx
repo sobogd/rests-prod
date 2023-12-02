@@ -144,15 +144,15 @@ export const ItemForm: FC<Props> = (props) => {
           p: Number(values?.p),
           c: values?.c,
           s: values?.s,
-          a: values?.a,
-          h: values?.h,
+          a: values?.a ?? false,
+          h: values?.h ?? false,
           f: values?.fChanged ? values?.f : undefined,
           fChanged: values?.fChanged,
-          t: values?.t?.map((i) => ({ ...i, id: undefined })),
-          ot: values?.ot?.map((i) => i.map((i) => ({ ...i, id: undefined }))),
-          vt: values?.vt?.map((i) => i.map((i) => ({ ...i, id: undefined }))),
-          o: values?.o?.map((i) => ({ ...i, p: Number(i.p), id: undefined })),
-          v: values?.v?.map((i) => ({ ...i, p: Number(i.p), id: undefined })),
+          t: values?.t?.map((i) => ({ ...i, id: undefined })) ?? [],
+          ot: values?.ot?.map((i) => i.map((i) => ({ ...i, id: undefined }))) ?? [],
+          vt: values?.vt?.map((i) => i.map((i) => ({ ...i, id: undefined }))) ?? [],
+          o: values?.o?.map((i) => ({ ...i, p: Number(i.p), id: undefined })) ?? [],
+          v: values?.v?.map((i) => ({ ...i, p: Number(i.p), id: undefined })) ?? [],
         }).then(() => {
           props.onBack();
           setSubmitting(false);
