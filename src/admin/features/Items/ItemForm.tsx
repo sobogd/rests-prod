@@ -73,8 +73,8 @@ const ItemFormComponent: FC<Props> = ({ onBack, selectedCopyItemId, selectedItem
     if (data) {
       setValues({
         n: data.n,
-        d: data.d,
-        i: data.i,
+        d: "",
+        i: "",
         p: data.p?.toString() ?? "",
         c: data.c,
         s: data.s,
