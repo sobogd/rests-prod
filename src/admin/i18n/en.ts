@@ -82,6 +82,31 @@ const i18nEn = {
     tabModNoComment: "No comment for order",
     tabModButton: "Add new order",
   },
+  categories: {
+    list: {
+      title: "Categories",
+      search: "Category name",
+      sort: "Sort",
+      add: "Add new category",
+      empty: "Categories not found",
+      remove: "Remove",
+      edit: "Edit",
+      dialog: "Category actions",
+    },
+    form: {
+      new: "New category",
+      edit: "Edit category",
+      save: "Save category",
+      name: "Name",
+      sort: "Sort",
+      description: "Description",
+      translations: {
+        countryCode: "Language",
+        translation: "Title translation on ",
+        addTranslation: "Add translation",
+      },
+    },
+  },
   items: {
     list: {
       title: "Positions",

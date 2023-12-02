@@ -48,8 +48,8 @@ const Container = styled.div<{ mb?: boolean }>`
 `;
 
 const Textarea = styled.textarea<{ mb?: boolean }>`
-  padding: 0 15px;
-  height: 60px;
+  padding: 17px 15px;
+  min-height: 80px;
   border: 1px solid ${borderColorDefault};
   font-size: 16px;
   border-radius: 10px;

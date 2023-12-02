@@ -82,6 +82,31 @@ const i18nRu = {
     tabModNoComment: "Комментарий не указан",
     tabModButton: "Добавить заказ",
   },
+  categories: {
+    list: {
+      title: "Категории",
+      search: "Имя категории",
+      sort: "Сортировка",
+      add: "Добавить категорию",
+      empty: "Категории не найдены",
+      remove: "Удалить",
+      edit: "Редактировать",
+      dialog: "Действия над категорией",
+    },
+    form: {
+      new: "Новая категория",
+      edit: "Изменение категории",
+      save: "Сохранить категорию",
+      name: "Название",
+      sort: "Сортировка",
+      description: "Описание",
+      translations: {
+        countryCode: "Язык",
+        translation: "Перевод названия на ",
+        addTranslation: "Добавить перевод",
+      },
+    },
+  },
   items: {
     list: {
       title: "Позиции",

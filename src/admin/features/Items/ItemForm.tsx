@@ -139,8 +139,8 @@ export const ItemForm: FC<Props> = (props) => {
         method({
           id: props.selectedItemId || undefined,
           n: values?.n,
-          d: values?.d,
-          i: values?.i,
+          d: values?.d ?? "",
+          i: values?.i ?? "",
           p: Number(values?.p),
           c: values?.c,
           s: values?.s,

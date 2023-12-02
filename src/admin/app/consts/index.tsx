@@ -24,6 +24,7 @@ import { Statistic } from "../../features/statistic";
 import { EPages } from "../../features/common/enums";
 import { PeriodStats } from "../../features/PeriodStats/PeriodStats";
 import { DayStats } from "../../features/DayStats/DayStats";
+import { CategoriesList } from "../../features/Categories/CategoriesList";
 
 export const CPageComponents = {
   [EPages.AUTHORIZATION]: <Login />,
@@ -31,7 +32,7 @@ export const CPageComponents = {
   [EPages.ORDERS]: <Orders />,
   [EPages.TABLES]: <Map />,
   [EPages.ELEMENTS]: <Elements />,
-  [EPages.CATEGORIES]: null,
+  [EPages.CATEGORIES]: <CategoriesList />,
   [EPages.KITCHEN]: <Kitchen />,
   [EPages.DAY_STATS]: <DayStats />,
   [EPages.PERIOD]: <PeriodStats />,

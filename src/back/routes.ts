@@ -11,6 +11,12 @@ import { BillingController } from './controllers/billing';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CategoriesController } from './controllers/categories';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CategoryCreateController } from './controllers/category-create';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CategoryRemoveController } from './controllers/category-remove';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CategoryUpdateController } from './controllers/category-update';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CategoryController } from './controllers/category';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DayStatsController } from './controllers/day-stats';
@@ -972,6 +978,87 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/category-create',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CategoryCreateController)),
+            ...(fetchMiddlewares<RequestHandler>(CategoryCreateController.prototype.create)),
+
+            function CategoryCreateController_create(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"ref":"ICategory"},
+                    undefined: {"in":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CategoryCreateController();
+
+
+              const promise = controller.create.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/category-remove',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CategoryRemoveController)),
+            ...(fetchMiddlewares<RequestHandler>(CategoryRemoveController.prototype.categoryRemove)),
+
+            function CategoryRemoveController_categoryRemove(request: any, response: any, next: any) {
+            const args = {
+                    undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"double","required":true}}},
+                    auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CategoryRemoveController();
+
+
+              const promise = controller.categoryRemove.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/category-update',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CategoryUpdateController)),
+            ...(fetchMiddlewares<RequestHandler>(CategoryUpdateController.prototype.update)),
+
+            function CategoryUpdateController_update(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"ref":"ICategory"},
+                    undefined: {"in":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CategoryUpdateController();
+
+
+              const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         app.post('/category',
             authenticateMiddleware([{"Bearer":["AuthService"]}]),
             ...(fetchMiddlewares<RequestHandler>(CategoryController)),
@@ -979,6 +1066,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function CategoryController_category(request: any, response: any, next: any) {
             const args = {
+                    undefined: {"in":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"id":{"dataType":"double","required":true}}},
                     auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
             };
 

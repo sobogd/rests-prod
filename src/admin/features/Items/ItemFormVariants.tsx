@@ -102,6 +102,7 @@ const TranslationCard = styled(VariantCard)`
     min-width: 50px;
     text-align: center;
     padding: 0;
+    text-align: center;
   }
   > div {
     :nth-child(1) {

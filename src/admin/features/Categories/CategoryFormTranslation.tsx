@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { languages } from "../../utils/timezones";
 import { useTranslation } from "react-i18next";
 import shortid from "shortid";
@@ -114,32 +114,38 @@ const TranslationCard = styled(UniversalListCard)`
   }
 `;
 
-export const ItemFormTranslation: FC = () => {
+export const CategoryFormTranslation: FC = () => {
   const { values, setValues } = useFormikContext<any>();
   const i18n = useTranslation();
 
   const handleAddTranslation = () => {
-    setValues({ ...values, t: [...(values.t ?? []), { l: "en", t: "", id: shortid.generate() }] });
+    setValues({
+      ...values,
+      translations: [...(values.translations ?? []), { l: "en", t: "", id: shortid.generate() }],
+    });
   };
 
   const handleRemoveTranslation = (idx: number) => () => {
-    setValues({ ...values, t: (values.t ?? []).filter((_: unknown, index: number) => index !== idx) });
+    setValues({
+      ...values,
+      translations: (values.translations ?? []).filter((_: unknown, index: number) => index !== idx),
+    });
   };
 
   return (
     <>
       <UniversalList>
-        {values.t?.map((translation: { l?: string; p?: number; id?: string }, idx: number) => (
+        {values.translations?.map((translation: { l?: string; p?: number; id?: string }, idx: number) => (
           <TranslationCard>
             <FormikSelect
-              label={i18n.t("items.form.translations.countryCode")}
-              name={`t.[${idx}].l`}
+              label={i18n.t("categories.form.translations.countryCode")}
+              name={`translations.[${idx}].l`}
               options={languages.map((l) => ({ label: l.code.toString(), value: l.code }))}
               firstDefault
             />
             <FormikInput
-              name={`t.[${idx}].t`}
-              label={i18n.t("items.form.translations.translation") + translation?.l}
+              name={`translations.[${idx}].t`}
+              label={i18n.t("categories.form.translations.translation") + translation?.l}
             />
             <span onClick={handleRemoveTranslation(idx)}>
               <TbTrash />
@@ -149,7 +155,7 @@ export const ItemFormTranslation: FC = () => {
       </UniversalList>
       <AddButton onClick={handleAddTranslation}>
         <TbPlus />
-        {i18n.t("items.form.translations.addTranslation")}
+        {i18n.t("categories.form.translations.addTranslation")}
       </AddButton>
     </>
   );
