@@ -5,7 +5,6 @@ import { SnackbarProvider } from "notistack";
 import { Notifications } from "../hooks/useNotification";
 import { useTranslation } from "react-i18next";
 import { CPageComponents } from "./consts";
-import { categoriesService, searchPositions } from "../api";
 import { searchPaymentMethods } from "../entities/paymentMethods";
 import { searchTables } from "../features/map/api";
 import { commonActions, getDefaultPageByRole } from "../features/common/slice";

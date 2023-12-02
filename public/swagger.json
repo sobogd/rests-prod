@@ -455,13 +455,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"ECategoryStatus": {
-				"enum": [
-					"active",
-					"archived"
-				],
-				"type": "string"
-			},
 			"ICategory": {
 				"properties": {
 					"id": {
@@ -474,27 +467,27 @@
 					"description": {
 						"type": "string"
 					},
-					"status": {
-						"$ref": "#/components/schemas/ECategoryStatus"
+					"company_id": {
+						"type": "number",
+						"format": "double"
 					},
-					"companyId": {
+					"sort": {
 						"type": "number",
 						"format": "double"
 					},
 					"translations": {
 						"items": {
 							"properties": {
-								"name": {
+								"n": {
 									"type": "string"
 								},
-								"code": {
+								"t": {
+									"type": "string"
+								},
+								"l": {
 									"type": "string"
 								}
 							},
-							"required": [
-								"name",
-								"code"
-							],
 							"type": "object"
 						},
 						"type": "array"
@@ -502,51 +495,6 @@
 				},
 				"required": [
 					"name"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IGetCategoryDetails": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"status": {
-						"$ref": "#/components/schemas/ECategoryStatus"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
-					},
-					"translations": {
-						"items": {
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"code": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"name",
-					"translations"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2374,9 +2322,9 @@
 				"parameters": []
 			}
 		},
-		"/categories/search": {
+		"/categories": {
 			"post": {
-				"operationId": "Search",
+				"operationId": "Categories",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -2412,9 +2360,6 @@
 						}
 					}
 				},
-				"tags": [
-					"CategoriesService"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -2425,17 +2370,16 @@
 				"parameters": []
 			}
 		},
-		"/categories/create": {
+		"/category": {
 			"post": {
-				"operationId": "Create",
+				"operationId": "Category",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"properties": {},
-									"type": "object"
+									"$ref": "#/components/schemas/ICategory"
 								}
 							}
 						}
@@ -2461,9 +2405,6 @@
 						}
 					}
 				},
-				"tags": [
-					"CategoriesService"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -2471,202 +2412,7 @@
 						]
 					}
 				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICategory"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/categories/update": {
-			"post": {
-				"operationId": "Update",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"CategoriesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICategory"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/categories/archive": {
-			"post": {
-				"operationId": "Archive",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"CategoriesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"id": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"id"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/categories/get-category-details/{id}": {
-			"get": {
-				"operationId": "GetCategoryDetails",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IGetCategoryDetails"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"CategoriesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
+				"parameters": []
 			}
 		},
 		"/day-stats": {

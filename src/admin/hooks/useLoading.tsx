@@ -3,7 +3,6 @@ import { useAppSelector } from "../app/store";
 export const useLoading = (): boolean => {
   const { isLoading: isLoadingUsers } = useAppSelector((s) => s.users);
   const { isLoading: isLoadingTables } = useAppSelector((s) => s.tables);
-  const { isLoading: isLoadingCats } = useAppSelector((s) => s.categories);
   const { isLoading: isLoadingElements } = useAppSelector((s) => s.elements);
   const { isLoading: isLoadingCompanies } = useAppSelector((s) => s.companies);
   const { isLoading: isLoadingReports } = useAppSelector((s) => s.reports);
@@ -14,7 +13,6 @@ export const useLoading = (): boolean => {
   return (
     isLoadingUsers ||
     isLoadingTables ||
-    isLoadingCats ||
     isLoadingElements ||
     isLoadingCompanies ||
     isLoadingReports ||

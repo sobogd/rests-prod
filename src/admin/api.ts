@@ -4,7 +4,6 @@ import { RootState, store } from "./app/store";
 import { Notice } from "./hooks/useNotification";
 import { commonActions } from "./features/common/slice";
 
-export * as categoriesService from "./api/categories";
 export * as elementsService from "./api/elements";
 export * from "./api/positions";
 export * from "./api/users";

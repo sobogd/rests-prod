@@ -48,3 +48,16 @@ export interface IItem {
   f?: string;
   fChanged?: boolean;
 }
+
+export interface ICategory {
+  id?: number;
+  name: string;
+  description?: string;
+  company_id?: number;
+  sort?: number;
+  translations?: {
+    l?: string;
+    t?: string;
+    n?: string;
+  }[];
+}

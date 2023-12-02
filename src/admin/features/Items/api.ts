@@ -1,24 +1,5 @@
-import { IItem } from "../../../back/types";
+import { ICategory, IItem } from "../../../back/types";
 import { API } from "../../api";
-import { ICategory } from "../categories/types";
-
-export interface IGetItemDetails {
-  id?: number;
-  name: string;
-  description?: string;
-  price: number;
-  isAdditional: boolean;
-  hide: boolean;
-  multipleChoice: boolean;
-  sort?: number;
-  additional: number[];
-  categories: number[];
-  composition: { elementId: number; weight: number }[];
-  translations: { code: string; name: string }[];
-  file?: File;
-  isFileChanged?: boolean;
-  fileName?: string;
-}
 
 const itemsApi = API.injectEndpoints({
   endpoints: (b) => ({
@@ -30,7 +11,7 @@ const itemsApi = API.injectEndpoints({
     }),
     listCategories: b.query<ICategory[], void>({
       query: () => ({
-        url: `categories/search`,
+        url: `categories`,
         method: "POST",
       }),
     }),

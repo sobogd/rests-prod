@@ -1,19 +1,11 @@
 import pool from "../../db";
-import { ECategoryStatus, mapCategoriesFromDB } from "../../mappers/categories";
-import { IMenu, IMenuResponse, mapMenuFromDB } from "../../mappers/menu";
-import {
-  EPositionStatuses,
-  IPosition,
-  mapPositionsFromDB,
-} from "../../mappers/positions";
+import { EPositionStatuses, IPosition, mapPositionsFromDB } from "../../mappers/positions";
 import { IPublicMenuCategory } from "../../controllers/menu";
 import { mapPositionsCategoriesFromDB } from "../../mappers/positionsCategories";
 import { mapPositionsAdditionalFromDB } from "../../mappers/positionsAdditional";
 import { mapPositionsI18nFromDB } from "../../mappers/positionsI18n";
 
-export const updatePublicMenuForCompany = async (
-  companyId: number
-): Promise<void> => {
+export const updatePublicMenuForCompany = async (companyId: number): Promise<void> => {
   const client = await pool.connect();
 
   const { rows: positionsDB } = await client.query(
@@ -36,13 +28,9 @@ export const updatePublicMenuForCompany = async (
     `
   );
 
-  const positionsCategories = mapPositionsCategoriesFromDB(
-    positionsCategoriesDB
-  );
+  const positionsCategories = mapPositionsCategoriesFromDB(positionsCategoriesDB);
 
-  const categoriesIds: number[] = positionsCategories?.map(
-    (pc) => pc.categoryId || 0
-  );
+  const categoriesIds: number[] = positionsCategories?.map((pc) => pc.categoryId || 0);
 
   if (!categoriesIds?.length) {
     return;
@@ -55,7 +43,7 @@ export const updatePublicMenuForCompany = async (
     `
   );
 
-  const categories = mapCategoriesFromDB(categoriesDB);
+  const categories = categoriesDB;
 
   const { rows: positionsAdditionalDB } = await client.query(
     `
@@ -64,9 +52,7 @@ export const updatePublicMenuForCompany = async (
     `
   );
 
-  const positionsAdditional = mapPositionsAdditionalFromDB(
-    positionsAdditionalDB
-  );
+  const positionsAdditional = mapPositionsAdditionalFromDB(positionsAdditionalDB);
 
   const positionsAdditionalIds: number[] =
     positionsAdditional?.map((pa) => pa.additionalPositionId || 0) || [];
@@ -117,9 +103,7 @@ export const updatePublicMenuForCompany = async (
           add: positionsAdditional
             ?.filter((pa) => pa.generalPositionId === position?.id)
             .map((pa) => {
-              const addition = additional.find(
-                (a) => a.id === pa.additionalPositionId
-              );
+              const addition = additional.find((a) => a.id === pa.additionalPositionId);
               return {
                 id: addition?.id || 0,
                 name: addition?.name || "",
@@ -137,10 +121,7 @@ export const updatePublicMenuForCompany = async (
 
   await client.query(`DELETE FROM menus WHERE company_id = $1`, [companyId]);
 
-  await client.query(`INSERT INTO menus (menu, company_id) VALUES ($1, $2)`, [
-    jsonResult,
-    companyId,
-  ]);
+  await client.query(`INSERT INTO menus (menu, company_id) VALUES ($1, $2)`, [jsonResult, companyId]);
 
   await client.release();
 };

@@ -1,5 +1,5 @@
 import pool from "../../db";
-import { ICategory } from "../../mappers/categories";
+import { ICategory } from "../../types";
 
 export default async (companyId: number): Promise<{ n: string; i: number }[]> => {
   const client = await pool.connect();

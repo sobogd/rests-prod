@@ -7,7 +7,6 @@ import { discountsSlice } from "../../entities/discounts";
 import { paymentMethodsSlice } from "../../entities/paymentMethods";
 import { billingReducer } from "../../slices/billing";
 import { CTablesInitialState } from "../../features/map/consts";
-import { categoriesSlice } from "../../features/categories/slice";
 import { API } from "../../api";
 import { elementModel } from "../../entities/element";
 import { usersModel } from "../../entities/users";
@@ -36,7 +35,6 @@ const preloadedState = preloadedStateUnFiltered
 
 export const store = configureStore({
   reducer: {
-    categories: categoriesSlice.reducer,
     elements: elementModel.reducer,
     tables: tablesReducer,
     users: usersModel.reducer,

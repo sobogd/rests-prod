@@ -15,7 +15,6 @@ import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import { MakeCashReport, HistoryCashReport } from "../../features/reports";
 import { Login } from "../../features/login";
 import { Users } from "../../features/users";
-import { Categories } from "../../features/categories";
 import { Map } from "../../features/map";
 import { Billing } from "../../features/billing";
 import { ItemsList } from "../../features/Items/ItemsList";
@@ -32,7 +31,7 @@ export const CPageComponents = {
   [EPages.ORDERS]: <Orders />,
   [EPages.TABLES]: <Map />,
   [EPages.ELEMENTS]: <Elements />,
-  [EPages.CATEGORIES]: <Categories />,
+  [EPages.CATEGORIES]: null,
   [EPages.KITCHEN]: <Kitchen />,
   [EPages.DAY_STATS]: <DayStats />,
   [EPages.PERIOD]: <PeriodStats />,
