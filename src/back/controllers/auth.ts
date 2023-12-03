@@ -8,10 +8,10 @@ import type {
 import getUsersByCompanyLogin from "../services/companies/getUsersByCompanyLogin";
 import registration from "../services/auth/registration";
 import { ErrorResponse } from "./users";
-import type { IAuthRequest } from "../types";
+import type { IAuthRequest, ICompany } from "../types";
 import whoAmI from "../services/users/whoAmI";
 import authorization from "../services/users/authorization";
-import type { ICompany, IRegistrationRequest } from "../mappers/comapnies";
+import type { IRegistrationRequest } from "../mappers/comapnies";
 import hashAuthorization from "../services/users/hashAuthorization";
 
 @Route("auth")

@@ -15,6 +15,7 @@ import { useFormikContext } from "formik";
 import { TbPlus, TbTrash } from "react-icons/tb";
 import FormikSelect from "../../shared/FormikSelect";
 import FormikInput from "../../shared/FormikInput";
+import { useAuth } from "../Auth/Context";
 
 const AddButton = styled.div`
   display: flex;
@@ -95,26 +96,16 @@ const VariantCard = styled(UniversalListCard)`
 const TranslationCard = styled(VariantCard)`
   border-radius: 0;
   border-top: 0;
-  select {
-    border-right: 1px solid #ede7ff;
-    border-radius: 0;
-    max-width: 50px;
-    min-width: 50px;
-    text-align: center;
-    padding: 0;
-    text-align: center;
-  }
   > div {
-    :nth-child(1) {
-      width: auto;
-      label {
-        display: none;
-      }
-    }
+    width: auto;
     :nth-child(2) {
       width: 100%;
       max-width: 100%;
     }
+  }
+  input {
+    border-radius: 0 !important;
+    border: 0 !important;
   }
   label {
     ::before {
@@ -132,6 +123,8 @@ export const ItemFormVariants: FC = () => {
   const { values, setValues } = useFormikContext<any>();
   const { t } = useTranslation();
 
+  const langs = useAuth()?.whoami?.company?.langs ?? [];
+
   const handleAddVariant = () => {
     setValues({
       ...values,
@@ -145,7 +138,7 @@ export const ItemFormVariants: FC = () => {
       ...values,
       vt:
         values.vt?.map((item: any, index: number) =>
-          index === variant_index ? [...item, { l: "en", t: "", id: shortid.generate() }] : item
+          index === variant_index ? langs.map((lang) => ({ l: lang, t: "" })) : item
         ) ?? [],
     });
   };
@@ -158,15 +151,10 @@ export const ItemFormVariants: FC = () => {
     });
   };
 
-  const handleRemoveTranslation = (variant_index: number, variant_translation_index: number) => () => {
+  const handleRemoveTranslation = (variant_index: number) => () => {
     setValues({
       ...values,
-      vt:
-        values.vt?.map((item: any, index: number) =>
-          index === variant_index
-            ? item.filter((_: unknown, index: number) => index !== variant_translation_index)
-            : item
-        ) ?? [],
+      vt: values.vt?.map((item: any, index: number) => (index === variant_index ? [] : item)) ?? [],
     });
   };
 
@@ -187,30 +175,28 @@ export const ItemFormVariants: FC = () => {
               </span>
             </VariantCard>
             {values.vt?.[variant_index]?.map(
-              (translation: { n: string; l?: IOption; id?: string }, variant_translation_index: number) => {
+              (translation: { l: string; t: string }, variant_translation_index: number) => {
                 return (
-                  <TranslationCard>
-                    <FormikSelect
-                      label={t("items.form.variants.countryCode")}
-                      name={`vt.[${variant_index}].[${variant_translation_index}].l`}
-                      options={languages.map((l) => ({ label: l.code.toString(), value: l.code }))}
-                      firstDefault
-                    />
+                  <TranslationCard key={translation.l}>
                     <FormikInput
                       name={`vt.[${variant_index}].[${variant_translation_index}].t`}
                       label={t("items.form.variants.translation") + translation.l}
                     />
-                    <span onClick={handleRemoveTranslation(variant_index, variant_translation_index)}>
-                      <TbTrash />
-                    </span>
                   </TranslationCard>
                 );
               }
             )}
-            <AddTranslationButton onClick={handleAddTranslation(variant_index)}>
-              <TbPlus />
-              {t("items.form.variants.addTranslation")}
-            </AddTranslationButton>
+            {values.vt?.[variant_index]?.length > 0 ? (
+              <AddTranslationButton onClick={handleRemoveTranslation(variant_index)}>
+                <TbPlus />
+                {t("items.form.translations.removeTranslation")}
+              </AddTranslationButton>
+            ) : (
+              <AddTranslationButton onClick={handleAddTranslation(variant_index)}>
+                <TbPlus />
+                {t("items.form.translations.addTranslation")}
+              </AddTranslationButton>
+            )}
           </>
         ))}
       </UniversalList>

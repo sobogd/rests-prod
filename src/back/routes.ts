@@ -19,6 +19,10 @@ import { CategoryUpdateController } from './controllers/category-update';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { CategoryController } from './controllers/category';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CompanyUpdateController } from './controllers/company-update';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { CompanyController } from './controllers/company';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DayStatsController } from './controllers/day-stats';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { DiscountsController } from './controllers/discounts';
@@ -52,6 +56,8 @@ import { PeriodStatsController } from './controllers/period-stats';
 import { PositionsController } from './controllers/positions';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TablesController } from './controllers/tables';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { WhoamiController } from './controllers/whoami';
 import { expressAuthentication } from './services/users/authentication';
 // @ts-ignore - no great way to install types from subpackage
 const promiseAny = require('promise.any');
@@ -153,10 +159,11 @@ const models: TsoaRoute.Models = {
             "tin": {"dataType":"string","required":true},
             "login": {"dataType":"string","required":true},
             "email": {"dataType":"string","required":true},
-            "currencySymbol": {"dataType":"string","required":true},
-            "timezone": {"dataType":"string","required":true},
+            "currencySymbol": {"dataType":"string"},
+            "currency_symbol": {"dataType":"string"},
+            "timezone": {"dataType":"string"},
             "lang": {"dataType":"string","required":true},
-            "utcDiff": {"dataType":"double","required":true},
+            "utcDiff": {"dataType":"double"},
             "balance": {"dataType":"double"},
             "status": {"ref":"ECompanyStatuses"},
             "rateId": {"dataType":"double"},
@@ -164,6 +171,7 @@ const models: TsoaRoute.Models = {
             "nextPayment": {"dataType":"string"},
             "perMonth": {"dataType":"double"},
             "rate": {"ref":"IRate"},
+            "langs": {"dataType":"array","array":{"dataType":"string"}},
         },
         "additionalProperties": false,
     },
@@ -553,6 +561,15 @@ const models: TsoaRoute.Models = {
             "type": {"ref":"ETableType","required":true},
             "companyId": {"dataType":"double"},
             "status": {"ref":"ETableStatuses"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IWhoAmI": {
+        "dataType": "refObject",
+        "properties": {
+            "company": {"dataType":"nestedObjectLiteral","nestedProperties":{"langs":{"dataType":"array","array":{"dataType":"string"}},"lang":{"dataType":"string","required":true},"symbol":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"title":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
+            "user": {"dataType":"nestedObjectLiteral","nestedProperties":{"login":{"dataType":"string","required":true},"type":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
     },
@@ -1080,6 +1097,59 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.category.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/company-update',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CompanyUpdateController)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyUpdateController.prototype.update)),
+
+            function CompanyUpdateController_update(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"ref":"ICompany"},
+                    undefined: {"in":"request","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CompanyUpdateController();
+
+
+              const promise = controller.update.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/company',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController)),
+            ...(fetchMiddlewares<RequestHandler>(CompanyController.prototype.company)),
+
+            function CompanyController_company(request: any, response: any, next: any) {
+            const args = {
+                    auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new CompanyController();
+
+
+              const promise = controller.company.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -2110,6 +2180,32 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.archive.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/whoami',
+            authenticateMiddleware([{"Bearer":["AuthService"]}]),
+            ...(fetchMiddlewares<RequestHandler>(WhoamiController)),
+            ...(fetchMiddlewares<RequestHandler>(WhoamiController.prototype.whoami)),
+
+            function WhoamiController_whoami(request: any, response: any, next: any) {
+            const args = {
+                    auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new WhoamiController();
+
+
+              const promise = controller.whoami.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

@@ -101,9 +101,9 @@ const i18nEn = {
       sort: "Sort",
       description: "Description",
       translations: {
-        countryCode: "Language",
         translation: "Title translation on ",
-        addTranslation: "Add translation",
+        addTranslation: "Add translations",
+        removeTranslation: "Remove translations",
       },
     },
   },
@@ -158,7 +158,7 @@ const i18nEn = {
         name: "Name",
         price: "Additional price",
         countryCode: "Language",
-        translation: "Translation",
+        translation: "Option translation on ",
         addTranslation: "Add translation",
         addOption: "Add option",
       },
@@ -168,6 +168,7 @@ const i18nEn = {
         countryCode: "Language",
         translation: "Title translation on ",
         addTranslation: "Add translation",
+        removeTranslation: "Remove translation",
       },
       image: {
         title: "Photography",

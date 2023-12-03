@@ -25,14 +25,15 @@ import { EPages } from "../../features/common/enums";
 import { PeriodStats } from "../../features/PeriodStats/PeriodStats";
 import { DayStats } from "../../features/DayStats/DayStats";
 import { CategoriesList } from "../../features/Categories/CategoriesList";
+import { Company } from "../../features/Company/Company";
 
 export const CPageComponents = {
   [EPages.AUTHORIZATION]: <Login />,
-  [EPages.COMPANY]: <Account />,
   [EPages.ORDERS]: <Orders />,
   [EPages.TABLES]: <Map />,
   [EPages.ELEMENTS]: <Elements />,
   [EPages.CATEGORIES]: <CategoriesList />,
+  [EPages.COMPANY]: <Company />,
   [EPages.KITCHEN]: <Kitchen />,
   [EPages.DAY_STATS]: <DayStats />,
   [EPages.PERIOD]: <PeriodStats />,

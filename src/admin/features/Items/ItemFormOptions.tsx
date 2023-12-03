@@ -15,6 +15,7 @@ import styled from "@emotion/styled";
 import FormikSelect from "../../shared/FormikSelect";
 import FormikInput from "../../shared/FormikInput";
 import { TbPlus, TbTrash } from "react-icons/tb";
+import { useAuth } from "../Auth/Context";
 
 const AddButton = styled.div`
   display: flex;
@@ -95,26 +96,16 @@ const OptionCard = styled(UniversalListCard)`
 const TranslationCard = styled(OptionCard)`
   border-radius: 0;
   border-top: 0;
-  select {
-    border-right: 1px solid #ede7ff;
-    border-radius: 0;
-    max-width: 50px;
-    min-width: 50px;
-    text-align: center;
-    padding: 0;
-    text-align: center;
-  }
   > div {
-    :nth-child(1) {
-      width: auto;
-      label {
-        display: none;
-      }
-    }
+    width: auto;
     :nth-child(2) {
       width: 100%;
       max-width: 100%;
     }
+  }
+  input {
+    border-radius: 0 !important;
+    border: 0 !important;
   }
   label {
     ::before {
@@ -132,6 +123,8 @@ export const ItemFormOptions: FC = () => {
   const { values, setValues } = useFormikContext<any>();
   const { t } = useTranslation();
 
+  const langs = useAuth()?.whoami?.company?.langs ?? [];
+
   const handleAddOption = () => {
     setValues({
       ...values,
@@ -145,7 +138,7 @@ export const ItemFormOptions: FC = () => {
       ...values,
       ot:
         values.ot?.map((item: any, index: number) =>
-          index === option_index ? [...item, { l: "en", t: "", id: shortid.generate() }] : item
+          index === option_index ? langs.map((lang) => ({ l: lang, t: "" })) : item
         ) ?? [],
     });
   };
@@ -158,15 +151,10 @@ export const ItemFormOptions: FC = () => {
     });
   };
 
-  const handleRemoveTranslation = (option_index: number, option_translation_index: number) => () => {
+  const handleRemoveTranslation = (option_index: number) => () => {
     setValues({
       ...values,
-      ot:
-        values.ot?.map((item: any, index: number) =>
-          index === option_index
-            ? item.filter((_: unknown, index: number) => index !== option_translation_index)
-            : item
-        ) ?? [],
+      ot: values.ot?.map((item: any, index: number) => (index === option_index ? [] : item)) ?? [],
     });
   };
 
@@ -190,27 +178,25 @@ export const ItemFormOptions: FC = () => {
               (translation: { n: string; l?: IOption; id?: string }, option_translation_index: number) => {
                 return (
                   <TranslationCard>
-                    <FormikSelect
-                      label={t("items.form.options.countryCode")}
-                      name={`ot.[${option_index}].[${option_translation_index}].l`}
-                      options={languages.map((l) => ({ label: l.code.toString(), value: l.code }))}
-                      firstDefault
-                    />
                     <FormikInput
                       name={`ot.[${option_index}].[${option_translation_index}].t`}
                       label={t("items.form.options.translation") + translation.l}
                     />
-                    <span onClick={handleRemoveTranslation(option_index, option_translation_index)}>
-                      <TbTrash />
-                    </span>
                   </TranslationCard>
                 );
               }
             )}
-            <AddTranslationButton onClick={handleAddTranslation(option_index)}>
-              <TbPlus />
-              {t("items.form.variants.addTranslation")}
-            </AddTranslationButton>
+            {values.ot?.[option_index]?.length > 0 ? (
+              <AddTranslationButton onClick={handleRemoveTranslation(option_index)}>
+                <TbTrash />
+                {t("items.form.translations.removeTranslation")}
+              </AddTranslationButton>
+            ) : (
+              <AddTranslationButton onClick={handleAddTranslation(option_index)}>
+                <TbPlus />
+                {t("items.form.translations.addTranslation")}
+              </AddTranslationButton>
+            )}
           </>
         ))}
       </UniversalList>

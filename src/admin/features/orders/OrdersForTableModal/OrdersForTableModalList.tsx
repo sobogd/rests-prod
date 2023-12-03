@@ -45,7 +45,7 @@ export const OrdersForTableModalList: FC<{
               {i18n.t("orders.tabModBeforeOrd")}
               {order.n}
             </span>
-            <OrderCretionTime>{getTimeFromUTCTimeStamp(order.crt ?? 0, utcDiff ?? 0)}</OrderCretionTime>
+            <OrderCretionTime>{getTimeFromUTCTimeStamp(order.crt ?? 0)}</OrderCretionTime>
             <OrderItemsCount>{order.p.length} items</OrderItemsCount>
           </p>
           <p>

@@ -80,9 +80,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
               <p>
                 <TbNumber /> №{order.n}
               </p>
-              <OrderCretionTime>
-                {getTimeFromUTCTimeStamp(order.crt ?? 0, company?.utcDiff ?? 0)}
-              </OrderCretionTime>
+              <OrderCretionTime>{getTimeFromUTCTimeStamp(order.crt ?? 0)}</OrderCretionTime>
             </p>
             <p>
               <TbMap /> №{table?.number} {table?.name}

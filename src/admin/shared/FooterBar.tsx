@@ -31,6 +31,10 @@ export const CMenuItems: IMenuItem[] = [
     permissions: ["admin"],
   },
   {
+    id: EPages.COMPANY,
+    permissions: ["admin"],
+  },
+  {
     id: EPages.USERS,
     permissions: ["admin"],
   },

@@ -1,3 +1,6 @@
+import { ECompanyStatuses } from "./mappers/comapnies";
+import { IRate } from "./mappers/rates";
+
 export interface IResponseStatusWithMessage {
   isSuccess: boolean;
   message?: string;
@@ -60,4 +63,42 @@ export interface ICategory {
     t?: string;
     n?: string;
   }[];
+}
+
+export interface ICompany {
+  id: number;
+  title: string;
+  tin: string;
+  login: string;
+  email: string;
+  currencySymbol?: string;
+  currency_symbol?: string;
+  timezone?: string;
+  lang: string;
+  utcDiff?: number;
+  balance?: number;
+  status?: ECompanyStatuses;
+  rateId?: number;
+  created?: string;
+  nextPayment?: string;
+  perMonth?: number;
+  rate?: IRate;
+  langs?: string[];
+}
+
+export interface IWhoAmI {
+  company: {
+    id: string;
+    title: string;
+    email: string;
+    symbol: string;
+    lang: string;
+    langs?: string[];
+  };
+  user: {
+    id: string;
+    name: string;
+    type: string;
+    login: string;
+  };
 }

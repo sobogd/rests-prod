@@ -1,4 +1,4 @@
-import { ICompany } from "./comapnies";
+import { ICompany } from "../types";
 
 export interface AuthorizationResponse extends IUser {
   token: string;

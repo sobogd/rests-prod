@@ -61,6 +61,8 @@ const Input = styled.input<{ mb?: boolean }>`
 const Error = styled.div<{ mb?: boolean }>`
   ${({ mb }) => (!mb ? `margin-bottom: 5px;` : null)}
   color: ${errorColor};
+  padding: 5px 15px 0;
+  font-size: 13px;
 `;
 
 const FormikInput: React.FC<{

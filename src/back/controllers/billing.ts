@@ -1,7 +1,6 @@
 import { Body, OperationId, Request, Post, Route, Security, Tags, Response } from "tsoa";
 import { ErrorResponse } from "./users";
-import type { IAuthRequest } from "../types";
-import { ICompany } from "../mappers/comapnies";
+import type { IAuthRequest, ICompany } from "../types";
 import updateCompanyInfo from "../services/billing/updateCompanyInfo";
 import makePayment from "../services/billing/makePayment";
 import express from "express";

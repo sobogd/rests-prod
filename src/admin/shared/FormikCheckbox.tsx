@@ -29,6 +29,7 @@ const CheckboxLabel = styled.label<{ checked?: boolean }>`
 const Error = styled.div<{ mb?: boolean }>`
   ${({ mb }) => (!mb ? `margin-bottom: 5px;` : null)}
   color: ${errorColor};
+  font-size: 13px;
 `;
 
 const FormikCheckbox: React.FC<{

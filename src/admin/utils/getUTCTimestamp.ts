@@ -10,7 +10,7 @@ export const getUTCTimestamp = (dateString?: string): number => {
   ).getTime();
 };
 
-export const getTimeFromUTCTimeStamp = (utcTimeStamp: number, offset: number): any => {
+export const getTimeFromUTCTimeStamp = (utcTimeStamp: number): any => {
   const newDate = new Date(Number(utcTimeStamp)).toLocaleTimeString();
   return newDate;
 };

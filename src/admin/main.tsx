@@ -7,16 +7,19 @@ import { theme } from "./app/styles";
 import App from "./app";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
+import { AuthProvider } from "./features/Auth/Context";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <Provider store={store}>
-    <ThemeProvider theme={theme}>
-      <BrowserRouter>
-        <I18nextProvider i18n={i18n}>
-          <CssBaseline />
-          <App />
-        </I18nextProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <BrowserRouter>
+          <I18nextProvider i18n={i18n}>
+            <CssBaseline />
+            <App />
+          </I18nextProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </AuthProvider>
   </Provider>
 );

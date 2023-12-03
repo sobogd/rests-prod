@@ -1,3 +1,4 @@
+import { ICompany } from "../types";
 import { IRate } from "./rates";
 
 export interface IRegistrationRequest {
@@ -17,35 +18,16 @@ export enum ECompanyStatuses {
   UNPAID = "unpaid",
 }
 
-export interface ICompany {
-  id: number;
-  title: string;
-  tin: string;
-  login: string;
-  email: string;
-  currencySymbol: string;
-  timezone: string;
-  lang: string;
-  utcDiff: number;
-  balance?: number;
-  status?: ECompanyStatuses;
-  rateId?: number;
-  created?: string;
-  nextPayment?: string;
-  perMonth?: number;
-  rate?: IRate;
-}
-
 export interface ICompanyDB {
   id: number;
   title: string;
   tin: string;
   login: string;
   email: string;
-  currency_symbol: string;
-  timezone: string;
+  currency_symbol?: string;
+  timezone?: string;
   lang: string;
-  utc_diff: number;
+  utc_diff?: number;
   balance?: number;
   status?: ECompanyStatuses;
   rate_id?: number;
