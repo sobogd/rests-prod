@@ -1,203 +1,244 @@
 import styled from "@emotion/styled";
 import { FC, useMemo, useState } from "react";
-import { CMenuItems } from "./FooterBar";
 import { useTranslation } from "react-i18next";
 import { DialogRests } from "./DialogRests";
 import { useAppDispatch, useAppSelector } from "../app/store";
-import { UniversalList, UniversalListItem, prePrimaryColor } from "../app/styles";
+import {
+  UniversalList,
+  UniversalListItem,
+  backgroundDefault,
+  borderColorDefault,
+  boxShadow,
+  newBorderColor,
+  prePrimaryColor,
+  textDefaultColor,
+} from "../app/styles";
 import { commonActions } from "../features/common/slice";
+import { CMenuItems } from "../menu";
+import { useAuth } from "../features/Auth/Context";
+import { TbBuildingSkyscraper, TbLanguage, TbLogout } from "react-icons/tb";
+import { AiOutlineClose } from "react-icons/ai";
+import { EPages } from "../features/common/enums";
 
-const MenuRestsContainer = styled.div`
-  position: fixed;
+const MenuRestsContainer = styled.div<{ isOpenMenu: boolean }>`
+  position: absolute;
   z-index: 250;
   top: 0;
   left: 0;
-  overflow: hidden;
-  height: 100vh;
-  width: 100vw;
+  overflow-y: scroll;
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-  background: white;
+  background: ${backgroundDefault};
   flex-direction: column;
-  color: #3e3e3e;
+  color: ${textDefaultColor};
+  transition: 0.3s;
+  opacity: ${({ isOpenMenu }) => (isOpenMenu ? "1" : "0")};
+  pointer-events: ${({ isOpenMenu }) => (isOpenMenu ? "inherit" : "none")};
 `;
 
 const MenuRestsHeader = styled.div`
-  justify-content: center;
-  background: ${prePrimaryColor};
-  width: 100vw;
+  position: relative;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px 7px 15px 15px;
-`;
-
-const MenuRestsCompanyTitle = styled.div`
-  font-weight: 600;
-  flex: 100%;
-  color: white;
-  font-size: 20px;
-  p {
-    margin-top: -3px;
-    font-size: 15px;
-    font-size: 15px;
-    font-weight: 400;
-    color: #eae2ff;
-    max-width: calc(100vw - 120px);
-    :nth-child(1) {
-      margin-top: 2px;
+  width: 100%;
+  padding-bottom: 25px;
+  > span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60px;
+    height: 60px;
+    :last-child {
+      left: auto;
+      right: 0;
+      align-items: center;
+      justify-content: center;
+      display: flex;
+      font-size: 16px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    svg {
+      width: 100%;
+      height: 100%;
+      padding: 18px;
+    }
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding-top: 15px;
+    svg {
+      width: 70px;
+      height: 70px;
+      background: ${textDefaultColor};
+      color: white;
+      border-radius: 100px;
+      padding: 10px;
+      margin: 15px 0 10px;
+    }
+    span {
+      font-size: 20px;
+      font-weight: 600;
+    }
+    p {
+      font-size: 16px;
+      margin-top: -2px;
+      color: gray;
     }
   }
 `;
 
-const MenuRestsLangButton = styled.div`
-  width: 55px;
-  height: 45px;
-  min-width: 55px;
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 600;
-  text-transform: uppercase;
-  position: relative;
-  color: white;
-  margin-right: 4px;
-  ::after {
-    content: "|";
+const MenuRestsHeaderLangs = styled.div<{ isOpenLang: boolean }>`
+  backdrop-filter: blur(3px);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: ${({ isOpenLang }) => (isOpenLang ? "1" : "0")};
+  transition: 0.3s;
+  pointer-events: ${({ isOpenLang }) => (isOpenLang ? "inherit" : "none")};
+  ul {
     position: absolute;
-    left: 100%;
-    font-weight: 100;
-    font-size: 12px;
-    color: #ede7ff;
+    top: 60px;
+    right: 20px;
+    background: #faf8f8;
+    display: flex;
+    flex-direction: column;
+    max-height: 50vh;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-radius: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: ${boxShadow};
+    li {
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 14px;
+      text-align: center;
+      border-bottom: 1px solid ${newBorderColor};
+      padding: 10px 20px;
+      :last-child {
+        border: 0;
+      }
+    }
   }
 `;
 
-const MenuRestsCloseButton = styled.div`
-  width: 45px;
-  height: 45px;
-  min-width: 45px;
-  position: relative;
-  span {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 20px;
-    height: 2.7px;
-    background: white;
-    margin: auto;
-    transform: rotate(-45deg);
-    :nth-child(2) {
-      transform: rotate(45deg);
+const MenuRestsLinks = styled.div`
+  display: flex;
+  background: white;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  margin-bottom: 25px;
+  border-top: 1px solid ${newBorderColor};
+  > div {
+    display: flex;
+    width: 100%;
+    padding: 0 20px;
+    align-items: center;
+    justify-content: flex-start;
+    border-bottom: 1px solid ${newBorderColor};
+    svg {
+      max-width: 35px;
+      max-height: 35px;
+      min-width: 35px;
+      min-height: 35px;
+      background: ${textDefaultColor};
+      color: white;
+      padding: 7px;
+      border-radius: 10px;
+      margin: 7px 0;
+    }
+    span {
+      font-size: 16px;
+      margin: 0 15px;
     }
   }
 `;
 
 export const MenuRests: FC<{
   onClose: () => void;
-}> = ({ onClose }) => {
+  isOpenMenu: boolean;
+}> = ({ onClose, isOpenMenu }) => {
   const { i18n, t } = useTranslation();
-  const dispatch = useAppDispatch();
-  const lang = useAppSelector((s) => s.common.user?.company?.lang);
-  const title = useAppSelector((s) => s.common.user?.company?.title);
-  const email = useAppSelector((s) => s.common.user?.company?.email);
-  const companyLogin = useAppSelector((s) => s.common.user?.company?.login);
-  const userLogin = useAppSelector((s) => s.common.user?.login);
-  const name = useAppSelector((s) => s.common.user?.name);
-  const user = useAppSelector((s) => s.common.user);
-  const [isOpenLangDialog, setIsOpenLangDialog] = useState<boolean>(false);
+  const { whoami, setActivePage, logout } = useAuth();
+  const [isOpenLang, setIsOpenLang] = useState<boolean>(false);
 
-  const langDialog = useMemo(
-    () =>
-      isOpenLangDialog ? (
-        <DialogRests
-          onClose={() => {
-            setIsOpenLangDialog(false);
-          }}
-          buttons={["en", "ru"].map((l) => ({
-            title: l.toUpperCase(),
-            onClick: () => {
-              onClose();
-              i18n.changeLanguage(l);
-            },
-          }))}
-        />
-      ) : null,
-    [isOpenLangDialog]
-  );
+  const handleGoCompany = () => {
+    if (whoami?.user?.type === "admin") {
+      setActivePage(EPages.COMPANY);
+    }
+  };
 
   return (
-    <MenuRestsContainer>
-      {isOpenLangDialog ? langDialog : null}
+    <MenuRestsContainer isOpenMenu={isOpenMenu}>
       <MenuRestsHeader>
-        <MenuRestsCompanyTitle>
-          {title}
-          <p>
-            Login: {companyLogin}-{userLogin}
-          </p>
-          <p>User: {name}</p>
-          <p>{email}</p>
-        </MenuRestsCompanyTitle>
-        <MenuRestsLangButton
-          onClick={() => {
-            setIsOpenLangDialog(true);
+        <span onClick={onClose}>
+          <AiOutlineClose />
+        </span>
+        <div>
+          <TbBuildingSkyscraper onClick={() => handleGoCompany()} />
+          <span onClick={() => handleGoCompany()}>{whoami?.company?.title}</span>
+          <p onClick={() => handleGoCompany()}>User: {whoami?.user?.name}</p>
+        </div>
+        <span
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpenLang(true);
           }}
         >
-          {lang}
-        </MenuRestsLangButton>
-        <MenuRestsCloseButton onClick={() => onClose()}>
-          <span></span>
-          <span></span>
-        </MenuRestsCloseButton>
+          {i18n.language}
+        </span>
       </MenuRestsHeader>
-      <UniversalList style={{ width: "100%", overflowY: "auto" }}>
-        {CMenuItems.filter((item) => item.permissions.includes(user?.type || "")).map((i) => (
-          <UniversalListItem
-            style={{ width: "100%", alignItems: "flex-start" }}
-            onClick={() => {
-              dispatch(commonActions.setActivePage(i.id));
-              onClose();
-            }}
-          >
-            {t(`menu.names.${i.id}`)}
-          </UniversalListItem>
-        ))}
-        <UniversalListItem
-          style={{ width: "100%", alignItems: "flex-start" }}
-          onClick={() => {
-            const elem = document.querySelector("body");
-            if (elem?.requestFullscreen) {
-              elem.requestFullscreen();
-              // @ts-expect-error
-            } else if (elem?.webkitRequestFullscreen) {
-              /* Safari */
-              // @ts-expect-error
-              elem.webkitRequestFullscreen();
-              // @ts-expect-error
-            } else if (elem?.msRequestFullscreen) {
-              /* IE11 */
-              // @ts-expect-error
-              elem.msRequestFullscreen();
-            }
-            onClose();
-          }}
-        >
-          {i18n.t("menu.names.fullscreen")}
-        </UniversalListItem>
-        <UniversalListItem
-          style={{ width: "100%", alignItems: "flex-start" }}
-          onClick={() => {
-            dispatch(commonActions.signOut());
-          }}
-        >
-          {i18n.t("menu.names.logout")}
-        </UniversalListItem>
-      </UniversalList>
+      <MenuRestsHeaderLangs
+        isOpenLang={isOpenLang}
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpenLang(false);
+        }}
+      >
+        <ul>
+          <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>{whoami?.company?.lang}</li>
+          {whoami?.company?.langs?.map((lang) => (
+            <li onClick={() => i18n.changeLanguage(lang)} key={lang}>
+              {lang}
+            </li>
+          ))}
+        </ul>
+      </MenuRestsHeaderLangs>
+      {["work", "stats", "service", "admin"].map((group) => {
+        const filteredItems = CMenuItems.filter(
+          (item) =>
+            item.permissions.includes(whoami?.user?.type || "") && !item.hideFromMenu && item.group === group
+        );
+        return filteredItems.length ? (
+          <MenuRestsLinks>
+            {filteredItems.map((i) => (
+              <div onClick={() => setActivePage(i.id)}>
+                {i.icon}
+                <span>{t(`menu.names.${i.id}`)}</span>
+              </div>
+            ))}
+          </MenuRestsLinks>
+        ) : null;
+      })}
+      <MenuRestsLinks>
+        <div onClick={() => logout()}>
+          <TbLogout />
+          <span>Logout</span>
+        </div>
+      </MenuRestsLinks>
     </MenuRestsContainer>
   );
 };

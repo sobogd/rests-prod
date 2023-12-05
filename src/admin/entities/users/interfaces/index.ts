@@ -1,6 +1,5 @@
+import { ICompany } from "../../../../back/types";
 import { EUserType } from "../enums";
-import { bool } from "yup";
-import { ICompany } from "../../companies/model";
 
 export interface IUsersState {
   usersForCompany: IUser[];

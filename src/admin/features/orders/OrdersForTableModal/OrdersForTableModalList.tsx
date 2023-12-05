@@ -28,7 +28,6 @@ export const OrdersForTableModalList: FC<{
   setOrderNumber: (orderNumber: number | undefined) => void;
   orders?: IOrder[];
 }> = ({ orders, setOrderNumber }) => {
-  const utcDiff = useAppSelector((s) => s.common.user?.company?.utcDiff);
   const i18n = useTranslation();
 
   return (

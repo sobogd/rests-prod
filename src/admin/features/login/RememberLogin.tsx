@@ -1,57 +1,103 @@
-import { FC, useEffect } from "react";
-import { Button, Stack } from "@mui/material";
-import { useAppDispatch, useAppSelector } from "../../app/store";
-import * as yup from "yup";
-import { LoginHeader } from "./LoginHeader";
-import { useTranslation } from "react-i18next";
-import { loginActions } from "./slice";
-import { ELoginTabs } from "./enums";
-import { useAuthByHashMutation } from "./api";
-import { LoadingInside } from "../../shared/LoadingInside";
-import { commonActions } from "../common/slice";
+import { FC } from "react";
+import { LoginTabs } from ".";
+import { Form, Formik } from "formik";
+import { TbLogin2 } from "react-icons/tb";
+import FormikInput from "../../shared/FormikInput";
+import { useAuth } from "../Auth/Context";
+import styled from "@emotion/styled";
+import { backgroundDefault, grayTextColor, textDefaultColor } from "../../app/styles";
 
-export const RememberLogin: FC = () => {
-  const dispatch = useAppDispatch();
-
-  const { i18n } = useTranslation();
-  const [auth, { data, isLoading }] = useAuthByHashMutation();
-  const userCreds = useAppSelector((s) => s.common.userCreds);
-  const userName = useAppSelector((s) => s.common.userName);
-
-  const handleLogin = () => {
-    if (!!userCreds) auth(userCreds);
-  };
-
-  useEffect(() => {
-    if (data?.id && data?.token) {
-      dispatch(commonActions.setLoggedUser(data));
-      dispatch(commonActions.setUserCreds({ name: data.name, creds: data.loginHash }));
+const FormStyled = styled(Form)`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: ${backgroundDefault};
+  > div {
+    width: 320px;
+    margin: 0 auto 25px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    img {
+      max-height: calc(100vh - 550px);
+      margin: 0 auto;
     }
-  }, [data, dispatch, i18n]);
+    :nth-child(2) {
+      flex-direction: column;
+      text-align: center;
+
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 16px;
+        color: ${grayTextColor};
+      }
+    }
+    :last-child {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      button {
+        color: white;
+        background-color: ${textDefaultColor};
+        outline: none;
+        border-radius: 10px;
+        height: 50px;
+        font-size: 16px;
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+          margin-right: 7px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+      span {
+        margin-top: 15px;
+        font-size: 14px;
+        color: gray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+`;
+
+export const RememberLogin: FC<{ setTab: (tab: LoginTabs) => void }> = ({ setTab }) => {
+  const auth = useAuth();
+  const loginUserName = localStorage.getItem("loginUserName");
 
   return (
-    <Stack
-      direction="column"
-      spacing={2}
-      padding={2}
-      alignItems="center"
-      justifyContent="space-around"
-      px={{ xs: 4, md: 8 }}
-    >
-      <LoadingInside isLoading={isLoading} />
-      <LoginHeader title="Welcome to workplace" subtitle="Enter your credentials:" />
-      <Button variant="contained" color="primary" size="large" onClick={handleLogin} fullWidth>
-        Log in as {userName ?? ""}
-      </Button>
-      <Button
-        variant="contained"
-        color="secondary"
-        size="large"
-        fullWidth
-        onClick={() => dispatch(loginActions.setTab(ELoginTabs.LOGIN))}
-      >
-        Another user
-      </Button>
-    </Stack>
+    <Formik initialValues={{}} onSubmit={() => auth.login({})}>
+      {() => (
+        <FormStyled autoComplete="off">
+          <div>
+            <img src="/login.png" />
+          </div>
+          <div>
+            <h1>Welcome to workplace</h1>
+            <p>Login as last user:</p>
+          </div>
+          <div>
+            <button type="submit">
+              <TbLogin2 />
+              Login as {loginUserName}
+            </button>
+            <span onClick={() => setTab("login")}>Login as another user</span>
+          </div>
+        </FormStyled>
+      )}
+    </Formik>
   );
 };

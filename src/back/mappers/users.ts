@@ -18,11 +18,6 @@ export enum EUserStatuses {
   ARCHIVED = "archived",
 }
 
-export interface AuthorizationRequest {
-  login: string;
-  password: string;
-}
-
 export interface HashAuthorizationRequest {
   hash: string;
 }

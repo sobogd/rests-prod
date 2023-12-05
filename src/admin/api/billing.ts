@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IErrorResponse, request } from "./base";
-import { ICompany } from "../entities/companies/model";
 import { IPayment } from "../slices/billing";
+import { ICompany } from "../../back/types";
 
 const updateCompanyInfo = createAsyncThunk<ICompany, void, IErrorResponse>(
   "billing/updateCompanyInfo",

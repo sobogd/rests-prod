@@ -2,6 +2,7 @@ import { FC } from "react";
 import styled from "@emotion/styled";
 import { useAppSelector } from "../../../app/store";
 import { IItem } from "../../../../back/types";
+import { useAuth } from "../../Auth/Context";
 
 type Option = { n?: string; p?: number; q?: number };
 
@@ -81,7 +82,7 @@ export const OptionsSelect: FC<{
     position?.o?.map((o, index) => {
       return { ...o, t: position.ot?.[index] };
     }) ?? [];
-  const currencySymbol = useAppSelector((s) => s.common.user?.company?.currencySymbol);
+  const symbol = useAuth()?.whoami?.company?.symbol;
 
   return (
     <>
@@ -89,7 +90,7 @@ export const OptionsSelect: FC<{
         <OptionsSelectListItem>
           <OptionsSelectName>
             {o?.n} (+{o?.p}
-            {currencySymbol})
+            {symbol})
           </OptionsSelectName>
           <OptionsSelectButtonsBlock>
             <OptionsSelectButton

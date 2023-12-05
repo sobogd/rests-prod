@@ -3,11 +3,12 @@ import { grey } from "@mui/material/colors";
 import { createBreakpoints } from "@mui/system";
 import type {} from "@mui/x-date-pickers/themeAugmentation";
 
-export const backgroundDefault = "rgb(251, 251, 251)";
-export const textDefaultColor = "#3a2a5e";
+export const backgroundDefault = "#faf8f8";
+export const textDefaultColor = "#3e3e3e";
 export const textDefaultWhiteColor = grey[50];
 export const prePrimaryColor = "#a487f8";
 export const primaryColor = "#835ff1";
+export const buttonColor = "#cf7ff8";
 export const primaryColorHover = "#7354d5";
 export const primaryColorDark = "#6246b9";
 export const primaryColorDarkHover = "#593fab";
@@ -17,10 +18,13 @@ export const successColor = "#4eb186";
 export const successColorHover = "#3d8d6b";
 export const secondaryColor = "#edeef9";
 export const secondaryColorHover = "#d8d9e7";
+export const grayTextColor = "#666666";
 export const borderColorDefault = "#f0e8fd";
 export const errorColor = "#cc6060";
 export const errorColorHover = "#b05151";
 export const bottomHeight = 56;
+export const boxShadow = "2px 2px 11px -5px #838383";
+export const newBorderColor = "#e2e2e2";
 
 const breakpoints = createBreakpoints({});
 

@@ -1,7 +1,6 @@
 import { Body, Post, Route, Response } from "tsoa";
 import { ErrorResponse } from "./users";
 import dotenv from "dotenv";
-import * as bcrypt from "bcryptjs";
 import pool from "../db";
 import * as crypto from "crypto";
 import * as jose from "jose";
@@ -10,32 +9,30 @@ dotenv.config();
 
 const secretKey = crypto.createSecretKey((process.env.TOKEN || "").toString(), "utf-8");
 
-@Route("auth")
-export class AuthController {
+@Route("auth-hash")
+export class AuthHashController {
   @Response<ErrorResponse>(500, "Response with error")
   @Response<ErrorResponse>(401, "Unauthorized request response")
   @Post("")
   public async auth(
-    @Body() request: { login: string; password: string }
+    @Body() request: { hash: string }
   ): Promise<{ token: string; loginHash: string; name: string }> {
     const client = await pool.connect();
 
-    if (!request.login) {
-      throw new Error("Login is empty");
+    if (!request.hash) {
+      throw new Error("Hash is empty");
     }
 
-    if (!request.password) {
-      throw new Error("Password is empty");
-    }
+    const { payload } = await jose.jwtVerify(request.hash, secretKey);
 
-    const loginSplit = request.login.toLowerCase().replaceAll(" ", "").trim().split("-");
-    const companyLogin = loginSplit[0];
-    const userLogin = loginSplit[1];
+    if (!payload || !payload.id || !payload.password) {
+      throw new Error("Invalid hash");
+    }
 
     const user = (
       await client.query(
-        `SELECT u.password, u.id, u.login, u.status, u.type, u.name, u.lang, c.login as "companyLogin" FROM users u LEFT JOIN companies c ON c.id = u.company_id WHERE u.status = 'active' AND c.login = $1 AND u.login = $2`,
-        [companyLogin, userLogin]
+        `SELECT u.password, u.id, u.login, u.status, u.type, u.name, u.lang, c.login as "companyLogin" FROM users u LEFT JOIN companies c ON c.id = u.company_id WHERE u.status = 'active' AND u.id = $1 AND u.password = $2`,
+        [payload.id, payload.password]
       )
     )?.rows?.[0];
 
@@ -44,12 +41,6 @@ export class AuthController {
     }
 
     await client.release();
-
-    const match = await bcrypt.compare(request.password, user.password);
-
-    if (!match) {
-      throw new Error("Password is incorrect");
-    }
 
     const token = await new jose.SignJWT({
       id: user.id,

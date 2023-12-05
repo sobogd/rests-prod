@@ -18,6 +18,7 @@ import { useAllTablesQuery } from "../orders/api";
 import { format } from "date-fns";
 import { getTimeFromUTCTimeStamp, getUTCTimestamp } from "../../utils/getUTCTimestamp";
 import getSummForOrder from "../../../utils/getSummForOrder";
+import { useAuth } from "../Auth/Context";
 
 const OrderCretionTime = styled.span`
   background: #ffc858;
@@ -57,7 +58,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
   onReturn,
 }) => {
   const i18n = useTranslation();
-  const company = useAppSelector((s) => s.common.user?.company);
+  const symbol = useAuth()?.whoami?.company?.symbol;
   const { data: tables, isFetching, isLoading } = useAllTablesQuery();
 
   const dayTotal = orders.reduce((summ, order) => {
@@ -69,7 +70,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
     <UniversalList>
       <Loading isLoading={isFetching || isLoading} />
       <UniversalListItemBorderedStats>
-        Total: {dayTotal} {company?.currencySymbol}
+        Total: {dayTotal} {symbol}
       </UniversalListItemBorderedStats>
       {orders?.map((order: IOrder) => {
         const table = tables?.find((t) => Number(t.id) === Number(order.t));
@@ -86,7 +87,7 @@ export const DayStatsList: React.FC<{ orders: IOrder[]; onReturn: (id: number) =
               <TbMap /> №{table?.number} {table?.name}
             </p>
             <p>
-              <TbCalculator /> {totalOrder} {company?.currencySymbol}
+              <TbCalculator /> {totalOrder} {symbol}
               {!!order.d ? (
                 <>
                   <TbDiscount2 style={{ marginLeft: 25 }} /> {order.d}%

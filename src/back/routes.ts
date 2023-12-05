@@ -5,7 +5,9 @@ import { Controller, ValidationService, FieldErrors, ValidateError, TsoaRoute, H
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UsersController } from './controllers/users';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { CompaniesController } from './controllers/auth';
+import { AuthHashController } from './controllers/auth-hash';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { AuthController } from './controllers/auth';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { BillingController } from './controllers/billing';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -54,6 +56,8 @@ import { PaymentMethodsController } from './controllers/paymentMethods';
 import { PeriodStatsController } from './controllers/period-stats';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PositionsController } from './controllers/positions';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { RegistrationController } from './controllers/registration';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TablesController } from './controllers/tables';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -172,75 +176,6 @@ const models: TsoaRoute.Models = {
             "perMonth": {"dataType":"double"},
             "rate": {"ref":"IRate"},
             "langs": {"dataType":"array","array":{"dataType":"string"}},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AuthorizationResponse": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double"},
-            "name": {"dataType":"string","required":true},
-            "login": {"dataType":"string"},
-            "password": {"dataType":"string"},
-            "type": {"ref":"EUserTypes","required":true},
-            "companyId": {"dataType":"double"},
-            "status": {"ref":"EUserStatuses"},
-            "companyLogin": {"dataType":"string"},
-            "lastLogin": {"dataType":"string"},
-            "lang": {"dataType":"string"},
-            "token": {"dataType":"string","required":true},
-            "company": {"ref":"ICompany"},
-            "loginHash": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "AuthorizationRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "login": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "HashAuthorizationRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "hash": {"dataType":"string","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IUser": {
-        "dataType": "refObject",
-        "properties": {
-            "id": {"dataType":"double"},
-            "name": {"dataType":"string","required":true},
-            "login": {"dataType":"string"},
-            "password": {"dataType":"string"},
-            "type": {"ref":"EUserTypes","required":true},
-            "companyId": {"dataType":"double"},
-            "status": {"ref":"EUserStatuses"},
-            "companyLogin": {"dataType":"string"},
-            "lastLogin": {"dataType":"string"},
-            "lang": {"dataType":"string"},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IRegistrationRequest": {
-        "dataType": "refObject",
-        "properties": {
-            "email": {"dataType":"string","required":true},
-            "title": {"dataType":"string","required":true},
-            "login": {"dataType":"string","required":true},
-            "tin": {"dataType":"string","required":true},
-            "password": {"dataType":"string","required":true},
-            "timezone": {"dataType":"string","required":true},
-            "lang": {"dataType":"string","required":true},
-            "currency": {"dataType":"string","required":true},
         },
         "additionalProperties": false,
     },
@@ -689,13 +624,13 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/auth/authorization',
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.authorization)),
+        app.post('/auth-hash',
+            ...(fetchMiddlewares<RequestHandler>(AuthHashController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthHashController.prototype.auth)),
 
-            function CompaniesController_authorization(request: any, response: any, next: any) {
+            function AuthHashController_auth(request: any, response: any, next: any) {
             const args = {
-                    request: {"in":"body","name":"request","required":true,"ref":"AuthorizationRequest"},
+                    request: {"in":"body","name":"request","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"hash":{"dataType":"string","required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -704,23 +639,23 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new CompaniesController();
+                const controller = new AuthHashController();
 
 
-              const promise = controller.authorization.apply(controller, validatedArgs as any);
+              const promise = controller.auth.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/auth/hash-authorization',
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.hashAuthorization)),
+        app.post('/auth',
+            ...(fetchMiddlewares<RequestHandler>(AuthController)),
+            ...(fetchMiddlewares<RequestHandler>(AuthController.prototype.auth)),
 
-            function CompaniesController_hashAuthorization(request: any, response: any, next: any) {
+            function AuthController_auth(request: any, response: any, next: any) {
             const args = {
-                    request: {"in":"body","name":"request","required":true,"ref":"HashAuthorizationRequest"},
+                    request: {"in":"body","name":"request","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"password":{"dataType":"string","required":true},"login":{"dataType":"string","required":true}}},
             };
 
             // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -729,86 +664,10 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new CompaniesController();
+                const controller = new AuthController();
 
 
-              const promise = controller.hashAuthorization.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.get('/auth/whoami',
-            authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.whoami)),
-
-            function CompaniesController_whoami(request: any, response: any, next: any) {
-            const args = {
-                    undefined: {"in":"request","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new CompaniesController();
-
-
-              const promise = controller.whoami.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/auth/getUsersByCompanyLogin',
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.getUsersByCompanyLogin)),
-
-            function CompaniesController_getUsersByCompanyLogin(request: any, response: any, next: any) {
-            const args = {
-                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"companyLogin":{"dataType":"string","required":true}}},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new CompaniesController();
-
-
-              const promise = controller.getUsersByCompanyLogin.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/auth/registration',
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController)),
-            ...(fetchMiddlewares<RequestHandler>(CompaniesController.prototype.registration)),
-
-            function CompaniesController_registration(request: any, response: any, next: any) {
-            const args = {
-                    request: {"in":"body","name":"request","required":true,"ref":"IRegistrationRequest"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new CompaniesController();
-
-
-              const promise = controller.registration.apply(controller, validatedArgs as any);
+              const promise = controller.auth.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -2021,6 +1880,31 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.getPositionDetails.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/registration',
+            ...(fetchMiddlewares<RequestHandler>(RegistrationController)),
+            ...(fetchMiddlewares<RequestHandler>(RegistrationController.prototype.registration)),
+
+            function RegistrationController_registration(request: any, response: any, next: any) {
+            const args = {
+                    request: {"in":"body","name":"request","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"currency":{"dataType":"string","required":true},"lang":{"dataType":"string","required":true},"password":{"dataType":"string","required":true},"tin":{"dataType":"string","required":true},"login":{"dataType":"string","required":true},"title":{"dataType":"string","required":true},"email":{"dataType":"string","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new RegistrationController();
+
+
+              const promise = controller.registration.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

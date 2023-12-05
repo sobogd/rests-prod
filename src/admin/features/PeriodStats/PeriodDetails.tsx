@@ -5,6 +5,7 @@ import { UniversalList, UniversalListItemBordered } from "../../app/styles";
 import { useAppSelector } from "../../app/store";
 import styled from "@emotion/styled";
 import priceInFormat from "../../utils/priceInFormat";
+import { useAuth } from "../Auth/Context";
 
 const UniversalListItemBorderedStats = styled(UniversalListItemBordered)`
   span {
@@ -30,13 +31,13 @@ const PaymentMethodRow = styled.div`
 
 export const PeriodDetails: React.FC<{ data: IPeriodStats }> = ({ data }) => {
   const i18n = useTranslation();
-  const currencySymbol = useAppSelector((s) => s.common.user?.company?.currencySymbol);
+  const symbol = useAuth()?.whoami?.company?.symbol;
 
   return (
     <UniversalList>
       <UniversalListItemBorderedStats>Orders count: {data.count}</UniversalListItemBorderedStats>
       <UniversalListItemBorderedStats>
-        Total: {priceInFormat(data.total)} {currencySymbol}
+        Total: {priceInFormat(data.total)} {symbol}
       </UniversalListItemBorderedStats>
       <UniversalListItemBorderedStats>
         <p>Total by payment methods:</p>
@@ -44,7 +45,7 @@ export const PeriodDetails: React.FC<{ data: IPeriodStats }> = ({ data }) => {
           <PaymentMethodRow>
             <span>{el.paymentMethod}:</span>
             <span>
-              {priceInFormat(el.summ)} {currencySymbol}
+              {priceInFormat(el.summ)} {symbol}
             </span>
           </PaymentMethodRow>
         ))}

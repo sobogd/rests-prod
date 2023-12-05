@@ -217,13 +217,13 @@ export const ModalRests: FC<{
     <ModalRestsDiv>
       <ModalRestsHeader>
         {isHaveMenu ? (
-          <ModalRestsHeaderMenu onClick={() => setIsOpenMenu(!isOpenMenu)}>
+          <ModalRestsHeaderMenu onClick={() => setIsOpenMenu(true)}>
             <b></b>
             <b></b>
             <b></b>
           </ModalRestsHeaderMenu>
         ) : null}
-        {isHaveMenu && isOpenMenu ? <MenuRests onClose={() => setIsOpenMenu(false)} /> : null}
+        {isHaveMenu ? <MenuRests onClose={() => setIsOpenMenu(false)} isOpenMenu={isOpenMenu} /> : null}
         {onBack ? (
           <ModalRestsHeaderButton onClick={onBack}>
             <b></b>

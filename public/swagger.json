@@ -249,168 +249,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"AuthorizationResponse": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"login": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/EUserTypes"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EUserStatuses"
-					},
-					"companyLogin": {
-						"type": "string"
-					},
-					"lastLogin": {
-						"type": "string"
-					},
-					"lang": {
-						"type": "string"
-					},
-					"token": {
-						"type": "string"
-					},
-					"company": {
-						"$ref": "#/components/schemas/ICompany"
-					},
-					"loginHash": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"type",
-					"token"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"AuthorizationRequest": {
-				"properties": {
-					"login": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"login",
-					"password"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"HashAuthorizationRequest": {
-				"properties": {
-					"hash": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"hash"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IUser": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"login": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/EUserTypes"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EUserStatuses"
-					},
-					"companyLogin": {
-						"type": "string"
-					},
-					"lastLogin": {
-						"type": "string"
-					},
-					"lang": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"type"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IRegistrationRequest": {
-				"properties": {
-					"email": {
-						"type": "string"
-					},
-					"title": {
-						"type": "string"
-					},
-					"login": {
-						"type": "string"
-					},
-					"tin": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"timezone": {
-						"type": "string"
-					},
-					"lang": {
-						"type": "string"
-					},
-					"currency": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"email",
-					"title",
-					"login",
-					"tin",
-					"password",
-					"timezone",
-					"lang",
-					"currency"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"EPaymentStatuses": {
 				"enum": [
 					"new",
@@ -1854,189 +1692,42 @@
 				}
 			}
 		},
-		"/auth/authorization": {
+		"/auth-hash": {
 			"post": {
-				"operationId": "Authorization",
+				"operationId": "Auth",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/AuthorizationResponse"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"AuthService"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/AuthorizationRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/hash-authorization": {
-			"post": {
-				"operationId": "HashAuthorization",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/AuthorizationResponse"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"AuthService"
-				],
-				"security": [],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/HashAuthorizationRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/auth/whoami": {
-			"get": {
-				"operationId": "whoAmI",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IUser"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"AuthService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/auth/getUsersByCompanyLogin": {
-			"post": {
-				"operationId": "getUsersByCompanyLogin",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"anyOf": [
-										{
-											"items": {
-												"$ref": "#/components/schemas/IUser"
-											},
-											"type": "array"
+									"properties": {
+										"name": {
+											"type": "string"
 										},
-										{
-											"properties": {
-												"message": {
-													"type": "string"
-												},
-												"isSuccess": {
-													"type": "boolean"
-												}
-											},
-											"required": [
-												"isSuccess"
-											],
-											"type": "object"
+										"loginHash": {
+											"type": "string"
+										},
+										"token": {
+											"type": "string"
 										}
-									]
+									},
+									"required": [
+										"name",
+										"loginHash",
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
 								}
 							}
 						}
@@ -2052,9 +1743,6 @@
 						}
 					}
 				},
-				"tags": [
-					"AuthService"
-				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -2063,12 +1751,12 @@
 						"application/json": {
 							"schema": {
 								"properties": {
-									"companyLogin": {
+									"hash": {
 										"type": "string"
 									}
 								},
 								"required": [
-									"companyLogin"
+									"hash"
 								],
 								"type": "object"
 							}
@@ -2077,16 +1765,42 @@
 				}
 			}
 		},
-		"/auth/registration": {
+		"/auth": {
 			"post": {
-				"operationId": "registration",
+				"operationId": "Auth",
 				"responses": {
 					"200": {
 						"description": "Ok",
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/ICompany"
+									"properties": {
+										"name": {
+											"type": "string"
+										},
+										"loginHash": {
+											"type": "string"
+										},
+										"token": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"name",
+										"loginHash",
+										"token"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
 								}
 							}
 						}
@@ -2102,9 +1816,6 @@
 						}
 					}
 				},
-				"tags": [
-					"AuthService"
-				],
 				"security": [],
 				"parameters": [],
 				"requestBody": {
@@ -2112,7 +1823,19 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/IRegistrationRequest"
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"login": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"password",
+									"login"
+								],
+								"type": "object"
 							}
 						}
 					}
@@ -4748,6 +4471,85 @@
 						}
 					}
 				]
+			}
+		},
+		"/registration": {
+			"post": {
+				"operationId": "Registration",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"login": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"login"
+									],
+									"type": "object"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Response with error",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/ErrorResponse"
+								}
+							}
+						}
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"currency": {
+										"type": "string"
+									},
+									"lang": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"tin": {
+										"type": "string"
+									},
+									"login": {
+										"type": "string"
+									},
+									"title": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"currency",
+									"lang",
+									"password",
+									"tin",
+									"login",
+									"title",
+									"email"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
 			}
 		},
 		"/tables/uploadImage": {

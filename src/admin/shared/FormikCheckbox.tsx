@@ -6,6 +6,9 @@ import { TbCheck } from "react-icons/tb";
 
 const Container = styled.div<{ mb?: boolean }>`
   ${({ mb }) => (mb ? `margin-bottom: 15px;` : null)}
+  display: flex;
+  flex-direction: column !important;
+  position: relative !important;
 `;
 
 const CheckboxLabel = styled.label<{ checked?: boolean }>`

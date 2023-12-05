@@ -3,13 +3,14 @@ import { useTranslation } from "react-i18next";
 import { useAppSelector } from "../../../app/store";
 import { IPositionForOrder } from "../../../../back/types/o";
 import getSummForOrder from "../../../../utils/getSummForOrder";
+import { useAuth } from "../../Auth/Context";
 
 export const OrderModalTotalBlock: FC<{
   discountInPercent?: number;
   positions: IPositionForOrder[];
 }> = ({ positions, discountInPercent }) => {
   const i18n = useTranslation();
-  const currencySymbol = useAppSelector((s) => s.common.user?.company?.currencySymbol);
+  const symbol = useAuth()?.whoami?.company?.symbol;
 
   const { summWithoutDiscount, summWithDiscount } = useMemo(
     () => getSummForOrder(positions, discountInPercent),
@@ -31,11 +32,11 @@ export const OrderModalTotalBlock: FC<{
           }}
         >
           {summWithoutDiscount}
-          {currencySymbol}
+          {symbol}
         </b>
         <b>
           {summWithDiscount}
-          {currencySymbol}
+          {symbol}
         </b>
       </span>
     </div>

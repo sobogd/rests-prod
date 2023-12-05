@@ -1,7 +1,7 @@
 import styled from "@emotion/styled";
 import { Alert } from "@mui/material";
 import { grey, red } from "@mui/material/colors";
-import { borderColorDefault, primaryColor, textDefaultWhiteColor } from "./theme";
+import { primaryColor, textDefaultWhiteColor } from "./theme";
 
 export const AlertStyled = styled(Alert)`
   background-color: ${red["900"]};

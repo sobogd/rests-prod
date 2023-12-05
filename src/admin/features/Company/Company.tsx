@@ -11,6 +11,7 @@ import styled from "@emotion/styled";
 import FormikSelect from "../../shared/FormikSelect";
 import { languages } from "../../utils/timezones";
 import { CompanyTranslation } from "./CompanyTranslations";
+import { useAuth } from "../Auth/Context";
 
 const UniversalListCompany = styled(UniversalList)`
   padding: 20px 15px;
@@ -80,7 +81,7 @@ export const CompanyForm: React.FC = () => {
 
 export const Company: FC = () => {
   const [updateCompany, { isLoading }] = useUpdateCompanyMutation();
-  const id = useAppSelector((s) => s.common.user?.company?.id) as number;
+  const id = Number(useAuth()?.whoami?.company?.id);
 
   return (
     <Formik

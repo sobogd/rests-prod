@@ -1,25 +1,27 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useFormikContext } from "formik";
-import { borderColorDefault, errorColor, primaryColor } from "../app/styles";
+import { backgroundDefault, borderColorDefault, errorColor, primaryColor } from "../app/styles";
 
 const Container = styled.div<{ mb?: boolean }>`
   ${({ mb }) => (mb ? `margin-bottom: 15px;` : null)}
-  position: relative;
+  display: flex;
+  flex-direction: column !important;
+  position: relative !important;
   label {
     position: absolute;
     height: 30px;
     top: -15px;
     left: 11px;
     line-height: 30px;
-    font-size: 13px;
+    font-size: 12px;
     white-space: nowrap;
     z-index: 2;
     padding: 0 6px;
     color: #999999;
     ::before {
       content: "";
-      background: #fbfbfb;
+      background: ${backgroundDefault};
       position: absolute;
       top: 0;
       left: 0;
@@ -49,7 +51,7 @@ const Container = styled.div<{ mb?: boolean }>`
 
 const Input = styled.input<{ mb?: boolean }>`
   padding: 0 15px;
-  height: 60px;
+  height: 50px;
   border: 1px solid ${borderColorDefault};
   font-size: 16px;
   border-radius: 10px;
@@ -82,6 +84,7 @@ const FormikInput: React.FC<{
         value={getFieldProps(name).value}
         onChange={handleChange}
         onBlur={handleBlur}
+        autoComplete="off"
         onWheel={(e) => {
           // @ts-expect-error
           document.activeElement.blur();

@@ -62,7 +62,6 @@ const schema = yup
 
 export const UserModal: React.FC = () => {
   const { form } = useAppSelector((s) => s.users);
-  const { user } = useAppSelector((s) => s.common);
   const dispatch = useAppDispatch();
 
   const methods = useForm<IUserEditForm>({
@@ -153,7 +152,7 @@ export const UserModal: React.FC = () => {
             <Button variant="contained" color="primary" size="medium" fullWidth type="submit">
               {form.formData?.id ? "Save user" : "Add user"}
             </Button>
-            {form.formData?.id && user?.id !== form.formData?.id && (
+            {/* {form.formData?.id && user?.id !== form.formData?.id && (
               <Button
                 variant="contained"
                 color="secondary"
@@ -163,7 +162,7 @@ export const UserModal: React.FC = () => {
               >
                 Remove user
               </Button>
-            )}
+            )} */}
           </Stack>
         </form>
       </FormProvider>

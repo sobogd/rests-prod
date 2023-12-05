@@ -7,8 +7,7 @@ export interface IErrorResponse {
   rejectValue: { fields?: string[]; message?: string; code?: string };
 }
 
-export const getToken = () =>
-  `Bearer ${JSON.parse(localStorage.getItem("restsReduxState") ?? "")?.common?.user?.token}`;
+export const getToken = () => `Bearer ${localStorage.getItem("token") ?? ""}`;
 
 export const request = async (url: string, method: string, data?: object) => {
   const response = await fetch(API_URL + url, {

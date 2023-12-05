@@ -4,21 +4,19 @@ import { RootState, store } from "./app/store";
 import { Notice } from "./hooks/useNotification";
 import { commonActions } from "./features/common/slice";
 
-export * as elementsService from "./api/elements";
-export * from "./api/positions";
 export * from "./api/users";
-export * from "./api/companies";
 
 export const API = createApi({
   reducerPath: "admin/api",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     prepareHeaders: (headers, { getState }) => {
-      const token = (getState() as RootState).common.user?.token;
+      const token = localStorage.getItem("token");
       if (token) headers.set("authorization", `Bearer ${token}`);
       return headers;
     },
     validateStatus: (response, result) => {
+      console.log(response.status, result);
       if (response.status === 401) {
         Notice.error("Unauthorized");
         if (!response.url.includes("whoami")) {

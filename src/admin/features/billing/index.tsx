@@ -1,22 +1,9 @@
 import React, { FC, useEffect, useMemo } from "react";
-import {
-  Alert,
-  AlertColor,
-  Box,
-  Button,
-  List,
-  Stack,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Alert, AlertColor, Box, Button, List, Stack, TextField, Typography } from "@mui/material";
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { useAppDispatch, useAppSelector } from "../../app/store";
 import { billingApi } from "../../api/billing";
-import { ECompanyStatuses } from "../../entities/companies/model";
-import {
-  getDateDifference,
-  getDateTimeInFormat,
-} from "../../utils/timeInFormat";
+import { getDateDifference, getDateTimeInFormat } from "../../utils/timeInFormat";
 import { grey } from "@mui/material/colors";
 import { MakePayment } from "./MakePayment";
 import { billingActions } from "../../slices/billing";
@@ -25,6 +12,7 @@ import { Header } from "../../shared/Header";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { borderColorDefault } from "../../app/styles";
 import AddIcon from "@mui/icons-material/Add";
+import { ECompanyStatuses } from "../../../back/mappers/comapnies";
 
 export const Billing: FC = () => {
   const dispatch = useAppDispatch();
@@ -54,10 +42,8 @@ export const Billing: FC = () => {
       let severity: AlertColor = "info";
       let message = (
         <>
-          Your subscription is valid until{" "}
-          {getDateTimeInFormat(company?.nextPayment)}. After that, it will be
-          automatically renewed, if there are {company?.rate?.perMonth}$ on the
-          account.
+          Your subscription is valid until {getDateTimeInFormat(company?.nextPayment)}. After that, it will be
+          automatically renewed, if there are {company?.rate?.perMonth}$ on the account.
         </>
       );
 
@@ -65,8 +51,8 @@ export const Billing: FC = () => {
         severity = "error";
         message = (
           <>
-            To continue using the functionality, you need to deposit to your
-            account for {company?.rate?.perMonth}$
+            To continue using the functionality, you need to deposit to your account for{" "}
+            {company?.rate?.perMonth}$
           </>
         );
       }
@@ -82,8 +68,7 @@ export const Billing: FC = () => {
         severity = "error";
         message = (
           <>
-            You need to deposit {company?.rate?.perMonth}$ before{" "}
-            {getDateTimeInFormat(company?.nextPayment)}
+            You need to deposit {company?.rate?.perMonth}$ before {getDateTimeInFormat(company?.nextPayment)}
           </>
         );
       }
@@ -98,19 +83,10 @@ export const Billing: FC = () => {
   }, [company]);
 
   return (
-    <Stack
-      direction="column"
-      width="100%"
-      height="100%"
-      paddingRight={2}
-      paddingTop={2}
-      paddingLeft={2}
-    >
+    <Stack direction="column" width="100%" height="100%" paddingRight={2} paddingTop={2} paddingLeft={2}>
       <Header
         title={`Balance: ${company?.balance}₺`}
-        subtitle={`Next payment date: ${getDateTimeInFormat(
-          company?.nextPayment
-        )}`}
+        subtitle={`Next payment date: ${getDateTimeInFormat(company?.nextPayment)}`}
         endIcon={<RefreshIcon onClick={handleUpdateBilling} />}
         isHaveBorder
       />
@@ -128,13 +104,7 @@ export const Billing: FC = () => {
             marginTop: 0,
           }}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            size="medium"
-            fullWidth
-            onClick={handleMakePayment}
-          >
+          <Button variant="contained" color="primary" size="medium" fullWidth onClick={handleMakePayment}>
             Make payment
           </Button>
         </Box>

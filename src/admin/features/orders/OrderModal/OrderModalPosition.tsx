@@ -2,6 +2,7 @@ import { FC } from "react";
 import { useAppSelector } from "../../../app/store";
 import { UniversalListItemBordered } from "../../../app/styles";
 import { IPositionForOrder } from "../../../../back/types/o";
+import { useAuth } from "../../Auth/Context";
 
 export const OrderModalPosition: FC<{
   hidePrices?: boolean;
@@ -10,7 +11,7 @@ export const OrderModalPosition: FC<{
   position: IPositionForOrder;
   onClick?: () => void;
 }> = ({ position, discountInPercent, onClick, hidePrices, hideBorder }) => {
-  const currencySymbol = useAppSelector((s) => s.common.user?.company?.currencySymbol);
+  const symbol = useAuth()?.whoami?.company?.symbol;
 
   const getPriceWithDiscount = (p: any, q: any, d: any) => {
     const discount = Math.round((Number(p) * Number(q) - Number(p) * Number(q) * (d / 100) ?? 0) * 100) / 100;
@@ -28,13 +29,13 @@ export const OrderModalPosition: FC<{
         {Number(p) && Number(q) ? (
           <b style={styleForPriceBeforeDiscount}>
             {Number(p) * Number(q)}
-            {currencySymbol}
+            {symbol}
           </b>
         ) : null}
         {discountInPercent && Number(p) !== 0 ? (
           <b style={styleForDiscountPrice}>
             {getPriceWithDiscount(p, q, discountInPercent)}
-            {currencySymbol}
+            {symbol}
           </b>
         ) : null}
       </>

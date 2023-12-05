@@ -16,7 +16,7 @@ export const getDefaultPageByRole = (role: string): EPages => {
 export const commonSlice = createSlice({
   name: "auth",
   initialState: {
-    activePage: EPages.AUTHORIZATION,
+    activePage: EPages.LOGIN,
     isMenuOpen: false,
   } as {
     user?: IUser;
@@ -28,7 +28,7 @@ export const commonSlice = createSlice({
   reducers: {
     signOut: (state) => {
       state.user = undefined;
-      state.activePage = EPages.AUTHORIZATION;
+      state.activePage = EPages.LOGIN;
     },
     toggleMenuOpen: (state) => {
       state.isMenuOpen = !state.isMenuOpen;

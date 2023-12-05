@@ -1,323 +1,207 @@
-import { FC, Fragment } from "react";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { Autocomplete, Button, Stack, TextField, Typography } from "@mui/material";
-import { yupResolver } from "@hookform/resolvers/yup/dist/yup";
-import * as yup from "yup";
-import { currencies, languages, timezones } from "../../utils/timezones";
-import { useAppDispatch } from "../../app/store";
-import { LoginHeader } from "./LoginHeader";
-import { IOption } from "../../app/interfaces";
-import { loginActions } from "./slice";
-import { ELoginTabs } from "./enums";
-import { useRegisterCompanyMutation } from "./api";
-import { LoadingInside } from "../../shared/LoadingInside";
+import { FC } from "react";
+import { LoginTabs } from ".";
+import { Form, Formik } from "formik";
+import { TbAddressBook, TbLogin2 } from "react-icons/tb";
+import { backgroundDefault, grayTextColor, textDefaultColor } from "../../app/styles";
+import styled from "@emotion/styled";
+import FormikInput from "../../shared/FormikInput";
+import FormikSelect from "../../shared/FormikSelect";
+import { currencies, languages } from "../../utils/timezones";
+import { useRegisterMutation } from "../Auth/api";
+import Loading from "../../shared/loading";
+
+const FormStyled = styled(Form)`
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: ${backgroundDefault};
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-y: scroll;
+  padding: 40px 0;
+  > div {
+    width: 320px;
+    margin: 0 auto 25px;
+    justify-content: space-between;
+    display: flex;
+    flex-direction: row;
+    text-align: left;
+    img {
+      max-height: calc(100vh - 550px);
+      margin: 0 auto;
+    }
+    :nth-child(2) {
+      flex-direction: column;
+      text-align: center;
+
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 16px;
+        color: ${grayTextColor};
+      }
+    }
+    :last-child {
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 0;
+      button {
+        color: white;
+        background-color: ${textDefaultColor};
+        outline: none;
+        border-radius: 10px;
+        height: 50px;
+        font-size: 16px;
+        width: 100%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        svg {
+          margin-right: 7px;
+          width: 20px;
+          height: 20px;
+        }
+      }
+      span {
+        margin-top: 15px;
+        font-size: 14px;
+        color: gray;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+`;
 
 interface IRegistrationForm {
-  email: string;
-  title: string;
-  login: string;
-  tin: string;
-  password: string;
-  passwordRepeat: string;
-  timezone: string;
-  currency: { name: string; symbol: string };
-  language: { name: string; code: string };
+  email?: string;
+  title?: string;
+  registerL?: string;
+  tin?: string;
+  registerP?: string;
+  passwordRepeat?: string;
+  currency?: string;
+  lang?: string;
 }
 
-const schema = yup
-  .object({
-    email: yup.string().required("Company email is required").email("Company email have incorrect format"),
-    title: yup
-      .string()
-      .required("Organization name is required")
-      .min(4, "Organization name must be more than 4 letters"),
-    login: yup
-      .string()
-      .required("Login for company is required")
-      .min(2, "Login must contain at least 2 characters")
-      .matches(/^[A-Za-z0-9]*$/, {
-        message: "Login must contain only numbers or letters",
-      }),
-    tin: yup
-      .string()
-      .required("Tax identification number is required")
-      .min(9, "Tax identification number must contains 9 numbers")
-      .max(9, "Tax identification number must contains 9 numbers"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .min(8, "Password must contain at least 8 characters"),
-    passwordRepeat: yup
-      .string()
-      .required()
-      .oneOf([yup.ref("password")], "Passwords must match"),
-    timezone: yup.string().required("Timezone is required"),
-    language: yup.object().required("Language is required"),
-    currency: yup.object().required("Currency is required"),
-  })
-  .required();
-
-export const RegistrationForm: FC = () => {
-  const dispatch = useAppDispatch();
-
-  const [register, { data, isLoading }] = useRegisterCompanyMutation();
-
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<IRegistrationForm>({
-    resolver: yupResolver(schema),
-    reValidateMode: "onSubmit",
-  });
-
-  const onSubmit: SubmitHandler<IRegistrationForm> = (form) => {
-    register({
-      email: form.email,
-      title: form.title,
-      tin: form.tin,
-      login: form.login,
-      password: form.password,
-      timezone: form.timezone,
-      lang: form.language.code,
-      currency: form.currency.symbol,
-    });
-  };
+export const RegistrationForm: FC<{ setTab: (tab: LoginTabs) => void }> = ({ setTab }) => {
+  const [register, { data, isLoading }] = useRegisterMutation();
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} name="restsRegistration" autoComplete="off">
-      <Stack
-        direction="column"
-        spacing={2}
-        padding={2}
-        alignItems="center"
-        justifyContent="space-around"
-        px={{ xs: 4, md: 8 }}
-      >
-        <LoadingInside isLoading={isLoading} />
-        {!data?.id ? (
-          <Fragment>
-            <LoginHeader title="Create an account" subtitle="Sign up your own company" />
-            <Controller
-              name="email"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  label="Company email"
-                  error={!!errors["email"]?.message}
-                  helperText={errors["email"]?.message?.toString()}
-                  variant="outlined"
-                  {...field}
+    <Formik
+      initialValues={{ lang: "en", currency: "$", registerL: "" }}
+      validateOnBlur={false}
+      validateOnChange={false}
+      onSubmit={(values: IRegistrationForm) =>
+        !data?.login
+          ? register({
+              email: values.email ?? "",
+              title: values.title ?? "",
+              tin: values.tin ?? "",
+              login: values.registerL ?? "",
+              password: values.registerP ?? "",
+              lang: values.lang ?? "",
+              currency: values.currency ?? "",
+            })
+          : setTab("login")
+      }
+      validate={(values) => {
+        const errors: any = {};
+        if (!values.email) {
+          errors.email = "Email is required";
+        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+          errors.email = "Invalid email address";
+        }
+        if (!values.title) errors.title = "Title is required";
+        if (!values.tin) {
+          errors.tin = "Tin is required";
+        } else if (!/^[0-9]+$/i.test(values.tin)) {
+          errors.tin = "Tin must have only numbers";
+        } else if (values.tin.length < 10 || values.tin.length > 12) {
+          errors.tin = "Tin must have 10-12 numbers";
+        }
+        if (!values.registerL) {
+          errors.registerL = "Login is required";
+        } else if (!/^[a-zA-Z0-9]+$/i.test(values.registerL)) {
+          errors.registerL = "Login must have only letters or numbers";
+        }
+        if (!values.registerP) {
+          errors.registerP = "Password is required";
+        } else if (values.registerP.length < 4) {
+          errors.registerP = "Password must have more than 4 sybmols";
+        }
+        if (!values.passwordRepeat) errors.passwordRepeat = "Repeat the password";
+        if (values.registerP?.toString() !== values.passwordRepeat?.toString())
+          errors.passwordRepeat = "Passwords not same";
+        if (!values.lang) errors.lang = "Language is required";
+        if (!values.currency) errors.currency = "Currency is required";
+        return errors;
+      }}
+    >
+      {() => (
+        <>
+          <Loading isLoading={isLoading} />
+          <FormStyled autoComplete="off">
+            <div>
+              <img src="/login.png" />
+            </div>
+            {!data?.login ? (
+              <>
+                <div>
+                  <h1>Welcome to workplace</h1>
+                  <p>Company registration:</p>
+                </div>
+                <FormikInput label={"Title"} name="title" mb />
+                <FormikInput label={"Login"} name="registerL" mb />
+                <FormikInput label={"Email"} name="email" mb />
+                <FormikInput label={"TIN"} name="tin" mb />
+                <FormikInput label={"Password"} name="registerP" mb type="password" />
+                <FormikInput label={"Password repeat"} name="passwordRepeat" mb type="password" />
+                <FormikSelect
+                  label={"Language"}
+                  name="lang"
+                  mb
+                  options={languages.map((c) => ({ value: c.code, label: c.name }))}
+                  firstDefault
                 />
-              )}
-            />
-            <Controller
-              name="title"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  label="Organization name"
-                  error={!!errors["title"]?.message}
-                  helperText={errors["title"]?.message?.toString()}
-                  variant="outlined"
-                  {...field}
+                <FormikSelect
+                  label={"Currency symbol"}
+                  name="currency"
+                  mb
+                  options={currencies.map((c) => ({ value: c.symbol, label: c.name }))}
+                  firstDefault
                 />
-              )}
-            />
-            <Controller
-              name="tin"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  label="Tax identification number"
-                  error={!!errors["tin"]?.message}
-                  helperText={errors["tin"]?.message?.toString()}
-                  variant="outlined"
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name="login"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  label="Login for company"
-                  error={!!errors["login"]?.message}
-                  helperText={errors["login"]?.message?.toString()}
-                  variant="outlined"
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name="password"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  type="password"
-                  label="Password for administrator"
-                  error={!!errors["password"]?.message}
-                  helperText={errors["password"]?.message?.toString()}
-                  variant="outlined"
-                  {...field}
-                />
-              )}
-            />
-            <Controller
-              name="passwordRepeat"
-              control={control}
-              render={({ field }) => (
-                <TextField
-                  fullWidth
-                  type="password"
-                  label="Repeat password"
-                  error={!!errors["passwordRepeat"]?.message}
-                  helperText={errors["passwordRepeat"]?.message?.toString()}
-                  variant="outlined"
-                  {...field}
-                />
-              )}
-            />
-            {/* <Controller
-              name="timezone"
-              control={control}
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  fullWidth
-                  options={timezones}
-                  onChange={(e, value) => {
-                    field.onChange(value);
-                  }}
-                  getOptionLabel={(option) => option}
-                  isOptionEqualToValue={(option: string, value: string) => option === value}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      fullWidth
-                      variant="outlined"
-                      label="Timezone"
-                      placeholder="Select categories"
-                      helperText={errors["timezone"]?.message?.toString()}
-                      error={!!errors["timezone"]?.message}
-                    />
-                  )}
-                />
-              )}
-            /> */}
-            <Controller
-              name="language"
-              control={control}
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  fullWidth
-                  options={languages}
-                  onChange={(e, value) => {
-                    field.onChange(value);
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  isOptionEqualToValue={(option: IOption, value: IOption) => option.code === value.code}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      InputLabelProps={undefined}
-                      fullWidth
-                      variant="outlined"
-                      label="Language"
-                      placeholder="Select categories"
-                      helperText={errors["language"]?.message?.toString()}
-                      error={!!errors["language"]?.message}
-                    />
-                  )}
-                />
-              )}
-            />
-            <Controller
-              name="currency"
-              control={control}
-              render={({ field }) => (
-                <Autocomplete
-                  {...field}
-                  options={currencies}
-                  fullWidth
-                  onChange={(e, value) => {
-                    field.onChange(value);
-                  }}
-                  getOptionLabel={(option) => option.name}
-                  isOptionEqualToValue={(
-                    option: { name: string; symbol: string },
-                    value: { name: string; symbol: string }
-                  ) => option.symbol === value.symbol}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      InputLabelProps={undefined}
-                      fullWidth
-                      variant="outlined"
-                      label="Currency"
-                      placeholder="Select currency"
-                      helperText={errors["currency"]?.message?.toString()}
-                      error={!!errors["currency"]?.message}
-                    />
-                  )}
-                />
-              )}
-            />
-            <Button variant="contained" color="primary" size="large" type="submit" fullWidth>
-              Register company
-            </Button>
-            <Button
-              variant="contained"
-              color="secondary"
-              size="large"
-              fullWidth
-              onClick={() => dispatch(loginActions.setTab(ELoginTabs.LOGIN))}
-            >
-              Sign in
-            </Button>
-          </Fragment>
-        ) : (
-          <Fragment>
-            <LoginHeader title="Account was created" subtitle="You can sign in with next data:" />
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="flex-start"
-              alignItems="center"
-              marginBottom="-15px !important"
-            >
-              <Typography>Login:</Typography>
-              <Typography fontWeight={600}>{data?.login}-admin</Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              spacing={1}
-              justifyContent="flex-start"
-              alignItems="center"
-              marginBottom="20px !important"
-            >
-              <Typography>Password:</Typography>
-              <Typography fontWeight={600}>your password</Typography>
-            </Stack>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              fullWidth
-              onClick={() => dispatch(loginActions.setTab(ELoginTabs.LOGIN))}
-            >
-              Sign in
-            </Button>
-          </Fragment>
-        )}
-      </Stack>
-    </form>
+                <div>
+                  <button type="submit">
+                    <TbAddressBook />
+                    Register
+                  </button>
+                  <span onClick={() => setTab("login")}>Back to login</span>
+                </div>
+              </>
+            ) : (
+              <>
+                <div>
+                  <h1>Welcome to workplace</h1>
+                  <p>Your login: {data?.login}-admin</p>
+                </div>
+                <div>
+                  <button type="submit">
+                    <TbLogin2 />
+                    Back to login
+                  </button>
+                </div>
+              </>
+            )}
+          </FormStyled>
+        </>
+      )}
+    </Formik>
   );
 };

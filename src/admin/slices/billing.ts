@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ICompany } from "../entities/companies/model";
 import { billingApi } from "../api/billing";
+import { ICompany } from "../../back/types";
 
 export enum EPaymentTypes {
   DEPOSIT = "deposit",
@@ -55,13 +55,10 @@ export const billingSlice = createSlice({
     builder.addCase(billingApi.updateCompanyInfo.rejected, (state) => {
       state.isLoading = false;
     });
-    builder.addCase(
-      billingApi.updateCompanyInfo.fulfilled,
-      (state, { payload }) => {
-        state.company = payload;
-        state.isLoading = false;
-      }
-    );
+    builder.addCase(billingApi.updateCompanyInfo.fulfilled, (state, { payload }) => {
+      state.company = payload;
+      state.isLoading = false;
+    });
     builder.addCase(billingApi.makePayment.pending, (state) => {
       state.isLoading = true;
     });

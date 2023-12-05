@@ -1,17 +1,6 @@
 import { ICompany } from "../types";
 import { IRate } from "./rates";
 
-export interface IRegistrationRequest {
-  email: string;
-  title: string;
-  login: string;
-  tin: string;
-  password: string;
-  timezone: string;
-  lang: string;
-  currency: string;
-}
-
 export enum ECompanyStatuses {
   ACTIVE = "active",
   ARCHIVE = "archive",

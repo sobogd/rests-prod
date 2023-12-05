@@ -14,7 +14,7 @@ import { ModalRests } from "../../shared/ModalRests";
 import Loading from "../../shared/loading";
 import { ITable } from "../map/types";
 import { useAllTablesQuery } from "../orders/api";
-import { prePrimaryColor } from "../../app/styles";
+import { backgroundDefault, prePrimaryColor } from "../../app/styles";
 import { IAllPositionsForKitchen } from "../../../back/types/k";
 
 const ListKitchenTables = styled.div`
@@ -25,7 +25,7 @@ const ListKitchenTables = styled.div`
   align-items: flex-start;
   justify-content: flex-start;
   overflow-x: scroll;
-  background: #fbfbfb;
+  background: ${backgroundDefault};
 `;
 
 const ListKitchenTablesItem = styled.div`

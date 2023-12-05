@@ -1,7 +1,5 @@
 import { Body, Get, Request, OperationId, Post, Response, Route, Security, Tags } from "tsoa";
-import authorization from "../services/users/authorization";
 import getUsersForCompany from "../services/users/getUsersForCompany";
-import whoAmI from "../services/users/whoAmI";
 import updateUserData from "../services/users/updateUserData";
 import createNewUser from "../services/users/createNewUser";
 import removeUser from "../services/users/removeUser";

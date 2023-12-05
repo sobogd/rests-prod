@@ -11,6 +11,7 @@ import NoData from "../../shared/NoData";
 import styled from "@emotion/styled";
 import { DialogRests } from "../../shared/DialogRests";
 import { IItem } from "../../../back/types";
+import { useAuth } from "../Auth/Context";
 
 const UniversalListItemBorderedPos = styled(UniversalListItemBordered)`
   width: 100%;
@@ -20,7 +21,7 @@ const UniversalListItemBorderedPos = styled(UniversalListItemBordered)`
 
 export const ItemsList: FC = () => {
   const i18n = useTranslation();
-  const currencySymbol = useAppSelector((s) => s.common?.user?.company?.currencySymbol);
+  const symbol = useAuth()?.whoami?.company?.symbol;
 
   const [selectedItemId, setSelectedItemId] = useState<number | null | undefined>(undefined);
   const [itemIdForDialog, setItemIdForDialog] = useState<number | undefined>(undefined);
@@ -66,7 +67,7 @@ export const ItemsList: FC = () => {
           <p>{item.n}</p>
           <p>
             <span>
-              {item?.p} {currencySymbol}
+              {item?.p} {symbol}
             </span>
             <span>
               {i18n.t("items.list.sort")}: {item?.s}
