@@ -22,8 +22,10 @@ const FormStyled = styled(Form)`
   justify-content: flex-start;
   overflow-y: scroll;
   padding: 40px 0;
+  padding: 0 15px;
   > div {
     width: 320px;
+    max-width: 100%;
     margin: 0 auto 25px;
     justify-content: space-between;
     display: flex;
@@ -55,17 +57,19 @@ const FormStyled = styled(Form)`
         background-color: ${textDefaultColor};
         outline: none;
         border-radius: 10px;
-        height: 50px;
+        min-height: 50px;
         font-size: 16px;
         width: 100%;
         cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
+        padding: 12px 15px;
         svg {
           margin-right: 7px;
           width: 20px;
           height: 20px;
+          min-width: 20px;
         }
       }
       span {
