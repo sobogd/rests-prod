@@ -72,7 +72,7 @@ function useProvideAuth() {
           });
         }
       });
-    } else if (hash !== "") {
+    } else if (hash !== null) {
       hashAuth(hash ?? "").then((res: any) => {
         console.log("loginname", res?.data?.name);
         if (res?.data?.token) {
@@ -87,6 +87,8 @@ function useProvideAuth() {
           });
         }
       });
+    } else {
+      Notice.warning("Wrong login or password");
     }
   };
 

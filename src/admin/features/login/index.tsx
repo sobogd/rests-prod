@@ -9,7 +9,7 @@ export const Login: FC = () => {
   const [tab, setTab] = useState<LoginTabs>("login");
 
   useEffect(() => {
-    if (localStorage.getItem("loginUserName") !== "" && localStorage.getItem("loginHash") !== "") {
+    if (localStorage.getItem("loginHash") !== null) {
       setTab("remember");
     }
   }, []);
