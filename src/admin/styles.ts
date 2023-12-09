@@ -1,6 +1,4 @@
 import styled from "@emotion/styled";
-import { Alert } from "@mui/material";
-import { grey, red } from "@mui/material/colors";
 
 export const backgroundDefault = "#faf8f8";
 export const newPallet = {
@@ -22,16 +20,6 @@ export const boxShadow = "2px 2px 11px -5px #00000073";
 export const boxShadowRight = "-2px -2px 11px -5px #00000073";
 export const newBorderColor = "#e2e2e2";
 
-export const AlertStyled = styled(Alert)`
-  background-color: ${red["900"]};
-  color: ${red["50"]};
-  margin-bottom: 10px;
-
-  .MuiAlert-icon {
-    color: ${red["50"]};
-  }
-`;
-
 export const MyForm = styled.form`
   justify-content: space-between;
   display: flex;
@@ -39,7 +27,7 @@ export const MyForm = styled.form`
 `;
 
 export const Container = styled.section`
-  background: ${grey[900]};
+  background: gray;
   width: 100%;
   height: 100%;
   position: fixed;
