@@ -30,7 +30,14 @@ export const LoadingContainer = styled.div<{
 const Loading: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
   return (
     <LoadingContainer isLoading={isLoading} className="loading">
-      LOADING
+      <div className="background" style={{ background: backgroundDefault }}>
+        <div className="lds-ellipsis">
+          <div style={{ background: textDefaultColor }}></div>
+          <div style={{ background: textDefaultColor }}></div>
+          <div style={{ background: textDefaultColor }}></div>
+          <div style={{ background: textDefaultColor }}></div>
+        </div>
+      </div>
     </LoadingContainer>
   );
 };
