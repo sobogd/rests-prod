@@ -15,7 +15,7 @@
   },
   "routes": {
     "routesDir": "src/back",
-    "authenticationModule": "src/back/services/users/authentication.ts"
+    "authenticationModule": "src/back/authentication.ts"
   },
   "ignore": ["**/node_modules/**", "**/admin/**", "**/admin/**", "src/admin"]
 }

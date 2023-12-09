@@ -1,5 +1,5 @@
 import pool from "../../db";
-import { IOrder } from "../../types/o";
+import { IOrder } from "../../types";
 
 export default async (companyId: number): Promise<{ t: number; f?: boolean }[]> => {
   const client = await pool.connect();
@@ -12,14 +12,11 @@ export default async (companyId: number): Promise<{ t: number; f?: boolean }[]> 
     orders.forEach((order: IOrder) => {
       objectWithTablesWithOrders[`table_${order.t}`] = {
         t: order.t,
-        f: (objectWithTablesWithOrders[`table_${order.t}`]?.f ?? []).concat([false]),
+        f: order?.p?.filter((p) => p.f == null)?.length === 0,
       };
     });
 
-    const tablesWithOrders = Object.values(objectWithTablesWithOrders).map((order: any) => ({
-      ...order,
-      f: !order?.f?.includes(false) ?? false,
-    }));
+    const tablesWithOrders = Object.values(objectWithTablesWithOrders) as { t: number; f?: boolean }[];
 
     return tablesWithOrders;
   } finally {

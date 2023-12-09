@@ -9,10 +9,12 @@ types.setTypeParser(1114, function (stringValue) {
   return new Date(Date.parse(stringValue + "+0000"));
 });
 
-export default new PG.Pool({
+export const pool = new PG.Pool({
   host: process.env.S3_HOST,
   user: process.env.S3_USER,
   password: process.env.S3_PASSWORD,
   database: process.env.S3_DATABASE,
   max: 200,
 });
+
+export default pool;

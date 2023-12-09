@@ -1,21 +1,19 @@
 import { OperationId, Request, Route, Security, Tags, Response, Get, Body, Post } from "tsoa";
-import { ErrorResponse } from "./users";
-import type { IAuthRequest, IItem } from "../types";
 import listCategoriesWithPositions from "../services/o/listCategoriesWithPositions";
 import addOrUpdateOrder from "../services/o/addOrUpdateOrder";
 import listOrdersForTable from "../services/o/listOrdersForTable";
 import orderByNumber from "../services/o/orderByNumber";
 import removeOrderByNumber from "../services/o/removeOrderByNumber";
 import finishOrderByNumber from "../services/o/finishOrderByNumber";
-import type { IOrder } from "../types/o";
 import tablesWithOrders from "../services/o/tablesWithOrders";
+import { IAuthRequest, IItem, IOrder } from "../types";
 
 @Route("o")
 export class OController {
   @Tags("O")
   @OperationId("List categories with positions")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Get("list-categories-with-positions")
   public async listCategoriesWithPositions(
@@ -25,8 +23,8 @@ export class OController {
   }
   @Tags("O")
   @OperationId("Add or update order")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("add-or-update-order")
   public async addOrUpdateOrder(@Body() body: IOrder, @Request() req: IAuthRequest): Promise<number> {
@@ -34,8 +32,8 @@ export class OController {
   }
   @Tags("O")
   @OperationId("List orders for table")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("list-orders-for-table")
   public async listOrdersForTable(
@@ -46,8 +44,8 @@ export class OController {
   }
   @Tags("O")
   @OperationId("Order by number")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("order-by-number")
   public async orderByNumber(
@@ -58,8 +56,8 @@ export class OController {
   }
   @Tags("O")
   @OperationId("Remove order by number")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("remove-order-by-number")
   public async removeOrderByNumber(
@@ -70,8 +68,8 @@ export class OController {
   }
   @Tags("O")
   @OperationId("Finish order by number")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("finish-order-by-number")
   public async finishOrderByNumber(
@@ -82,8 +80,8 @@ export class OController {
   }
   @Tags("O")
   @OperationId("Tables with orders")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Get("tables-with-orders")
   public async tablesWithOrders(@Request() req: IAuthRequest): Promise<{ t: number; f?: boolean }[]> {

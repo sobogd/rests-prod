@@ -7,7 +7,7 @@ export default async (companyId: number): Promise<{ c: string; i: IItem[] }[]> =
   try {
     const items = (
       await client.query(
-        `SELECT categories.sort, categories.name as "cname", items.c, items.n, items.p, items.v, items.o, items.vt, items.ot, items.t FROM items LEFT JOIN categories ON categories.id = items.c WHERE items.company = $1 AND items.a = TRUE ORDER BY categories.sort, items.s ASC`,
+        `SELECT categories.sort, categories.name as "cname", items.c, items.n, items.p, items.v, items.o, items.vt, items.ot, items.t, items.id FROM items LEFT JOIN categories ON categories.id = items.c WHERE items.company = $1 AND items.a = TRUE ORDER BY categories.sort, items.s ASC`,
         [companyId]
       )
     )?.rows as IItem[] | undefined;

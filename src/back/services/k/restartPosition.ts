@@ -1,5 +1,5 @@
 import pool from "../../db";
-import { IPositionForOrder } from "../../types/o";
+import { IPositionForOrder } from "../../types";
 
 export default async (orderNumber: number, positionIndex: number, companyId: number): Promise<void> => {
   const client = await pool.connect();

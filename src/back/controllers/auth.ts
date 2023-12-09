@@ -1,5 +1,4 @@
 import { Body, Post, Route, Response } from "tsoa";
-import { ErrorResponse } from "./users";
 import dotenv from "dotenv";
 import * as bcrypt from "bcryptjs";
 import pool from "../db";
@@ -12,8 +11,8 @@ const secretKey = crypto.createSecretKey((process.env.TOKEN || "").toString(), "
 
 @Route("auth")
 export class AuthController {
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Post("")
   public async auth(
     @Body() request: { login: string; password: string }
@@ -34,7 +33,7 @@ export class AuthController {
 
     const user = (
       await client.query(
-        `SELECT u.password, u.id, u.login, u.status, u.type, u.name, u.lang, c.login as "companyLogin" FROM users u LEFT JOIN companies c ON c.id = u.company_id WHERE u.status = 'active' AND c.login = $1 AND u.login = $2`,
+        `SELECT u.password, u.id, u.login, u.type, u.name, u.lang, c.login as "companyLogin" FROM users u LEFT JOIN companies c ON c.id = u.company_id WHERE u.status = 'active' AND c.login = $1 AND u.login = $2`,
         [companyLogin, userLogin]
       )
     )?.rows?.[0];
@@ -55,7 +54,6 @@ export class AuthController {
       id: user.id,
       name: user.name,
       login: user.login,
-      status: user.status,
       type: user.type,
     })
       .setProtectedHeader({ alg: "HS256" })

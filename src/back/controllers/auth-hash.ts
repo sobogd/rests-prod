@@ -1,5 +1,4 @@
 import { Body, Post, Route, Response } from "tsoa";
-import { ErrorResponse } from "./users";
 import dotenv from "dotenv";
 import pool from "../db";
 import * as crypto from "crypto";
@@ -11,8 +10,8 @@ const secretKey = crypto.createSecretKey((process.env.TOKEN || "").toString(), "
 
 @Route("auth-hash")
 export class AuthHashController {
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Post("")
   public async auth(
     @Body() request: { hash: string }
@@ -31,7 +30,7 @@ export class AuthHashController {
 
     const user = (
       await client.query(
-        `SELECT u.password, u.id, u.login, u.status, u.type, u.name, u.lang, c.login as "companyLogin" FROM users u LEFT JOIN companies c ON c.id = u.company_id WHERE u.status = 'active' AND u.id = $1 AND u.password = $2`,
+        `SELECT u.password, u.id, u.login, u.type, u.name, u.lang, c.login as "companyLogin" FROM users u LEFT JOIN companies c ON c.id = u.company_id WHERE u.status = 'active' AND u.id = $1 AND u.password = $2`,
         [payload.id, payload.password]
       )
     )?.rows?.[0];
@@ -46,7 +45,6 @@ export class AuthHashController {
       id: user.id,
       name: user.name,
       login: user.login,
-      status: user.status,
       type: user.type,
     })
       .setProtectedHeader({ alg: "HS256" })

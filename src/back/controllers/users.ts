@@ -1,60 +1,31 @@
-import { Body, Get, Request, OperationId, Post, Response, Route, Security, Tags } from "tsoa";
-import getUsersForCompany from "../services/users/getUsersForCompany";
-import updateUserData from "../services/users/updateUserData";
-import createNewUser from "../services/users/createNewUser";
-import removeUser from "../services/users/removeUser";
-import { IResponseStatusWithMessage } from "../types";
-import * as types from "../types";
-import * as users from "../mappers/users";
-
-export interface ErrorResponse {
-  error: string;
-}
+import { Body, Post, Request, Response, Route, Security } from "tsoa";
+import pool from "../db";
+import { IAuthRequest, IUser } from "../types";
 
 @Route("users")
 export class UsersController {
-  @Tags("UsersService")
-  @OperationId("GetUsersForCompany")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
-  @Get("get-users-for-company")
-  public async getUsersForCompany(@Request() { user }: types.IAuthRequest): Promise<users.IUser[]> {
-    return await getUsersForCompany(user.companyId);
-  }
+  @Post("")
+  public async users(@Request() auth: IAuthRequest): Promise<IUser[]> {
+    const client = await pool.connect();
 
-  @Tags("UsersService")
-  @OperationId("UpdateUserData")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
-  @Security("Bearer", ["AuthService"])
-  @Post("update-users-data")
-  public async updateUserData(
-    @Body() userDataForUpdate: users.IUserForUpdate
-  ): Promise<IResponseStatusWithMessage> {
-    return await updateUserData(userDataForUpdate);
-  }
+    try {
+      const users =
+        (
+          await client.query(`SELECT * from users WHERE company_id = $1 AND id <> $2 ORDER BY name ASC`, [
+            auth?.user?.companyId,
+            auth?.user?.id,
+          ])
+        )?.rows?.map((user) => ({
+          ...user,
+          password: undefined,
+        })) ?? [];
 
-  @Tags("UsersService")
-  @OperationId("CreateNewUser")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
-  @Security("Bearer", ["AuthService"])
-  @Post("create-new-users")
-  public async createNewUser(
-    @Body() userDataForUpdate: users.IUserForCreate,
-    @Request() { user }: { user: { companyId: number } }
-  ): Promise<IResponseStatusWithMessage> {
-    return await createNewUser(userDataForUpdate, user.companyId);
-  }
-
-  @Tags("UsersService")
-  @OperationId("RemoveUser")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
-  @Security("Bearer", ["AuthService"])
-  @Post("remove-users")
-  public async removeUser(@Body() { userId }: { userId: number }): Promise<IResponseStatusWithMessage> {
-    return await removeUser(userId);
+      return users;
+    } finally {
+      client.release();
+    }
   }
 }

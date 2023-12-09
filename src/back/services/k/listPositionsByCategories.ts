@@ -1,5 +1,5 @@
 import pool from "../../db";
-import { IAllPositionsForKitchen } from "../../types/k";
+import { IAllPositionsForKitchen } from "../../types";
 
 export default async (companyId: number): Promise<IAllPositionsForKitchen[]> => {
   const client = await pool.connect();

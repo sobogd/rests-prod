@@ -1,14 +1,13 @@
 import { Body, Request, Post, Route, Security, Response } from "tsoa";
-import { ErrorResponse } from "./users";
 import type { IAuthRequest, IItem } from "../types";
-import { getPhotoFileDataFromBase64 } from "../services/files/getPhotoFileDataFromBase64";
-import { uploadFileToGoogle } from "../services/files/uploadFileToGoogle";
+import { getPhotoFileDataFromBase64 } from "../utils/getPhotoFileDataFromBase64";
+import { uploadFileToGoogle } from "../utils/uploadFileToGoogle";
 import pool from "../db";
 
 @Route("item-create")
 export class ItemCreateController {
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("")
   public async create(@Body() request: IItem, @Request() { user }: IAuthRequest): Promise<void> {

@@ -1,14 +1,12 @@
 import { Request, Route, Security, Response, Post, Body } from "tsoa";
-import { ErrorResponse } from "./users";
-import type { IAuthRequest } from "../types";
+import type { IAuthRequest, IOrder } from "../types";
 import pool from "../db";
-import { IOrder } from "../types/o";
 import { getUTCTimestamp } from "../../admin/utils/getUTCTimestamp";
 
 @Route("day-stats")
 export class DayStatsController {
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("")
   public async dayStats(@Body() { day }: { day: string }, @Request() auth: IAuthRequest): Promise<IOrder[]> {

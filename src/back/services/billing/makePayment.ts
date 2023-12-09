@@ -1,14 +1,8 @@
 import pool from "../../db";
-import FieldsError from "../../helpers/fieldsError";
-import {
-  EPaymentStatuses,
-  EPaymentTypes,
-  mapPaymentsFromDB,
-} from "../../mappers/payments";
+import { EPaymentStatuses, EPaymentTypes, mapPaymentsFromDB } from "../../mappers/payments";
 import crypto from "crypto";
 // @ts-ignore
 import nodeBase64 from "nodejs-base64-converter";
-import { mapCompaniesFromDB } from "../../mappers/comapnies";
 import request from "request";
 import dotenv from "dotenv";
 
@@ -32,28 +26,22 @@ const requestPayTr = (url: any, options: any): Promise<string> => {
   });
 };
 
-const makePayment = async (
-  companyId: number,
-  amount: number
-): Promise<{ token: string }> => {
+const makePayment = async (companyId: number, amount: number): Promise<{ token: string }> => {
   const client = await pool.connect();
 
   if (!companyId) {
-    throw new FieldsError("Company ID is required");
+    throw new Error("Company ID is required");
   }
 
   if (!amount) {
-    throw new FieldsError("Amount is required");
+    throw new Error("Amount is required");
   }
 
-  const { rows: companiesDB } = await client.query(
-    "SELECT * FROM companies WHERE id = $1",
-    [companyId]
-  );
-  const company = mapCompaniesFromDB(companiesDB)[0];
+  const { rows: companiesDB } = await client.query("SELECT * FROM companies WHERE id = $1", [companyId]);
+  const company = companiesDB[0];
 
   if (!company?.id) {
-    throw new FieldsError("Error while loading company from DB");
+    throw new Error("Error while loading company from DB");
   }
 
   const { rows: createdPaymentsDB } = await client.query(
@@ -68,11 +56,9 @@ const makePayment = async (
   const createdPayment = mapPaymentsFromDB(createdPaymentsDB)[0];
 
   if (!createdPayment?.id) {
-    throw new FieldsError("Error while create payment in DB");
+    throw new Error("Error while create payment in DB");
   }
-  const basket = JSON.stringify([
-    ["Subscription for company ID: " + companyId, amount, 1],
-  ]);
+  const basket = JSON.stringify([["Subscription for company ID: " + companyId, amount, 1]]);
   const user_basket = nodeBase64.encode(basket);
   const merchant_oid = createdPayment.id;
   const max_installment = "0";
@@ -93,10 +79,7 @@ const makePayment = async (
 
   const hashSTR = `${merchantId}${user_ip}${merchant_oid}${email}${payment_amount}${user_basket}${no_installment}${max_installment}${currency}${test_mode}`;
   const paytr_token = hashSTR + merchantSalt;
-  const token = crypto
-    .createHmac("sha256", merchantKey)
-    .update(paytr_token)
-    .digest("base64");
+  const token = crypto.createHmac("sha256", merchantKey).update(paytr_token).digest("base64");
 
   const options = {
     method: "POST",
@@ -131,7 +114,7 @@ const makePayment = async (
     const token = await requestPayTr(options.url, options);
     return { token };
   } catch (error) {
-    throw new FieldsError("Error while try to payment with Pay Tr System");
+    throw new Error("Error while try to payment with Pay Tr System");
   } finally {
     await client.release();
   }

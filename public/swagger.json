@@ -6,151 +6,6 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
-			"EUserTypes": {
-				"enum": [
-					"admin",
-					"personal",
-					"manager",
-					"kitchen"
-				],
-				"type": "string"
-			},
-			"EUserStatuses": {
-				"enum": [
-					"active",
-					"archived"
-				],
-				"type": "string"
-			},
-			"users.IUser": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"login": {
-						"type": "string"
-					},
-					"password": {
-						"type": "string"
-					},
-					"type": {
-						"$ref": "#/components/schemas/EUserTypes"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EUserStatuses"
-					},
-					"companyLogin": {
-						"type": "string"
-					},
-					"lastLogin": {
-						"type": "string"
-					},
-					"lang": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"name",
-					"type"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ErrorResponse": {
-				"properties": {
-					"error": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"error"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IResponseStatusWithMessage": {
-				"properties": {
-					"isSuccess": {
-						"type": "boolean"
-					},
-					"message": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"isSuccess"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"users.IUserForUpdate": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"newPassword": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"type": {
-						"type": "string"
-					},
-					"login": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"type",
-					"login"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"users.IUserForCreate": {
-				"properties": {
-					"newPassword": {
-						"type": "string"
-					},
-					"name": {
-						"type": "string"
-					},
-					"type": {
-						"type": "string"
-					},
-					"login": {
-						"type": "string"
-					}
-				},
-				"required": [
-					"newPassword",
-					"name",
-					"type",
-					"login"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"ECompanyStatuses": {
-				"enum": [
-					"active",
-					"archive",
-					"unpaid"
-				],
-				"type": "string"
-			},
 			"IRate": {
 				"properties": {
 					"id": {
@@ -210,9 +65,6 @@
 					"balance": {
 						"type": "number",
 						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/ECompanyStatuses"
 					},
 					"rateId": {
 						"type": "number",
@@ -381,8 +233,19 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"EPriority": {
+				"enum": [
+					"FIRST",
+					"SECOND"
+				],
+				"type": "string"
+			},
 			"IPositionForOrder": {
 				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
 					"n": {
 						"type": "string"
 					},
@@ -427,6 +290,9 @@
 					"cat": {
 						"type": "number",
 						"format": "double"
+					},
+					"pr": {
+						"$ref": "#/components/schemas/EPriority"
 					}
 				},
 				"required": [
@@ -478,76 +344,6 @@
 					"t",
 					"p",
 					"c"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IDiscount": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"percent": {
-						"type": "number",
-						"format": "double"
-					},
-					"title": {
-						"type": "string"
-					},
-					"description": {
-						"type": "string"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"percent",
-					"title",
-					"description",
-					"companyId"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"EElementStatus": {
-				"enum": [
-					"active",
-					"archived"
-				],
-				"type": "string"
-			},
-			"IElement": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"element": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"priceForCount": {
-						"type": "number",
-						"format": "double"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EElementStatus"
-					}
-				},
-				"required": [
-					"element",
-					"price",
-					"priceForCount"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -756,141 +552,7 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IPublicMenuItem": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"photo": {
-						"type": "string"
-					},
-					"multipleChoice": {
-						"type": "boolean"
-					},
-					"t": {
-						"items": {
-							"properties": {
-								"title": {
-									"type": "string"
-								},
-								"code": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"title",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"add": {
-						"items": {
-							"properties": {
-								"t": {
-									"items": {
-										"properties": {
-											"title": {
-												"type": "string"
-											},
-											"code": {
-												"type": "string"
-											}
-										},
-										"required": [
-											"title",
-											"code"
-										],
-										"type": "object"
-									},
-									"type": "array"
-								},
-								"price": {
-									"type": "number",
-									"format": "double"
-								},
-								"name": {
-									"type": "string"
-								},
-								"id": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"t",
-								"price",
-								"name",
-								"id"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"price",
-					"t",
-					"add"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IPublicMenuCategory": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"t": {
-						"items": {
-							"properties": {
-								"title": {
-									"type": "string"
-								},
-								"code": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"title",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"items": {
-						"items": {
-							"$ref": "#/components/schemas/IPublicMenuItem"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"id",
-					"name",
-					"t",
-					"items"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IPaymentMethod": {
+			"IMethod": {
 				"properties": {
 					"id": {
 						"type": "number",
@@ -901,17 +563,8 @@
 					},
 					"description": {
 						"type": "string"
-					},
-					"companyId": {
-						"type": "number",
-						"format": "double"
 					}
 				},
-				"required": [
-					"title",
-					"description",
-					"companyId"
-				],
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -953,338 +606,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"EPositionStatuses": {
-				"enum": [
-					"active",
-					"archived"
-				],
-				"type": "string"
-			},
-			"ICreatePositionRequest": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"isAdditional": {
-						"type": "boolean"
-					},
-					"sort": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EPositionStatuses"
-					},
-					"fileName": {
-						"type": "string"
-					},
-					"hide": {
-						"type": "boolean"
-					},
-					"multipleChoice": {
-						"type": "boolean"
-					},
-					"categories": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
-					},
-					"composition": {
-						"items": {
-							"properties": {
-								"weight": {
-									"type": "number",
-									"format": "double"
-								},
-								"elementId": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"weight",
-								"elementId"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"additional": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
-					},
-					"file": {
-						"type": "string"
-					},
-					"isFileChanged": {
-						"type": "boolean"
-					},
-					"translations": {
-						"items": {
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"code": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"name",
-					"price",
-					"isAdditional",
-					"sort",
-					"categories",
-					"composition",
-					"additional",
-					"translations"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IUpdatePositionRequest": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"isAdditional": {
-						"type": "boolean"
-					},
-					"sort": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EPositionStatuses"
-					},
-					"fileName": {
-						"type": "string"
-					},
-					"hide": {
-						"type": "boolean"
-					},
-					"multipleChoice": {
-						"type": "boolean"
-					},
-					"categories": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
-					},
-					"composition": {
-						"items": {
-							"properties": {
-								"weight": {
-									"type": "number",
-									"format": "double"
-								},
-								"elementId": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"weight",
-								"elementId"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"additional": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
-					},
-					"file": {
-						"type": "string"
-					},
-					"isFileChanged": {
-						"type": "boolean"
-					},
-					"translations": {
-						"items": {
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"code": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"name",
-					"price",
-					"isAdditional",
-					"sort",
-					"categories",
-					"composition",
-					"additional",
-					"translations",
-					"id"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"IGetPositionDetails": {
-				"properties": {
-					"id": {
-						"type": "number",
-						"format": "double"
-					},
-					"name": {
-						"type": "string"
-					},
-					"price": {
-						"type": "number",
-						"format": "double"
-					},
-					"description": {
-						"type": "string"
-					},
-					"isAdditional": {
-						"type": "boolean"
-					},
-					"sort": {
-						"type": "number",
-						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/EPositionStatuses"
-					},
-					"fileName": {
-						"type": "string"
-					},
-					"hide": {
-						"type": "boolean"
-					},
-					"multipleChoice": {
-						"type": "boolean"
-					},
-					"additional": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
-					},
-					"categories": {
-						"items": {
-							"type": "number",
-							"format": "double"
-						},
-						"type": "array"
-					},
-					"composition": {
-						"items": {
-							"properties": {
-								"weight": {
-									"type": "number",
-									"format": "double"
-								},
-								"elementId": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"weight",
-								"elementId"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"translations": {
-						"items": {
-							"properties": {
-								"name": {
-									"type": "string"
-								},
-								"code": {
-									"type": "string"
-								}
-							},
-							"required": [
-								"name",
-								"code"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					}
-				},
-				"required": [
-					"name",
-					"price",
-					"isAdditional",
-					"sort",
-					"additional",
-					"categories",
-					"composition",
-					"translations"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
-			"tables.ITableImageResponse": {
-				"properties": {
-					"filePath": {
-						"type": "string"
-					}
-				},
-				"type": "object",
-				"additionalProperties": false
-			},
 			"ETableType": {
 				"enum": [
 					"table_s",
@@ -1309,14 +630,7 @@
 				],
 				"type": "string"
 			},
-			"ETableStatuses": {
-				"enum": [
-					"active",
-					"archived"
-				],
-				"type": "string"
-			},
-			"tables.ITable": {
+			"ITable": {
 				"properties": {
 					"id": {
 						"type": "number",
@@ -1337,7 +651,7 @@
 						"type": "number",
 						"format": "double"
 					},
-					"forOrder": {
+					"for_order": {
 						"type": "boolean"
 					},
 					"w": {
@@ -1351,22 +665,54 @@
 					"type": {
 						"$ref": "#/components/schemas/ETableType"
 					},
-					"companyId": {
+					"company_id": {
 						"type": "number",
 						"format": "double"
-					},
-					"status": {
-						"$ref": "#/components/schemas/ETableStatuses"
 					}
 				},
 				"required": [
 					"x",
 					"y",
-					"forOrder",
+					"for_order",
 					"w",
 					"h",
 					"type"
 				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"EUserTypes": {
+				"enum": [
+					"admin",
+					"personal",
+					"manager",
+					"kitchen"
+				],
+				"type": "string"
+			},
+			"IUser": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"name": {
+						"type": "string"
+					},
+					"login": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"type": {
+						"$ref": "#/components/schemas/EUserTypes"
+					},
+					"company_id": {
+						"type": "number",
+						"format": "double"
+					}
+				},
 				"type": "object",
 				"additionalProperties": false
 			},
@@ -1458,240 +804,6 @@
 	},
 	"openapi": "3.0.0",
 	"paths": {
-		"/users/get-users-for-company": {
-			"get": {
-				"operationId": "GetUsersForCompany",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/users.IUser"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"UsersService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/users/update-users-data": {
-			"post": {
-				"operationId": "UpdateUserData",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IResponseStatusWithMessage"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"UsersService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/users.IUserForUpdate"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/users/create-new-users": {
-			"post": {
-				"operationId": "CreateNewUser",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IResponseStatusWithMessage"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"UsersService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/users.IUserForCreate"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/users/remove-users": {
-			"post": {
-				"operationId": "RemoveUser",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IResponseStatusWithMessage"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"UsersService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"userId": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"userId"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
 		"/auth-hash": {
 			"post": {
 				"operationId": "Auth",
@@ -1723,24 +835,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [],
@@ -1796,24 +894,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [],
@@ -1857,24 +941,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -1913,24 +983,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -1983,24 +1039,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -2031,14 +1073,7 @@
 						}
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -2075,14 +1110,7 @@
 						"description": "No content"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -2100,14 +1128,7 @@
 						"description": "No content"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -2135,24 +1156,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2173,24 +1180,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2221,24 +1214,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2278,24 +1257,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2333,24 +1298,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2390,24 +1341,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2445,24 +1382,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2493,24 +1416,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2533,294 +1442,6 @@
 								},
 								"required": [
 									"day"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/discounts/search": {
-			"post": {
-				"operationId": "Search",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IDiscount"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"DiscountsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/elements/search": {
-			"post": {
-				"operationId": "Search",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IElement"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"ElementsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/elements/create": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"ElementsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IElement"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/elements/update": {
-			"post": {
-				"operationId": "Update",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"ElementsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IElement"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/elements/archive": {
-			"post": {
-				"operationId": "Archive",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"ElementsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"id": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"id"
 								],
 								"type": "object"
 							}
@@ -2852,14 +1473,7 @@
 						}
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -2877,24 +1491,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2925,24 +1525,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -2982,24 +1568,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -3037,24 +1609,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -3104,24 +1662,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -3175,24 +1719,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3226,24 +1756,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3267,24 +1783,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3332,24 +1834,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3389,44 +1877,170 @@
 				}
 			}
 		},
-		"/menu/update/{companyId}": {
-			"get": {
-				"operationId": "UpdatePublicMenuForCompany",
+		"/method-create": {
+			"post": {
+				"operationId": "MethodCreate",
 				"responses": {
 					"204": {
 						"description": "No content"
 					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IMethod"
 							}
 						}
 					}
-				},
-				"tags": [
-					"MenuService"
-				],
-				"security": [],
-				"parameters": [
-					{
-						"in": "query",
-						"name": "companyId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
+				}
 			}
 		},
-		"/menu/get/{companyId}": {
-			"get": {
-				"operationId": "UpdatePublicMenuForCompany",
+		"/method-delete": {
+			"post": {
+				"operationId": "MethodDelete",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/method-update": {
+			"post": {
+				"operationId": "MethodUpdate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IMethod"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/method": {
+			"post": {
+				"operationId": "Method",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IMethod"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/methods": {
+			"post": {
+				"operationId": "Methods",
 				"responses": {
 					"200": {
 						"description": "Ok",
@@ -3434,39 +2048,28 @@
 							"application/json": {
 								"schema": {
 									"items": {
-										"$ref": "#/components/schemas/IPublicMenuCategory"
+										"$ref": "#/components/schemas/IMethod"
 									},
 									"type": "array"
 								}
 							}
 						}
 					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
-				"tags": [
-					"MenuService"
-				],
-				"security": [],
-				"parameters": [
+				"security": [
 					{
-						"in": "query",
-						"name": "companyId",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
+						"Bearer": [
+							"AuthService"
+						]
 					}
-				]
+				],
+				"parameters": []
 			}
 		},
 		"/o/list-categories-with-positions": {
@@ -3502,24 +2105,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3551,24 +2140,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3612,24 +2187,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3679,24 +2240,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3739,24 +2286,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3799,24 +2332,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3885,24 +2404,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"tags": [
@@ -3926,24 +2431,10 @@
 						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -3975,57 +2466,6 @@
 				}
 			}
 		},
-		"/paymentMethods/search": {
-			"post": {
-				"operationId": "Search",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/IPaymentMethod"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"PaymentMethodsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
 		"/period-stats": {
 			"post": {
 				"operationId": "PeriodStats",
@@ -4041,24 +2481,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [
@@ -4093,386 +2519,6 @@
 				}
 			}
 		},
-		"/positions/search": {
-			"post": {
-				"operationId": "Search",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"properties": {
-											"status": {
-												"$ref": "#/components/schemas/EPositionStatuses"
-											},
-											"categories": {
-												"items": {
-													"properties": {
-														"categoryId": {
-															"type": "number",
-															"format": "double"
-														}
-													},
-													"required": [
-														"categoryId"
-													],
-													"type": "object"
-												},
-												"type": "array"
-											},
-											"sort": {
-												"type": "number",
-												"format": "double"
-											},
-											"id": {
-												"type": "number",
-												"format": "double"
-											},
-											"isAdditional": {
-												"type": "boolean"
-											},
-											"description": {
-												"type": "string"
-											},
-											"name": {
-												"type": "string"
-											},
-											"additional": {
-												"items": {
-													"properties": {
-														"positionId": {
-															"type": "number",
-															"format": "double"
-														}
-													},
-													"required": [
-														"positionId"
-													],
-													"type": "object"
-												},
-												"type": "array"
-											},
-											"price": {
-												"type": "number",
-												"format": "double"
-											},
-											"composition": {
-												"items": {
-													"properties": {
-														"element": {
-															"type": "number",
-															"format": "double"
-														},
-														"weight": {
-															"type": "number",
-															"format": "double"
-														}
-													},
-													"required": [
-														"element",
-														"weight"
-													],
-													"type": "object"
-												},
-												"type": "array"
-											}
-										},
-										"required": [
-											"categories",
-											"sort",
-											"isAdditional",
-											"name",
-											"additional",
-											"price",
-											"composition"
-										],
-										"type": "object"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"PositionsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/positions/create": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"PositionsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/ICreatePositionRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/positions/update": {
-			"post": {
-				"operationId": "Update",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"PositionsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IUpdatePositionRequest"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/positions/archive": {
-			"post": {
-				"operationId": "Archive",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"PositionsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"properties": {
-									"id": {
-										"type": "number",
-										"format": "double"
-									}
-								},
-								"required": [
-									"id"
-								],
-								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/positions/get-position-details/{id}": {
-			"get": {
-				"operationId": "GetPositionDetails",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/IGetPositionDetails"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"PositionsService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [
-					{
-						"in": "path",
-						"name": "id",
-						"required": true,
-						"schema": {
-							"format": "double",
-							"type": "number"
-						}
-					}
-				]
-			}
-		},
 		"/registration": {
 			"post": {
 				"operationId": "Registration",
@@ -4496,14 +2542,7 @@
 						}
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [],
@@ -4552,215 +2591,20 @@
 				}
 			}
 		},
-		"/tables/uploadImage": {
+		"/table-create": {
 			"post": {
-				"operationId": "uploadImage",
+				"operationId": "TableCreate",
 				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
+					"204": {
+						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
-				"tags": [
-					"TablesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"multipart/form-data": {
-							"schema": {
-								"type": "object",
-								"properties": {
-									"files": {
-										"items": {
-											"type": "string",
-											"format": "binary"
-										},
-										"type": "array"
-									}
-								},
-								"required": [
-									"files"
-								]
-							}
-						}
-					}
-				}
-			}
-		},
-		"/tables/findImage": {
-			"post": {
-				"operationId": "findImage",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/tables.ITableImageResponse"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"TablesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/tables/search": {
-			"post": {
-				"operationId": "Search",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"items": {
-										"$ref": "#/components/schemas/tables.ITable"
-									},
-									"type": "array"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"TablesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": []
-			}
-		},
-		"/tables/create": {
-			"post": {
-				"operationId": "Create",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"TablesService"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -4774,111 +2618,27 @@
 					"content": {
 						"application/json": {
 							"schema": {
-								"$ref": "#/components/schemas/tables.ITable"
+								"$ref": "#/components/schemas/ITable"
 							}
 						}
 					}
 				}
 			}
 		},
-		"/tables/update": {
+		"/table-delete": {
 			"post": {
-				"operationId": "Update",
+				"operationId": "TableDelete",
 				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
+					"204": {
+						"description": "No content"
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
-				"tags": [
-					"TablesService"
-				],
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/tables.ITable"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/tables/archive": {
-			"post": {
-				"operationId": "Archive",
-				"responses": {
-					"200": {
-						"description": "Ok",
-						"content": {
-							"application/json": {
-								"schema": {
-									"properties": {},
-									"type": "object"
-								}
-							}
-						}
-					},
-					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					},
-					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
-					}
-				},
-				"tags": [
-					"TablesService"
-				],
 				"security": [
 					{
 						"Bearer": [
@@ -4908,6 +2668,269 @@
 				}
 			}
 		},
+		"/table-update": {
+			"post": {
+				"operationId": "TableUpdate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/ITable"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/tables": {
+			"post": {
+				"operationId": "Tables",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/ITable"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/user-create": {
+			"post": {
+				"operationId": "UserCreate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user-delete": {
+			"post": {
+				"operationId": "UserDelete",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user-update": {
+			"post": {
+				"operationId": "UserUpdate",
+				"responses": {
+					"204": {
+						"description": "No content"
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/IUser"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/user": {
+			"post": {
+				"operationId": "User",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IUser"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"id": {
+										"type": "number",
+										"format": "double"
+									}
+								},
+								"required": [
+									"id"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users": {
+			"post": {
+				"operationId": "Users",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"items": {
+										"$ref": "#/components/schemas/IUser"
+									},
+									"type": "array"
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Unauthorized request response"
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [
+					{
+						"Bearer": [
+							"AuthService"
+						]
+					}
+				],
+				"parameters": []
+			}
+		},
 		"/whoami": {
 			"post": {
 				"operationId": "Whoami",
@@ -4923,24 +2946,10 @@
 						}
 					},
 					"401": {
-						"description": "Unauthorized request response",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Unauthorized request response"
 					},
 					"500": {
-						"description": "Response with error",
-						"content": {
-							"application/json": {
-								"schema": {
-									"$ref": "#/components/schemas/ErrorResponse"
-								}
-							}
-						}
+						"description": "Response with error"
 					}
 				},
 				"security": [

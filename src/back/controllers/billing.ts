@@ -1,5 +1,4 @@
 import { Body, OperationId, Request, Post, Route, Security, Tags, Response } from "tsoa";
-import { ErrorResponse } from "./users";
 import type { IAuthRequest, ICompany } from "../types";
 import updateCompanyInfo from "../services/billing/updateCompanyInfo";
 import makePayment from "../services/billing/makePayment";
@@ -13,8 +12,8 @@ import { makeMonthlyPaymentAndUpdateCompany } from "../services/billing/makeMont
 export class BillingController {
   @Tags("BillingService")
   @OperationId("UpdateCompanyInfo")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("update-company-info")
   public async updateCompanyInfo(@Request() { user }: IAuthRequest): Promise<ICompany> {
@@ -22,8 +21,8 @@ export class BillingController {
   }
   @Tags("BillingService")
   @OperationId("MakePayment")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("make-payment")
   public async makePayment(
@@ -34,8 +33,8 @@ export class BillingController {
   }
   @Tags("BillingService")
   @OperationId("PaymentsList")
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("payments-list")
   public async paymentsList(@Request() { user }: IAuthRequest): Promise<IPayment[]> {
@@ -43,14 +42,14 @@ export class BillingController {
   }
   @Tags("BillingService")
   @OperationId("MakeMonthlyPaymentAndUpdateCompany")
-  @Response<ErrorResponse>(500, "Response with error")
+  @Response(500, "Response with error")
   @Post("make-monthly-payment-and-update-company")
   public async makeMonthlyPaymentAndUpdateCompany(@Body() request: { companyId: number }): Promise<boolean> {
     return await makeMonthlyPaymentAndUpdateCompany(request.companyId);
   }
   @Tags("BillingService")
   @OperationId("SuccessPayment")
-  @Response<ErrorResponse>(500, "Response with error")
+  @Response(500, "Response with error")
   @Post("success-payment")
   public async successPayment(@Request() req: express.Request): Promise<void> {
     await paymentResult(
@@ -64,7 +63,7 @@ export class BillingController {
   }
   @Tags("BillingService")
   @OperationId("FailedPayment")
-  @Response<ErrorResponse>(500, "Response with error")
+  @Response(500, "Response with error")
   @Post("failed-payment")
   public async failedPayment(@Request() req: express.Request): Promise<void> {
     await paymentResult(

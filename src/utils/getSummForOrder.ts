@@ -1,4 +1,4 @@
-import { IPositionForOrder } from "../back/types/o";
+import { IPositionForOrder } from "../back/types";
 
 const getSummForOrder = (positions: IPositionForOrder[], orderDiscount?: number) => {
   let summWithDiscount = 0;
@@ -30,7 +30,7 @@ const getSummForOrder = (positions: IPositionForOrder[], orderDiscount?: number)
   }, 0);
   return {
     summWithoutDiscount: summWithoutDiscount ? Math.round(summWithoutDiscount * 100) / 100 : 0,
-    summWithDiscount: summWithDiscount ? Math.round(summWithDiscount * 100) / 100 : 0,
+    summWithDiscount: summWithDiscount ? Math.round((summWithDiscount * 100) / 100) : 0,
   };
 };
 

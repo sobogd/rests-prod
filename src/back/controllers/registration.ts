@@ -1,11 +1,10 @@
 import { Body, Post, Route, Response } from "tsoa";
-import { ErrorResponse } from "./users";
 import * as bcrypt from "bcryptjs";
 import pool from "../db";
 
 @Route("registration")
 export class RegistrationController {
-  @Response<ErrorResponse>(500, "Response with error")
+  @Response(500, "Response with error")
   @Post("")
   public async registration(
     @Body()

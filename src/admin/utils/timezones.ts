@@ -1,4 +1,4 @@
-import { IOption } from "../app/interfaces";
+import { IOption } from "../types";
 
 export const timezones: string[] = [
   "Europe/Andorra",

@@ -1,5 +1,4 @@
 import { Request, Route, Security, Response, Post, Body } from "tsoa";
-import { ErrorResponse } from "./users";
 import type { IAuthRequest } from "../types";
 import pool from "../db";
 import { getUTCTimestamp } from "../../admin/utils/getUTCTimestamp";
@@ -13,8 +12,8 @@ export interface IPeriodStats {
 
 @Route("period-stats")
 export class PeriodStatsController {
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("")
   public async periodStats(

@@ -1,15 +1,13 @@
 import { Provider } from "react-redux";
 import ReactDOM from "react-dom/client";
-import { ThemeProvider, CssBaseline } from "@mui/material";
-import { store } from "./app/store";
-import { theme } from "./app/styles";
+import { store } from "./store";
 import { I18nextProvider } from "react-i18next";
 import i18n from "./i18n";
-import { AuthProvider, useAuth } from "./features/Auth/Context";
+import { AuthProvider, useAuth } from "./components/Auth/Context";
 import { SnackbarProvider } from "notistack";
 import { Notifications } from "./hooks/useNotification";
-import { CMenuItems } from "./menu";
 import { FC } from "react";
+import { CMenuItems, MenuProvider } from "./components/Menu/Menu";
 
 const Page: FC = () => {
   const { activePage } = useAuth();
@@ -26,11 +24,10 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
     >
       <I18nextProvider i18n={i18n}>
         <AuthProvider>
-          <ThemeProvider theme={theme}>
-            <Notifications />
-            <CssBaseline />
+          <Notifications />
+          <MenuProvider>
             <Page />
-          </ThemeProvider>
+          </MenuProvider>
         </AuthProvider>
       </I18nextProvider>
     </SnackbarProvider>

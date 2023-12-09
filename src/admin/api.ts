@@ -1,10 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { API_URL } from "./config";
-import { RootState, store } from "./app/store";
+import { RootState, store } from "./store";
 import { Notice } from "./hooks/useNotification";
-import { commonActions } from "./features/common/slice";
-
-export * from "./api/users";
 
 export const API = createApi({
   reducerPath: "admin/api",
@@ -16,12 +13,8 @@ export const API = createApi({
       return headers;
     },
     validateStatus: (response, result) => {
-      console.log(response.status, result);
       if (response.status === 401) {
         Notice.error("Unauthorized");
-        if (!response.url.includes("whoami")) {
-          store.dispatch(commonActions.signOut());
-        }
       }
       if (response.status >= 402 || response.status === 400) {
         Notice.error(result?.message || "Error with request");

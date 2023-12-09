@@ -1,12 +1,11 @@
-import { Body, Request, Post, Route, Security, Response } from "tsoa";
-import { ErrorResponse } from "./users";
-import type { IAuthRequest, ICategory, IItem } from "../types";
+import { Request, Post, Route, Security, Response } from "tsoa";
+import type { IAuthRequest, ICategory } from "../types";
 import pool from "../db";
 
 @Route("categories")
 export class CategoriesController {
-  @Response<ErrorResponse>(500, "Response with error")
-  @Response<ErrorResponse>(401, "Unauthorized request response")
+  @Response(500, "Response with error")
+  @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("")
   public async categories(@Request() auth: IAuthRequest): Promise<ICategory[]> {
