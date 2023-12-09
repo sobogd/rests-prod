@@ -133,6 +133,7 @@ const ModalRestsHeaderButton = styled.span<{ isFilter?: boolean }>`
   align-items: center;
   justify-content: center;
   margin-left: -15px;
+  text-transform: uppercase;
   svg {
     width: 22px;
     height: 22px;
@@ -371,8 +372,7 @@ export const ModalRests: FC<{
           <ModalRestsHeaderBack onClick={onBack}>
             <TbChevronLeft />
           </ModalRestsHeaderBack>
-        ) : null}
-        {!isFullScreen ? (
+        ) : !isFullScreen ? (
           <ModalRestsHeaderMenu onClick={() => setIsOpenMenu(true)}>
             <TbAlignJustified />
           </ModalRestsHeaderMenu>
