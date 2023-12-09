@@ -6,11 +6,19 @@ import i18n from "./i18n";
 import { AuthProvider, useAuth } from "./components/Auth/Context";
 import { SnackbarProvider } from "notistack";
 import { Notifications } from "./hooks/useNotification";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { CMenuItems, MenuProvider } from "./components/Menu/Menu";
 
 const Page: FC = () => {
   const { activePage } = useAuth();
+  useEffect(() => {
+    // @ts-expect-error
+    if (navigator?.deviceMemory <= 3.9) {
+      const style = document.createElement("style");
+      style.innerHTML = "*{transition: none !important;}";
+      document.getElementsByTagName("head")[0].appendChild(style);
+    }
+  }, []);
   return CMenuItems.find((i) => i.id === activePage)?.component ?? null;
 };
 
