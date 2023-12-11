@@ -6,3 +6,5 @@ lib
 src/routes.ts
 .vscode
 public/admin
+ios
+android

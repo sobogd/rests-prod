@@ -168,6 +168,7 @@ export const OrderModal: FC<{
     if (orderNumber != null) {
       loadOrder({ orderNumber });
     }
+    setComment("");
   }, [orderNumber]);
 
   console.log({ discountForOrder });

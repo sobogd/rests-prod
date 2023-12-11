@@ -8,6 +8,8 @@ import { SnackbarProvider } from "notistack";
 import { Notifications } from "./hooks/useNotification";
 import { FC, useEffect } from "react";
 import { CMenuItems, MenuProvider } from "./components/Menu/Menu";
+import { backgroundDefault, textDefaultColor } from "./styles";
+import { SafeArea } from "capacitor-plugin-safe-area";
 
 const Page: FC = () => {
   const { activePage } = useAuth();
@@ -18,6 +20,11 @@ const Page: FC = () => {
       style.innerHTML = "*{transition: none !important;}";
       document.getElementsByTagName("head")[0].appendChild(style);
     }
+    SafeArea.getSafeAreaInsets().then(({ insets }) => {
+      const style = document.createElement("style");
+      style.innerHTML = `#root{border-top: ${insets.top}px solid ${textDefaultColor} !important;}`;
+      document.getElementsByTagName("head")[0].appendChild(style);
+    });
   }, []);
   return CMenuItems.find((i) => i.id === activePage)?.component ?? null;
 };
