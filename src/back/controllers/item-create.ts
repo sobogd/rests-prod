@@ -3,6 +3,7 @@ import type { IAuthRequest, IItem } from "../types";
 import { getPhotoFileDataFromBase64 } from "../utils/getPhotoFileDataFromBase64";
 import { uploadFileToGoogle } from "../utils/uploadFileToGoogle";
 import pool from "../db";
+import jimp from "jimp";
 
 @Route("item-create")
 export class ItemCreateController {
@@ -38,7 +39,9 @@ export class ItemCreateController {
 
       if (!!request?.f) {
         const { file, name } = getPhotoFileDataFromBase64(request?.f);
-        await uploadFileToGoogle(file, name);
+        const image = await jimp.read(file);
+        const buffer = await image.scaleToFit(700, 700).quality(90).getBufferAsync(jimp.MIME_JPEG);
+        await uploadFileToGoogle(buffer, name);
         await client.query(`UPDATE items SET f = $1 WHERE id = $2`, [name, createdItem?.id]);
       }
     } finally {

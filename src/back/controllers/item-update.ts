@@ -4,6 +4,7 @@ import { getPhotoFileDataFromBase64 } from "../utils/getPhotoFileDataFromBase64"
 import { uploadFileToGoogle } from "../utils/uploadFileToGoogle";
 import deleteFileFromGoogle from "../utils/deleteFileFromGoogle";
 import pool from "../db";
+import jimp from "jimp";
 
 @Route("item-update")
 export class ItemUpdateController {
@@ -41,7 +42,9 @@ export class ItemUpdateController {
       if (!!request.fChanged) {
         if (!!request?.f) {
           const { file, name } = getPhotoFileDataFromBase64(request?.f);
-          await uploadFileToGoogle(file, name);
+          const image = await jimp.read(file);
+          const buffer = await image.scaleToFit(700, 700).quality(90).getBufferAsync(jimp.MIME_JPEG);
+          await uploadFileToGoogle(buffer, name);
           try {
             if (!!updatedItem?.f) await deleteFileFromGoogle(updatedItem.f);
           } catch {}
@@ -55,6 +58,8 @@ export class ItemUpdateController {
           }
         }
       }
+
+      return;
     } finally {
       client.release();
     }

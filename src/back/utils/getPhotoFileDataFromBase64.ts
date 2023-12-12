@@ -8,7 +8,7 @@ export const getPhotoFileDataFromBase64 = (file: string): { file: Buffer; name: 
   if (mimeType === "data:image/jpeg") ext = "jpeg";
   if (mimeType === "data:image/png") ext = "png";
   return {
-    file: new Buffer(base64Data, "base64"),
+    file: Buffer.from(base64Data, "base64"),
     name: `${crypto.randomBytes(20).toString("hex")}.${ext}`,
   };
 };

@@ -15,6 +15,7 @@ import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
 import { Notice } from "../../hooks/useNotification";
 import { useAuth } from "../Auth/Context";
 import { UniversalList } from "../../styles";
+import { IMAGE_URL } from "../../config";
 
 const defaultValues = {
   n: "",
@@ -122,7 +123,7 @@ const ItemFormComponent: FC<Props> = ({
         a: data.a,
         h: data.h,
         fChanged: false,
-        fUrl: undefined,
+        fUrl: data.f && data.f !== "" ? IMAGE_URL + data.f : undefined,
         f: data.f,
         t: data.t?.length ? data.t : langs.map((lang) => ({ l: lang, t: "" })),
         ot: data.ot,
