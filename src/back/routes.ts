@@ -55,6 +55,8 @@ import { OrderReturnController } from './controllers/order-return';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { PeriodStatsController } from './controllers/period-stats';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+import { PublicCompanyController } from './controllers/public-company';
+// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { RegistrationController } from './controllers/registration';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TableCreateController } from './controllers/table-create';
@@ -278,6 +280,31 @@ const models: TsoaRoute.Models = {
             "count": {"dataType":"double","required":true},
             "summary": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"paymentMethod":{"dataType":"string","required":true},"summ":{"dataType":"double","required":true}}},"required":true},
             "total": {"dataType":"double","required":true},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IPublicResponse": {
+        "dataType": "refObject",
+        "properties": {
+            "id": {"dataType":"double","required":true},
+            "title": {"dataType":"string","required":true},
+            "tin": {"dataType":"string","required":true},
+            "login": {"dataType":"string","required":true},
+            "email": {"dataType":"string","required":true},
+            "currencySymbol": {"dataType":"string"},
+            "currency_symbol": {"dataType":"string"},
+            "timezone": {"dataType":"string"},
+            "lang": {"dataType":"string","required":true},
+            "utcDiff": {"dataType":"double"},
+            "balance": {"dataType":"double"},
+            "rateId": {"dataType":"double"},
+            "created": {"dataType":"string"},
+            "nextPayment": {"dataType":"string"},
+            "perMonth": {"dataType":"double"},
+            "rate": {"ref":"IRate"},
+            "langs": {"dataType":"array","array":{"dataType":"string"}},
+            "categoriesWithPositions": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"i":{"dataType":"array","array":{"dataType":"refObject","ref":"IItem"},"required":true},"t":{"dataType":"array","array":{"dataType":"refObject","ref":"ITranslate"}},"c":{"dataType":"string","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -1392,6 +1419,31 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.periodStats.apply(controller, validatedArgs as any);
+              promiseHandler(controller, promise, response, undefined, next);
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        app.post('/public-company',
+            ...(fetchMiddlewares<RequestHandler>(PublicCompanyController)),
+            ...(fetchMiddlewares<RequestHandler>(PublicCompanyController.prototype.publicCompany)),
+
+            function PublicCompanyController_publicCompany(request: any, response: any, next: any) {
+            const args = {
+                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"login":{"dataType":"string","required":true}}},
+            };
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = getValidatedArgs(args, request, response);
+
+                const controller = new PublicCompanyController();
+
+
+              const promise = controller.publicCompany.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

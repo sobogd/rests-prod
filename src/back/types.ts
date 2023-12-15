@@ -231,3 +231,7 @@ export interface IAllPositionsForKitchen {
   o: IVariantOrOptionForPosition[];
   on?: number;
 }
+
+export interface IPublicResponse extends ICompany {
+  categoriesWithPositions?: { c: string; t?: ITranslate[]; i: IItem[] }[];
+}
