@@ -20,6 +20,11 @@ app.use(
   })
 );
 app.use(express.static("public"));
+
+app.get("/site/*", function (req, res) {
+  res.sendFile("index.html", { root: "./public/site" });
+});
+
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({

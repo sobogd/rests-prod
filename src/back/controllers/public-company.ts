@@ -17,7 +17,7 @@ export class PublicCompanyController {
 
       const items = (
         await client.query(
-          `SELECT categories.sort, categories.name as "cname", items.c, items.n, items.p, items.v, items.f, items.o, items.vt, items.ot, items.t, items.id FROM items LEFT JOIN categories ON categories.id = items.c WHERE items.company = $1 AND items.a = TRUE AND items.h = FALSE ORDER BY categories.sort, items.s ASC`,
+          `SELECT categories.sort, categories.name as "cname", categories.translations as "ctranslations", items.c, items.n, items.p, items.v, items.f, items.o, items.vt, items.ot, items.t, items.id FROM items LEFT JOIN categories ON categories.id = items.c WHERE items.company = $1 AND items.a = TRUE AND items.h = FALSE ORDER BY categories.sort, items.s ASC`,
           [company.id]
         )
       )?.rows as IItem[] | undefined;
@@ -40,6 +40,8 @@ export class PublicCompanyController {
         (Object.values(objectItems) as IItem[][]).map((itemArray) => ({
           // @ts-ignore
           c: itemArray?.[0]?.cname?.toString() ?? "",
+          // @ts-ignore
+          t: itemArray?.[0]?.ctranslations ?? [],
           i:
             itemArray?.map((item) => ({
               ...item,

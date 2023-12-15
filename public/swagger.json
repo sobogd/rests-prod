@@ -88,6 +88,18 @@
 							"type": "string"
 						},
 						"type": "array"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"instagram": {
+						"type": "string"
+					},
+					"google_maps_link": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
 					}
 				},
 				"required": [
@@ -602,6 +614,118 @@
 					"count",
 					"summary",
 					"total"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IPublicResponse": {
+				"properties": {
+					"id": {
+						"type": "number",
+						"format": "double"
+					},
+					"title": {
+						"type": "string"
+					},
+					"tin": {
+						"type": "string"
+					},
+					"login": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"currencySymbol": {
+						"type": "string"
+					},
+					"currency_symbol": {
+						"type": "string"
+					},
+					"timezone": {
+						"type": "string"
+					},
+					"lang": {
+						"type": "string"
+					},
+					"utcDiff": {
+						"type": "number",
+						"format": "double"
+					},
+					"balance": {
+						"type": "number",
+						"format": "double"
+					},
+					"rateId": {
+						"type": "number",
+						"format": "double"
+					},
+					"created": {
+						"type": "string"
+					},
+					"nextPayment": {
+						"type": "string"
+					},
+					"perMonth": {
+						"type": "number",
+						"format": "double"
+					},
+					"rate": {
+						"$ref": "#/components/schemas/IRate"
+					},
+					"langs": {
+						"items": {
+							"type": "string"
+						},
+						"type": "array"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"instagram": {
+						"type": "string"
+					},
+					"google_maps_link": {
+						"type": "string"
+					},
+					"address": {
+						"type": "string"
+					},
+					"categoriesWithPositions": {
+						"items": {
+							"properties": {
+								"i": {
+									"items": {
+										"$ref": "#/components/schemas/IItem"
+									},
+									"type": "array"
+								},
+								"t": {
+									"items": {
+										"$ref": "#/components/schemas/ITranslate"
+									},
+									"type": "array"
+								},
+								"c": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"i",
+								"c"
+							],
+							"type": "object"
+						},
+						"type": "array"
+					}
+				},
+				"required": [
+					"id",
+					"title",
+					"tin",
+					"login",
+					"email",
+					"lang"
 				],
 				"type": "object",
 				"additionalProperties": false
@@ -2511,6 +2635,46 @@
 								"required": [
 									"dayEnd",
 									"dayStart"
+								],
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/public-company": {
+			"post": {
+				"operationId": "PublicCompany",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/IPublicResponse"
+								}
+							}
+						}
+					},
+					"500": {
+						"description": "Response with error"
+					}
+				},
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"login": {
+										"type": "string"
+									}
+								},
+								"required": [
+									"login"
 								],
 								"type": "object"
 							}

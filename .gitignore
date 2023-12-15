@@ -6,5 +6,7 @@ lib
 src/routes.ts
 .vscode
 public/admin
+public/site
+public/swagger.json
 ios
 android

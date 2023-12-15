@@ -11,12 +11,7 @@ const Select: React.FC<{
   return (
     <SelectStyled.Container mb={mb}>
       <label>{label}</label>
-      <SelectStyled.Select
-        value={value}
-        onChange={(e) => {
-          console.log(e.target.value);
-        }}
-      >
+      <SelectStyled.Select value={value} onChange={(e) => {}}>
         {!firstDefault ? <option value={undefined} disabled selected></option> : null}
         {options.map((option, index) => (
           <option value={option.value} selected={!!firstDefault && index === 0 ? true : undefined}>

@@ -171,8 +171,6 @@ export const OrderModal: FC<{
     setComment("");
   }, [orderNumber]);
 
-  console.log({ discountForOrder });
-
   useEffect(() => {
     if (loadedOrder != null && orderNumber != null) {
       setPositions(loadedOrder?.p);

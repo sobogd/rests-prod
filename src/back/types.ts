@@ -82,6 +82,10 @@ export interface ICompany {
   perMonth?: number;
   rate?: IRate;
   langs?: string[];
+  phone?: string;
+  instagram?: string;
+  google_maps_link?: string;
+  address?: string;
 }
 
 export interface IWhoAmI {
