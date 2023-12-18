@@ -6,7 +6,7 @@ import { VariantsSelect } from "./VariantsSelect";
 import { OptionsSelect } from "./OptionsSelect";
 import { useTranslation } from "react-i18next";
 import { ModalRests } from "../../ModalRests";
-import { useListCategoriesWithPositionsQuery } from "../api";
+import { useLazyListCategoriesWithPositionsQuery } from "../api";
 import { utcToZonedTime } from "date-fns-tz";
 import { EPriority, IItem, IPositionForOrder, IVariantOrOptionForPosition } from "../../../../back/types";
 import { errorColor, newPallet } from "../../../styles";
@@ -28,7 +28,11 @@ export const OrderPositionModal: FC<{
   const [percent, setPercent] = useState<number>(0);
   const [priority, setPriority] = useState<EPriority | undefined>(undefined);
   const i18n = useTranslation();
-  const { data } = useListCategoriesWithPositionsQuery();
+  const [loadPositions, { data }] = useLazyListCategoriesWithPositionsQuery();
+
+  useEffect(() => {
+    loadPositions();
+  }, []);
 
   useEffect(() => {
     if (selectedPosition !== undefined && selectedPosition !== null && selectedPosition?.i !== undefined) {

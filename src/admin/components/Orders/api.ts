@@ -44,12 +44,14 @@ const ordersApi = API.injectEndpoints({
 
 export const {
   useListCategoriesWithPositionsQuery,
+  useLazyListCategoriesWithPositionsQuery,
   useAddOrUpdateOrderMutation,
   useLazyListOrdersForTableQuery,
   useLazyLoadOrderByNumberQuery,
   useRemoveOrderByNumberMutation,
   useFinishOrderByNumberMutation,
   useAllTablesQuery,
+  useLazyAllTablesQuery,
   useLazyTablesWithOrdersQuery,
   usePaymentMethodsQuery,
 } = ordersApi;

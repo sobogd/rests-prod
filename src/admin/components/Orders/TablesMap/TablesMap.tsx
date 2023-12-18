@@ -1,6 +1,6 @@
-import React, { FC, useEffect, useMemo, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { OrdersForTableModal } from "../OrdersForTableModal/OrdersForTableModal";
-import { useAllTablesQuery, useLazyTablesWithOrdersQuery } from "../api";
+import { useLazyAllTablesQuery, useLazyTablesWithOrdersQuery } from "../api";
 import Loading from "../../loading";
 import { MapBlock } from "../../Map/MapBlock";
 import { ITableWithOrders } from "../../Map/types";
@@ -15,7 +15,11 @@ export const TablesMap: FC = () => {
     loadTablesWithOrders,
     { data: tablesWidthOrders, isLoading: isLoadingTablesWithOrders, isFetching: isFetchingTablesWithOrders },
   ] = useLazyTablesWithOrdersQuery();
-  const { data: allTables, isLoading, isFetching } = useAllTablesQuery();
+  const [loadTables, { data: allTables, isLoading, isFetching }] = useLazyAllTablesQuery();
+
+  useEffect(() => {
+    loadTables();
+  }, []);
 
   useEffect(() => {
     const timer = setInterval(() => {
