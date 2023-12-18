@@ -6,6 +6,7 @@ import { useAuth } from "../Auth/Context";
 import { TbLogin2 } from "react-icons/tb";
 import { LoginTabs } from ".";
 import { backgroundDefault, textDefaultColor } from "../../styles";
+import loginImage from "./loginImage";
 
 const FormStyled = styled(Form)`
   width: 100%;
@@ -96,7 +97,7 @@ export const LoginForm: FC<{ setTab: (tab: LoginTabs) => void }> = ({ setTab }) 
       {() => (
         <FormStyled autoComplete="off">
           <div>
-            <img src="/login.png" />
+            <img src={loginImage} />
           </div>
           <div>
             <h1>Welcome to workplace</h1>

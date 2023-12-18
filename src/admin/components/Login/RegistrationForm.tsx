@@ -9,6 +9,7 @@ import { currencies, languages } from "../../utils/timezones";
 import { useRegisterMutation } from "../Auth/api";
 import Loading from "../loading";
 import { backgroundDefault, textDefaultColor } from "../../styles";
+import loginImage from "./loginImage";
 
 const FormStyled = styled(Form)`
   width: 100%;
@@ -153,7 +154,7 @@ export const RegistrationForm: FC<{ setTab: (tab: LoginTabs) => void }> = ({ set
           <Loading isLoading={isLoading} />
           <FormStyled autoComplete="off">
             <div>
-              <img src="/login.png" />
+              <img src={loginImage} />
             </div>
             {!data?.login ? (
               <>

@@ -6,6 +6,7 @@ import FormikInput from "../FormikInput";
 import { useAuth } from "../Auth/Context";
 import styled from "@emotion/styled";
 import { backgroundDefault, textDefaultColor } from "../../styles";
+import loginImage from "./loginImage";
 
 const FormStyled = styled(Form)`
   width: 100%;
@@ -87,7 +88,7 @@ export const RememberLogin: FC<{ setTab: (tab: LoginTabs) => void }> = ({ setTab
       {() => (
         <FormStyled autoComplete="off">
           <div>
-            <img src="/login.png" />
+            <img src={loginImage} />
           </div>
           <div>
             <h1>Welcome to workplace</h1>
