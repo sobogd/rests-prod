@@ -3,7 +3,7 @@ import { API } from "../../api";
 
 const itemsApi = API.injectEndpoints({
   endpoints: (b) => ({
-    items: b.query<IItem[], undefined>({
+    items: b.query<IItem[], void>({
       query: () => ({
         url: `items`,
         method: "POST",
@@ -54,6 +54,7 @@ export const {
   useUpdateItemMutation,
   useCreateItemMutation,
   useDeleteItemMutation,
+  useLazyItemsQuery,
   useItemsQuery,
   useListCategoriesQuery,
 } = itemsApi;

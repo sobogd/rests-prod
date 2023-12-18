@@ -4,6 +4,7 @@ import { ModalRests } from "../ModalRests";
 import Loading from "../loading";
 import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
 import {
+  useCategoriesQuery,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useLazyCategoryQuery,
@@ -42,14 +43,20 @@ const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch 
   const { setValues, resetForm } = useFormikContext();
   const [loadCategory, { data, isLoading, isFetching }] = useLazyCategoryQuery();
   const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
+  const { data: categories } = useCategoriesQuery();
+
+  const getLastSortNumber = () => (categories?.at(-1)?.sort ?? 10) + 1;
 
   useEffect(() => {
-    if (selectedCategoryId) {
-      loadCategory(selectedCategoryId);
-    } else {
-      setValues(defaultValues);
+    if (categories) {
+      if (selectedCategoryId) {
+        loadCategory(selectedCategoryId);
+      } else {
+        console.log(getLastSortNumber());
+        setValues({ ...defaultValues, sort: getLastSortNumber() });
+      }
     }
-  }, [selectedCategoryId]);
+  }, [selectedCategoryId, categories]);
 
   useEffect(() => {
     if (data && selectedCategoryId != null) {
@@ -60,7 +67,8 @@ const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch 
         translations: data.translations ?? [],
       });
     } else {
-      setValues(defaultValues);
+      console.log(getLastSortNumber());
+      setValues({ ...defaultValues, sort: getLastSortNumber() });
     }
   }, [data]);
 

@@ -27,10 +27,7 @@ export const ItemFormGeneral: FC = () => {
       />
       <Loading isLoading={isLoading || isFetching} />
       <InputGroup>
-        <FormikInput
-          name={`n`}
-          label={langs?.length <= 0 ? t("items.form.general.n") : t("items.form.general.non") + lang}
-        />
+        <FormikInput name={`n`} label={t("items.form.general.non") + lang} />
         {(values as any).t?.map((translation: { l?: string; p?: number }, idx: number) => (
           <FormikInput
             name={`t.[${idx}].t`}

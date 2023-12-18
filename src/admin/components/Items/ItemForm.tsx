@@ -1,7 +1,8 @@
-import { FC, useEffect } from "react";
+import { FC, useEffect, useMemo } from "react";
 import {
   useCreateItemMutation,
   useDeleteItemMutation,
+  useItemsQuery,
   useLazyGetItemDetailsQuery,
   useUpdateItemMutation,
 } from "./api";
@@ -88,18 +89,42 @@ const ItemFormComponent: FC<Props> = ({
   onCopy,
 }) => {
   const i18n = useTranslation();
-  const { setValues, resetForm } = useFormikContext();
+  const { setValues, resetForm, getFieldProps, setFieldValue } = useFormikContext();
+  const category = getFieldProps("c").value;
 
   const langs = useAuth()?.whoami?.company?.langs ?? [];
 
   const [loadItem, { data, isLoading: isLoadingItem, isFetching, requestId }] = useLazyGetItemDetailsQuery();
   const [deleteItem, { isLoading: isDeleting }] = useDeleteItemMutation();
+  const { data: items } = useItemsQuery();
+
+  const getLastSortNumber = (c?: number) =>
+    items?.length
+      ? (items
+          .filter((i) => (!!c ? i.c === Number(c) : true))
+          .sort((a, b) => {
+            if (a?.s && b?.s && a.s < b.s) {
+              return 1;
+            } else if (a?.s && b?.s && a.s > b.s) {
+              return -1;
+            }
+            return 0;
+          })?.[0]?.s ?? 0) + 1
+      : 10;
+
+  const lastSortNumber = useMemo(() => getLastSortNumber(), [items]);
+
+  useEffect(() => {
+    if (items && category && !selectedItemId && !selectedCopyItemId) {
+      setFieldValue("s", getLastSortNumber(category));
+    }
+  }, [items, category, selectedItemId, selectedCopyItemId]);
 
   useEffect(() => {
     if (selectedItemId) {
       loadItem(selectedItemId);
     } else {
-      setValues({ ...defaultValues, t: langs.map((lang) => ({ l: lang, t: "" })) });
+      setValues({ ...defaultValues, t: langs.map((lang) => ({ l: lang, t: "" })), s: lastSortNumber });
     }
   }, [selectedItemId]);
 
@@ -119,7 +144,7 @@ const ItemFormComponent: FC<Props> = ({
         i: "",
         p: data.p?.toString() ?? "",
         c: data.c,
-        s: data.s,
+        s: selectedCopyItemId && data.s ? data.s + 1 : data.s,
         a: data.a,
         h: data.h,
         fChanged: false,
@@ -132,7 +157,7 @@ const ItemFormComponent: FC<Props> = ({
         v: data.v,
       });
     } else {
-      setValues({ ...defaultValues, t: langs.map((lang) => ({ l: lang, t: "" })) });
+      setValues({ ...defaultValues, t: langs.map((lang) => ({ l: lang, t: "" })), s: lastSortNumber });
     }
   }, [data, requestId]);
 

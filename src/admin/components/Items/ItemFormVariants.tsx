@@ -112,6 +112,7 @@ export const ItemFormVariants: FC = () => {
   const { t } = useTranslation();
 
   const langs = useAuth()?.whoami?.company?.langs ?? [];
+  const lang = useAuth()?.whoami?.company?.lang ?? "en";
 
   const handleAddVariant = () => {
     setValues({
@@ -134,12 +135,7 @@ export const ItemFormVariants: FC = () => {
       {values.v?.map((variant: { n?: string; p?: number; id?: string }, variant_index: number) => (
         <Variant>
           <div style={variant_index === 0 ? { marginTop: 15 } : undefined}>
-            <FormikInput name={`v.${variant_index}.n`} label={t("items.form.variants.name")} />
-            <FormikInput
-              name={`v.[${variant_index}].p`}
-              type="number"
-              label={t("items.form.variants.price")}
-            />
+            <FormikInput name={`v.${variant_index}.n`} label={t("items.form.variants.name") + lang} />
             <span onClick={handleRemoveVariant(variant_index)}>
               <TbTrash />
             </span>
@@ -154,6 +150,7 @@ export const ItemFormVariants: FC = () => {
               );
             }
           )}
+          <FormikInput name={`v.[${variant_index}].p`} type="number" label={t("items.form.variants.price")} />
         </Variant>
       ))}
       <AddButton onClick={handleAddVariant}>

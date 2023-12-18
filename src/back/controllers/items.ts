@@ -13,7 +13,7 @@ export class ItemsController {
 
     try {
       const items = (
-        await client.query(`SELECT id, n, p, s FROM items WHERE company = $1 ORDER BY s, n, id ASC`, [
+        await client.query(`SELECT id, n, p, s, c FROM items WHERE company = $1 ORDER BY s, n, id ASC`, [
           user.companyId,
         ])
       )?.rows as IItem[] | undefined;

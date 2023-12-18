@@ -3,7 +3,7 @@ import { API } from "../../api";
 
 const categoriesApi = API.injectEndpoints({
   endpoints: (b) => ({
-    categories: b.query<ICategory[], undefined>({
+    categories: b.query<ICategory[], void>({
       query: () => ({
         url: `categories`,
         method: "POST",
@@ -45,6 +45,7 @@ const categoriesApi = API.injectEndpoints({
 
 export const {
   useCategoriesQuery,
+  useLazyCategoriesQuery,
   useLazyCategoryQuery,
   useDeleteCategoryMutation,
   useUpdateCategoryMutation,

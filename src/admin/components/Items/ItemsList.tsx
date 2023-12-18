@@ -1,5 +1,5 @@
-import { FC, useMemo, useState } from "react";
-import { useItemsQuery } from "./api";
+import { FC, useEffect, useMemo, useState } from "react";
+import { useLazyItemsQuery } from "./api";
 import { useTranslation } from "react-i18next";
 import { ModalRests } from "../ModalRests";
 import { ItemForm } from "./ItemForm";
@@ -17,7 +17,11 @@ export const ItemsList: FC = () => {
   const [selectedCopyItemId, setSelectedCopyItemId] = useState<number | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { data, isLoading, isFetching, refetch } = useItemsQuery(undefined);
+  const [load, { data, isLoading, isFetching }] = useLazyItemsQuery(undefined);
+
+  useEffect(() => {
+    load();
+  }, []);
 
   const filteredItems: IItem[] = useMemo(
     () =>
@@ -40,7 +44,7 @@ export const ItemsList: FC = () => {
           },
         ]}
         withPadding
-        moreButtons={[{ title: i18n.t("items.list.update"), onClick: () => refetch() }]}
+        moreButtons={[{ title: i18n.t("items.list.update"), onClick: () => load() }]}
         isOpenAdditional={selectedItemId !== undefined || selectedCopyItemId !== undefined}
         isGeneral
         isLoading={isLoading || isFetching}
@@ -76,7 +80,7 @@ export const ItemsList: FC = () => {
           setSelectedItemId(undefined);
           setSelectedCopyItemId(copyId);
         }}
-        refetch={refetch}
+        refetch={() => load()}
         selectedItemId={selectedItemId}
         selectedCopyItemId={selectedCopyItemId}
       />

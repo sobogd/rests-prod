@@ -1,11 +1,11 @@
-import { FC, useMemo, useState } from "react";
+import { FC, useEffect, useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Loading from "../loading";
 import { ModalRests } from "../ModalRests";
 import InputWithClear from "../InputWithClear";
 import NoData from "../NoData";
 import { ICategory } from "../../../back/types";
-import { useCategoriesQuery } from "./api";
+import { useLazyCategoriesQuery } from "./api";
 import { CategoryForm } from "./CategoryForm";
 import List from "../List";
 
@@ -15,7 +15,7 @@ export const CategoriesList: FC = () => {
   const [selectedCategoryId, setSelectedCategoryId] = useState<number | null | undefined>(undefined);
   const [searchQuery, setSearchQuery] = useState<string>("");
 
-  const { data, isLoading, isFetching, refetch } = useCategoriesQuery(undefined);
+  const [load, { data, isLoading, isFetching }] = useLazyCategoriesQuery();
 
   const filteredCategories: ICategory[] = useMemo(
     () =>
@@ -26,6 +26,10 @@ export const CategoriesList: FC = () => {
       ) ?? [],
     [data, searchQuery]
   );
+
+  useEffect(() => {
+    load();
+  }, []);
 
   return (
     <>
@@ -41,7 +45,7 @@ export const CategoriesList: FC = () => {
         withPadding
         isGeneral
         isOpenAdditional={selectedCategoryId !== undefined}
-        moreButtons={[{ title: i18n.t("categories.list.update"), onClick: () => refetch() }]}
+        moreButtons={[{ title: i18n.t("categories.list.update"), onClick: () => load() }]}
       >
         <Loading isLoading={isLoading || isFetching} />
         <InputWithClear
@@ -65,7 +69,7 @@ export const CategoriesList: FC = () => {
       </ModalRests>
       <CategoryForm
         onBack={() => setSelectedCategoryId(undefined)}
-        refetch={refetch}
+        refetch={() => load()}
         selectedCategoryId={selectedCategoryId}
       />
     </>

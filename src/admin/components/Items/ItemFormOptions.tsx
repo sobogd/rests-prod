@@ -113,6 +113,7 @@ export const ItemFormOptions: FC = () => {
   const { t } = useTranslation();
 
   const langs = useAuth()?.whoami?.company?.langs ?? [];
+  const lang = useAuth()?.whoami?.company?.lang ?? "en";
 
   const handleAddOption = () => {
     setValues({
@@ -135,8 +136,7 @@ export const ItemFormOptions: FC = () => {
       {values.o?.map((option: { n?: string; p?: number; id?: string }, option_index: number) => (
         <Option>
           <div style={option_index === 0 ? { marginTop: 15 } : undefined}>
-            <FormikInput name={`o.[${option_index}].n`} label={t("items.form.options.name")} />
-            <FormikInput name={`o.[${option_index}].p`} type="number" label={t("items.form.options.price")} />
+            <FormikInput name={`o.[${option_index}].n`} label={t("items.form.options.name") + lang} />
             <span onClick={handleRemoveOption(option_index)}>
               <TbTrash />
             </span>
@@ -151,6 +151,7 @@ export const ItemFormOptions: FC = () => {
               );
             }
           )}
+          <FormikInput name={`o.[${option_index}].p`} type="number" label={t("items.form.options.price")} />
         </Option>
       ))}
       <AddButton onClick={handleAddOption}>

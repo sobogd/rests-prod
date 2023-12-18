@@ -14,9 +14,10 @@ export class CategoriesController {
     try {
       const categories =
         (
-          await client.query("SELECT id, name, sort FROM categories WHERE company_id = $1", [
-            auth.user.companyId,
-          ])
+          await client.query(
+            "SELECT id, name, sort FROM categories WHERE company_id = $1 ORDER BY sort ASC",
+            [auth.user.companyId]
+          )
         )?.rows ?? [];
 
       return categories;
