@@ -3,6 +3,7 @@ import { EPages } from "../../types";
 import { Header } from "../Header/Header";
 import { Home } from "../Home/Home";
 import { image } from "./consts";
+import { sushiandmore } from "./sushiandmore";
 import { Background, Container, Wrapper } from "./styles";
 import { About } from "../About/About";
 import { Menu } from "../Menu/Menu";
@@ -25,7 +26,7 @@ export const Layout: FC<{ page: EPages; data: any }> = ({ data, page }) => {
   return (
     <Container>
       <Header title={data?.title ?? ""} />
-      <Background src={image} />
+      <Background src={data?.login === "sushiandmore" ? sushiandmore : image} />
       <Wrapper>{renderPage}</Wrapper>
     </Container>
   );
