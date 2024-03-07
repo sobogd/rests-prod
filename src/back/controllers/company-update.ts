@@ -8,7 +8,10 @@ export class CompanyUpdateController {
   @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("")
-  public async update(@Body() request: ICompany, @Request() { user }: IAuthRequest): Promise<void> {
+  public async update(
+    @Body() request: ICompany,
+    @Request() { user }: IAuthRequest
+  ): Promise<void> {
     const client = await pool.connect();
 
     try {
@@ -20,8 +23,12 @@ export class CompanyUpdateController {
             email = $4, 
             currency_symbol = $5, 
             lang = $6, 
-            langs = $7 
-        WHERE id = $8`,
+            langs = $7, 
+            address = $8, 
+            instagram = $9, 
+            google_maps_link = $10, 
+            phone = $11
+        WHERE id = $12`,
         [
           request.title,
           request.tin,
@@ -30,6 +37,10 @@ export class CompanyUpdateController {
           request.currency_symbol,
           request.lang,
           JSON.stringify(request.langs),
+          request.address,
+          request.instagram,
+          request.google_maps_link,
+          request.phone,
           user.companyId,
         ]
       );

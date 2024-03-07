@@ -306,6 +306,10 @@ const i18nEn = {
       select: "Additional languages",
       add: "Add language",
     },
+    address: "Address",
+    google_maps_link: "Google Maps link",
+    instagram: "Instagram page login",
+    phone: "Phone number with plus",
   },
 };
 

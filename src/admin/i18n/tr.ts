@@ -306,6 +306,10 @@ const i18nEn = {
       select: "Ek diller",
       add: "Dil ekle",
     },
+    address: "Adres",
+    google_maps_link: "Google Haritalar bağlantısı",
+    instagram: "Instagram sayfasına giriş yap",
+    phone: "Artılı telefon numarası",
   },
 };
 

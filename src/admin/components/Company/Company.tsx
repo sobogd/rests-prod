@@ -23,6 +23,10 @@ interface ICompanyValues {
   email?: string;
   currency_symbol?: string;
   lang?: string;
+  address?: string;
+  phone?: string;
+  google_maps_link?: string;
+  instagram?: string;
   langs?: string[];
 }
 
@@ -44,6 +48,10 @@ export const CompanyForm: React.FC = () => {
         login: data.login ?? "",
         email: data.email ?? "",
         currency_symbol: data.currency_symbol ?? "",
+        address: data.address ?? "",
+        phone: data.phone ?? "",
+        google_maps_link: data.google_maps_link ?? "",
+        instagram: data.instagram ?? "",
         lang: data.lang ?? "",
         langs: data.langs ?? [],
       });
@@ -69,7 +77,23 @@ export const CompanyForm: React.FC = () => {
           <FormikInput label={i18n.t("company.tin")} name="tin" mb />
           <FormikInput label={i18n.t("company.loginPrefix")} name="login" mb />
           <FormikInput label={i18n.t("company.email")} name="email" mb />
-          <FormikInput label={i18n.t("company.currencySymbol")} name="currency_symbol" mb />
+          <FormikInput
+            label={i18n.t("company.currencySymbol")}
+            name="currency_symbol"
+            mb
+          />
+          <FormikInput label={i18n.t("company.address")} name="address" mb />
+          <FormikInput
+            label={i18n.t("company.google_maps_link")}
+            name="google_maps_link"
+            mb
+          />
+          <FormikInput
+            label={i18n.t("company.instagram")}
+            name="instagram"
+            mb
+          />
+          <FormikInput label={i18n.t("company.phone")} name="phone" mb />
           <FormikSelect
             label={i18n.t("company.defaultLanguage")}
             name="lang"
@@ -96,7 +120,9 @@ export const Company: FC = () => {
         const errors: any = {};
         if (!values.email) {
           errors.email = i18n.t("company.emailReq");
-        } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
+        } else if (
+          !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
+        ) {
           errors.email = i18n.t("company.emailInv");
         }
         if (!values.title) {
@@ -117,7 +143,10 @@ export const Company: FC = () => {
         return errors;
       }}
       initialValues={{}}
-      onSubmit={(values: ICompanyValues, { setSubmitting }: FormikHelpers<ICompanyValues>) => {
+      onSubmit={(
+        values: ICompanyValues,
+        { setSubmitting }: FormikHelpers<ICompanyValues>
+      ) => {
         updateCompany({
           id,
           title: values.title ?? "",
@@ -126,6 +155,10 @@ export const Company: FC = () => {
           email: values.email ?? "",
           currency_symbol: values.currency_symbol ?? "",
           lang: values.lang ?? "en",
+          address: values.address ?? "",
+          instagram: values.instagram ?? "",
+          phone: values.phone ?? "",
+          google_maps_link: values.google_maps_link ?? "",
           langs: values.langs ?? [],
         }).then(() => {
           setSubmitting(false);
