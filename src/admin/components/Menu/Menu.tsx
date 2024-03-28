@@ -6,7 +6,7 @@ import { CategoriesList } from "../Categories/CategoriesList";
 import { Company } from "../Company/Company";
 import { DayStats } from "../DayStats/DayStats";
 import { ItemsList } from "../Items/ItemsList";
-import { PeriodStats } from "../PeriodStats/PeriodStats";
+import { Statistics } from "../Statistics/Statistics";
 import { UsersList } from "../Users/UsersList";
 import { Map } from "../Map/Map";
 import { Kitchen } from "../Kitchen";
@@ -28,7 +28,12 @@ import {
   TbToolsKitchen,
   TbUsers,
 } from "react-icons/tb";
-import { backgroundDefault, textDefaultColor, boxShadow, newBorderColor } from "../../styles";
+import {
+  backgroundDefault,
+  textDefaultColor,
+  boxShadow,
+  newBorderColor,
+} from "../../styles";
 
 export enum EPages {
   LOGIN = "LOGIN",
@@ -119,7 +124,7 @@ export const CMenuItems: {
   {
     id: EPages.PERIOD,
     permissions: ["admin"],
-    component: <PeriodStats />,
+    component: <Statistics />,
     icon: <TbChartHistogram />,
     group: "stats",
   },
@@ -342,7 +347,9 @@ export function MenuProvider({ children }: { children: any }) {
               </span>
               <div>
                 <TbBuildingSkyscraper onClick={() => handleGoCompany()} />
-                <span onClick={() => handleGoCompany()}>{whoami?.company?.title}</span>
+                <span onClick={() => handleGoCompany()}>
+                  {whoami?.company?.title}
+                </span>
                 <p onClick={() => handleGoCompany()}>{whoami?.user?.name}</p>
               </div>
               <span
@@ -362,7 +369,9 @@ export function MenuProvider({ children }: { children: any }) {
               }}
             >
               <ul>
-                <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>{whoami?.company?.lang}</li>
+                <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>
+                  {whoami?.company?.lang}
+                </li>
                 {whoami?.company?.langs?.map((lang) => (
                   <li onClick={() => i18n.changeLanguage(lang)} key={lang}>
                     {lang}
