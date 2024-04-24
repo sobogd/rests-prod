@@ -4,9 +4,8 @@ import styled from "@emotion/styled";
 import { TbCash, TbLogout } from "react-icons/tb";
 import { CategoriesList } from "../Categories/CategoriesList";
 import { Company } from "../Company/Company";
-import { DayStats } from "../DayStats/DayStats";
 import { ItemsList } from "../Items/ItemsList";
-import { Statistics } from "../Statistics/Statistics";
+import { Stats } from "../Stats/Stats";
 import { UsersList } from "../Users/UsersList";
 import { Map } from "../Map/Map";
 import { Kitchen } from "../Kitchen";
@@ -19,8 +18,6 @@ import { EUserTypes } from "../../../back/types";
 import {
   TbBasket,
   TbBuildingSkyscraper,
-  TbCalculator,
-  TbChartDonut,
   TbChartHistogram,
   TbLayoutList,
   TbMap,
@@ -45,8 +42,7 @@ export enum EPages {
   POSITIONS = "POSITIONS",
   USERS = "USERS",
   BILLING = "BILLING",
-  DAY_STATS = "DAY_STATS",
-  PERIOD = "PERIOD",
+  STATS = "STATS",
   METHODS = "METHODS",
 }
 
@@ -115,16 +111,9 @@ export const CMenuItems: {
     group: "work",
   },
   {
-    id: EPages.DAY_STATS,
-    permissions: ["manager", "kitchen", "admin", "personal"],
-    component: <DayStats />,
-    icon: <TbChartDonut />,
-    group: "stats",
-  },
-  {
-    id: EPages.PERIOD,
+    id: EPages.STATS,
     permissions: ["admin"],
-    component: <Statistics />,
+    component: <Stats />,
     icon: <TbChartHistogram />,
     group: "stats",
   },

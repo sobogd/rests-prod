@@ -2,7 +2,7 @@ import { IPeriodStats } from "../../../back/controllers/period-stats";
 import { IOrder } from "../../../back/types";
 import { API } from "../../api";
 
-const periodApi = API.injectEndpoints({
+const statsApi = API.injectEndpoints({
   endpoints: (b) => ({
     periodStats: b.query<IOrder[], { dayStart: string; dayEnd: string }>({
       query: (body) => ({
@@ -11,8 +11,15 @@ const periodApi = API.injectEndpoints({
         body,
       }),
     }),
+    orderReturn: b.mutation<any, { id: number }>({
+      query: ({ id }) => ({
+        url: `order-return`,
+        method: "POST",
+        body: { id },
+      }),
+    }),
   }),
   overrideExisting: false,
 });
 
-export const { useLazyPeriodStatsQuery } = periodApi;
+export const { useLazyPeriodStatsQuery, useOrderReturnMutation } = statsApi;

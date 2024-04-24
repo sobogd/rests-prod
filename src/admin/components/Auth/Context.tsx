@@ -1,5 +1,9 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useAuthByCompanyLoginAndPasswordMutation, useAuthByHashMutation, useLazyWhoamiQuery } from "./api";
+import {
+  useAuthByCompanyLoginAndPasswordMutation,
+  useAuthByHashMutation,
+  useLazyWhoamiQuery,
+} from "./api";
 import Loading from "../loading";
 import { IWhoAmI } from "../../../back/types";
 import { useTranslation } from "react-i18next";
@@ -11,7 +15,7 @@ export const getDefaultPageByRole = (role: string): EPages => {
     case "kitchen":
       return EPages.KITCHEN;
     case "admin":
-      return EPages.DAY_STATS;
+      return EPages.STATS;
     default:
       return EPages.ORDERS;
   }
@@ -43,9 +47,11 @@ export const useAuth = (): {
 function useProvideAuth() {
   const [activePage, setActivePage] = useState<EPages>(EPages.LOGIN);
 
-  const [whoami, { data: whoamiData, isFetching, isLoading }] = useLazyWhoamiQuery();
+  const [whoami, { data: whoamiData, isFetching, isLoading }] =
+    useLazyWhoamiQuery();
 
-  const [auth, { isLoading: isAuthLoading }] = useAuthByCompanyLoginAndPasswordMutation();
+  const [auth, { isLoading: isAuthLoading }] =
+    useAuthByCompanyLoginAndPasswordMutation();
   const [hashAuth, { isLoading: isAuthHashLoading }] = useAuthByHashMutation();
 
   const { i18n } = useTranslation();
@@ -55,7 +61,13 @@ function useProvideAuth() {
     setActivePage(EPages.LOGIN);
   };
 
-  const login = ({ login, password }: { login?: string; password?: string }) => {
+  const login = ({
+    login,
+    password,
+  }: {
+    login?: string;
+    password?: string;
+  }) => {
     const hash = localStorage.getItem("loginHash");
     if (login && password) {
       auth({ login, password }).then((res: any) => {

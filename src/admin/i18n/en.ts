@@ -14,8 +14,6 @@ const i18nEn = {
       CASH_REPORT_HISTORY: "Cash history",
       STATS: "Statistics",
       BILLING: "Billing",
-      DAY_STATS: "Orders for day",
-      PERIOD: "Orders for period",
       METHODS: "Payment methods",
       logout: "Log out",
       fullscreen: "Fullscreen mode",
@@ -310,6 +308,25 @@ const i18nEn = {
     google_maps_link: "Google Maps link",
     instagram: "Instagram page login",
     phone: "Phone number with plus",
+  },
+  newStats: {
+    chart: {
+      title: "Detailed statistics for the period",
+      subtitle: "Click on a day to view detailed daily statistics",
+      description:
+        "Pull left or right to view statistics for the selected period",
+    },
+    dayPayments: {
+      title: "Payments",
+      subtitle: "Statistics on payment methods",
+      allPeriod: "All period",
+      onlyDay: "Day",
+    },
+    dayDetails: {
+      title: "Orders",
+      subtitle: "Statistics on orders",
+      return: "Return order",
+    },
   },
 };
 

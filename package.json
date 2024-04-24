@@ -88,7 +88,7 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.8.2",
     "react-svg": "^16.1.29",
-    "recharts": "^2.5.0",
+    "recharts": "^2.12.6",
     "request": "^2.88.2",
     "shortid": "^2.2.16",
     "swagger-ui-express": "^4.6.0",
