@@ -1,5 +1,5 @@
 import { Request, Route, Security, Response, Post, Body } from "tsoa";
-import type { IAuthRequest } from "../types";
+import type { IAuthRequest, IOrder } from "../types";
 import pool from "../db";
 import { getUTCTimestamp } from "../../admin/utils/getUTCTimestamp";
 import getSummForOrder from "../../utils/getSummForOrder";
@@ -19,7 +19,7 @@ export class PeriodStatsController {
   public async periodStats(
     @Body() { dayStart, dayEnd }: { dayStart: string; dayEnd: string },
     @Request() auth: IAuthRequest
-  ): Promise<IPeriodStats> {
+  ): Promise<IOrder[]> {
     const client = await pool.connect();
 
     const startDayMs = getUTCTimestamp(dayStart);
@@ -34,30 +34,7 @@ export class PeriodStatsController {
           )
         )?.rows ?? [];
 
-      const ordersSummary = orders.map((order) => {
-        return {
-          summ: getSummForOrder(order.p, order.d).summWithDiscount ?? "No payment method",
-          paymentMethod: order.m,
-        };
-      });
-
-      const summaryByPaymentMethodObject: any = {};
-
-      ordersSummary.forEach((summary) => {
-        summaryByPaymentMethodObject[summary.paymentMethod] = {
-          summ: (summaryByPaymentMethodObject[summary.paymentMethod]?.summ ?? 0) + (summary.summ ?? 0),
-          paymentMethod: summary.paymentMethod,
-        };
-      });
-
-      const summaryByPaymentMethods: any = Object.values(summaryByPaymentMethodObject);
-
-      const total = summaryByPaymentMethods.reduce(
-        (total: any, summary: any) => total + (summary?.summ ?? 0),
-        0
-      );
-
-      return { count: orders.length, summary: summaryByPaymentMethods, total: total };
+      return orders;
     } finally {
       client.release();
     }

@@ -1,16 +1,22 @@
 import React from "react";
 import styled from "@emotion/styled";
-import { backgroundDefault, textDefaultColor } from "../styles";
+import {
+  backgroundDefault,
+  black1,
+  blackText1,
+  textDefaultColor,
+} from "../styles";
 
 export const LoadingContainer = styled.div<{
   isLoading: boolean;
+  isDark?: boolean;
 }>`
   position: fixed;
   width: 100vw;
   height: 100vh;
   top: 0;
   left: 0;
-  background: ${backgroundDefault};
+  background: ${(p) => (p.isDark ? black1 : backgroundDefault)};
   z-index: 9999;
   transition: none;
   display: flex;
@@ -27,15 +33,29 @@ export const LoadingContainer = styled.div<{
   }
 `;
 
-const Loading: React.FC<{ isLoading: boolean }> = ({ isLoading }) => {
+const Loading: React.FC<{ isLoading: boolean; isDark?: boolean }> = ({
+  isLoading,
+  isDark,
+}) => {
   return (
-    <LoadingContainer isLoading={isLoading} className="loading">
-      <div className="background" style={{ background: backgroundDefault }}>
+    <LoadingContainer isLoading={isLoading} isDark={isDark} className="loading">
+      <div
+        className="background"
+        style={{ background: isDark ? black1 : backgroundDefault }}
+      >
         <div className="lds-ellipsis">
-          <div style={{ background: textDefaultColor }}></div>
-          <div style={{ background: textDefaultColor }}></div>
-          <div style={{ background: textDefaultColor }}></div>
-          <div style={{ background: textDefaultColor }}></div>
+          <div
+            style={{ background: isDark ? blackText1 : textDefaultColor }}
+          ></div>
+          <div
+            style={{ background: isDark ? blackText1 : textDefaultColor }}
+          ></div>
+          <div
+            style={{ background: isDark ? blackText1 : textDefaultColor }}
+          ></div>
+          <div
+            style={{ background: isDark ? blackText1 : textDefaultColor }}
+          ></div>
         </div>
       </div>
     </LoadingContainer>

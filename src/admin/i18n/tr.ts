@@ -14,7 +14,6 @@ const i18nEn = {
       CASH_REPORT_HISTORY: "Nakit geçmişi",
       STATS: "İstatistikler",
       BILLING: "Faturalandırma",
-      DAY_STATS: "Günlük siparişler",
       PERIOD: "Dönem siparişleri",
       METHODS: "Ödeme yöntemleri",
       logout: "Oturumu kapat",
@@ -310,6 +309,25 @@ const i18nEn = {
     google_maps_link: "Google Haritalar bağlantısı",
     instagram: "Instagram sayfasına giriş yap",
     phone: "Artılı telefon numarası",
+  },
+  newStats: {
+    chart: {
+      title: "Detailed statistics for the period",
+      subtitle: "Click on a day to view detailed daily statistics",
+      description:
+        "Pull left or right to view statistics for the selected period",
+    },
+    dayPayments: {
+      title: "Payments",
+      subtitle: "Statistics on payment methods",
+      allPeriod: "All period",
+      onlyDay: "Day",
+    },
+    dayDetails: {
+      title: "Orders",
+      subtitle: "Statistics on orders",
+      return: "Return order",
+    },
   },
 };
 

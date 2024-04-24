@@ -580,44 +580,6 @@
 				"type": "object",
 				"additionalProperties": false
 			},
-			"IPeriodStats": {
-				"properties": {
-					"count": {
-						"type": "number",
-						"format": "double"
-					},
-					"summary": {
-						"items": {
-							"properties": {
-								"paymentMethod": {
-									"type": "string"
-								},
-								"summ": {
-									"type": "number",
-									"format": "double"
-								}
-							},
-							"required": [
-								"paymentMethod",
-								"summ"
-							],
-							"type": "object"
-						},
-						"type": "array"
-					},
-					"total": {
-						"type": "number",
-						"format": "double"
-					}
-				},
-				"required": [
-					"count",
-					"summary",
-					"total"
-				],
-				"type": "object",
-				"additionalProperties": false
-			},
 			"IPublicResponse": {
 				"properties": {
 					"id": {
@@ -2599,7 +2561,10 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"$ref": "#/components/schemas/IPeriodStats"
+									"items": {
+										"$ref": "#/components/schemas/IOrder"
+									},
+									"type": "array"
 								}
 							}
 						}

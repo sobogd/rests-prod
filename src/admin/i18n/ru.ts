@@ -14,7 +14,6 @@ const i18nRu = {
       CASH_REPORT_HISTORY: "История отчетов",
       STATS: "Статистика",
       BILLING: "Баланс",
-      DAY_STATS: "Заказы за день",
       PERIOD: "Заказы за период",
       METHODS: "Методы оплаты",
       logout: "Выйти",
@@ -312,6 +311,25 @@ const i18nRu = {
     google_maps_link: "Ссылка в Google Maps",
     instagram: "Логин в Instagram",
     phone: "Номер телефона с плюсом",
+  },
+  newStats: {
+    chart: {
+      title: "Detailed statistics for the period",
+      subtitle: "Click on a day to view detailed daily statistics",
+      description:
+        "Pull left or right to view statistics for the selected period",
+    },
+    dayPayments: {
+      title: "Payments",
+      subtitle: "Statistics on payment methods",
+      allPeriod: "All period",
+      onlyDay: "Day",
+    },
+    dayDetails: {
+      title: "Orders",
+      subtitle: "Statistics on orders",
+      return: "Return order",
+    },
   },
 };
 

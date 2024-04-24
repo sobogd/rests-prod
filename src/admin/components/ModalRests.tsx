@@ -15,7 +15,13 @@ import {
 import { AiOutlineClose } from "react-icons/ai";
 import Loading from "./loading";
 import { useMenu } from "../components/Menu/Menu";
-import { boxShadowRight, textDefaultColor, backgroundDefault, boxShadow, newBorderColor } from "../styles";
+import {
+  boxShadowRight,
+  textDefaultColor,
+  backgroundDefault,
+  boxShadow,
+  newBorderColor,
+} from "../styles";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "./Auth/Context";
 
@@ -25,10 +31,11 @@ const ModalRestsDiv = styled.div<{
   isOpenAdditional?: boolean;
   isAdditionalForAdditional?: boolean;
   isFullScreen?: boolean;
+  background?: string;
 }>`
   position: absolute;
   z-index: 200;
-  background: white;
+  background: ${({ background }) => background ?? "white"};
   display: flex;
   flex-direction: column;
   width: 100% ${({ isFullScreen }) => (isFullScreen ? "!important" : null)};
@@ -38,7 +45,8 @@ const ModalRestsDiv = styled.div<{
   top: 0;
   overflow: hidden;
   transition: 0.3s;
-  right: ${({ isShow }) => (isShow === undefined || isShow === true ? "0" : "-100%")};
+  right: ${({ isShow }) =>
+    isShow === undefined || isShow === true ? "0" : "-100%"};
   .loading {
     position: absolute;
     width: 100%;
@@ -48,7 +56,12 @@ const ModalRestsDiv = styled.div<{
   }
   @media (min-width: 1000px) {
     box-shadow: ${boxShadowRight};
-    width: ${({ isGeneral, isShow, isOpenAdditional, isAdditionalForAdditional }) => {
+    width: ${({
+      isGeneral,
+      isShow,
+      isOpenAdditional,
+      isAdditionalForAdditional,
+    }) => {
       if (isAdditionalForAdditional) {
         return "100%";
       }
@@ -63,7 +76,12 @@ const ModalRestsDiv = styled.div<{
         }
       }
     }};
-    left: ${({ isGeneral, isShow, isAdditionalForAdditional, isFullScreen }) => {
+    left: ${({
+      isGeneral,
+      isShow,
+      isAdditionalForAdditional,
+      isFullScreen,
+    }) => {
       if (isFullScreen) {
         return "0";
       }
@@ -324,7 +342,11 @@ export const ModalRests: FC<{
   description?: string;
   moreTitle?: string;
   footerButton?: { title: any; onClick?: () => void; isSubmit?: boolean };
-  footerSticks?: { icon: IFooterStickType; iconColor?: string; onClick?: () => void }[];
+  footerSticks?: {
+    icon: IFooterStickType;
+    iconColor?: string;
+    onClick?: () => void;
+  }[];
   moreButtons?: ({ title: string; onClick: () => void } | null)[];
   withPadding?: boolean;
   children?: any;
@@ -335,6 +357,7 @@ export const ModalRests: FC<{
   isAdditionalForAdditional?: boolean;
   isFullScreen?: boolean;
   isHaveLangs?: boolean;
+  background?: string;
 }> = ({
   onClose,
   onBack,
@@ -352,6 +375,7 @@ export const ModalRests: FC<{
   isAdditionalForAdditional,
   isFullScreen,
   isHaveLangs,
+  background,
 }) => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isOpenLang, setIsOpenLang] = useState<boolean>(false);
@@ -366,6 +390,7 @@ export const ModalRests: FC<{
       isAdditionalForAdditional={isAdditionalForAdditional}
       isOpenAdditional={isOpenAdditional}
       isFullScreen={isFullScreen}
+      background={background}
     >
       <ModalRestsHeader>
         {onBack ? (
@@ -392,7 +417,9 @@ export const ModalRests: FC<{
             }}
           >
             <ul>
-              <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>{whoami?.company?.lang}</li>
+              <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>
+                {whoami?.company?.lang}
+              </li>
               {whoami?.company?.langs?.map((lang) => (
                 <li onClick={() => i18n.changeLanguage(lang)} key={lang}>
                   {lang}
@@ -402,7 +429,9 @@ export const ModalRests: FC<{
           </MenuRestsHeaderLangs>
         ) : null}
         {isHaveLangs ? (
-          <ModalRestsHeaderMore onClick={() => setIsOpenLang(true)}>{i18n.language}</ModalRestsHeaderMore>
+          <ModalRestsHeaderMore onClick={() => setIsOpenLang(true)}>
+            {i18n.language}
+          </ModalRestsHeaderMore>
         ) : null}
         {onClose ? (
           <ModalRestsHeaderMore onClick={onClose}>
@@ -419,6 +448,7 @@ export const ModalRests: FC<{
         style={{
           padding: withPadding ? "15px" : undefined,
           paddingBottom: footerSticks?.length ? "65px" : undefined,
+          background,
         }}
       >
         {children}
@@ -456,7 +486,10 @@ export const ModalRests: FC<{
       {footerSticks?.length ? (
         <ModalRestsFooterSticks>
           {footerSticks.map((footerStick) => (
-            <ModalRestsFooterStick onClick={footerStick.onClick} iconColor={footerStick.iconColor}>
+            <ModalRestsFooterStick
+              onClick={footerStick.onClick}
+              iconColor={footerStick.iconColor}
+            >
               {getIconForFooterStick(footerStick.icon)}
             </ModalRestsFooterStick>
           ))}

@@ -38,11 +38,17 @@ interface Props {
   selectedCategoryId: number | null | undefined;
 }
 
-const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch }) => {
+const CategoryFormComponent: FC<Props> = ({
+  onBack,
+  selectedCategoryId,
+  refetch,
+}) => {
   const i18n = useTranslation();
   const { setValues, resetForm } = useFormikContext();
-  const [loadCategory, { data, isLoading, isFetching }] = useLazyCategoryQuery();
-  const [deleteCategory, { isLoading: isDeleting }] = useDeleteCategoryMutation();
+  const [loadCategory, { data, isLoading, isFetching }] =
+    useLazyCategoryQuery();
+  const [deleteCategory, { isLoading: isDeleting }] =
+    useDeleteCategoryMutation();
   const { data: categories } = useCategoriesQuery();
 
   const getLastSortNumber = () => (categories?.at(-1)?.sort ?? 10) + 1;
@@ -52,7 +58,6 @@ const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch 
       if (selectedCategoryId) {
         loadCategory(selectedCategoryId);
       } else {
-        console.log(getLastSortNumber());
         setValues({ ...defaultValues, sort: getLastSortNumber() });
       }
     }
@@ -67,7 +72,6 @@ const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch 
         translations: data.translations ?? [],
       });
     } else {
-      console.log(getLastSortNumber());
       setValues({ ...defaultValues, sort: getLastSortNumber() });
     }
   }, [data]);
@@ -75,7 +79,11 @@ const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch 
   return (
     <Form>
       <ModalRests
-        title={selectedCategoryId === null ? i18n.t("categories.form.new") : i18n.t("categories.form.edit")}
+        title={
+          selectedCategoryId === null
+            ? i18n.t("categories.form.new")
+            : i18n.t("categories.form.edit")
+        }
         onBack={onBack}
         footerSticks={[{ icon: "save" }]}
         isShow={selectedCategoryId !== undefined ? true : false}
@@ -108,8 +116,10 @@ const CategoryFormComponent: FC<Props> = ({ onBack, selectedCategoryId, refetch 
 
 export const CategoryForm: FC<Props> = (props) => {
   const { t } = useTranslation();
-  const [createCategory, { isLoading: isCreating }] = useCreateCategoryMutation();
-  const [updateCategory, { isLoading: isUpdating }] = useUpdateCategoryMutation();
+  const [createCategory, { isLoading: isCreating }] =
+    useCreateCategoryMutation();
+  const [updateCategory, { isLoading: isUpdating }] =
+    useUpdateCategoryMutation();
 
   return (
     <Formik
@@ -118,19 +128,26 @@ export const CategoryForm: FC<Props> = (props) => {
       validate={(values) => {
         const errors: any = {};
         if (!values.name) errors.name = t("categories.form.nameReq");
-        if (!values.description) errors.description = t("categories.form.descriptionReq");
+        if (!values.description)
+          errors.description = t("categories.form.descriptionReq");
         if (!values.sort) errors.sort = t("categories.form.sortReq");
         return errors;
       }}
       initialValues={{}}
-      onSubmit={(values: Values, { setSubmitting, resetForm, setValues }: FormikHelpers<Values>) => {
-        const method = !props.selectedCategoryId ? createCategory : updateCategory;
+      onSubmit={(
+        values: Values,
+        { setSubmitting, resetForm, setValues }: FormikHelpers<Values>
+      ) => {
+        const method = !props.selectedCategoryId
+          ? createCategory
+          : updateCategory;
         method({
           id: props.selectedCategoryId || undefined,
           name: values?.name ?? "",
           description: values?.description,
           sort: values?.sort ?? 100,
-          translations: values?.translations?.map((i) => ({ ...i, id: undefined })) ?? [],
+          translations:
+            values?.translations?.map((i) => ({ ...i, id: undefined })) ?? [],
         }).then((res) => {
           // @ts-expect-error
           if (!!res.error) {

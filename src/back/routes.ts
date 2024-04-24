@@ -278,16 +278,6 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-    "IPeriodStats": {
-        "dataType": "refObject",
-        "properties": {
-            "count": {"dataType":"double","required":true},
-            "summary": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"paymentMethod":{"dataType":"string","required":true},"summ":{"dataType":"double","required":true}}},"required":true},
-            "total": {"dataType":"double","required":true},
-        },
-        "additionalProperties": false,
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IPublicResponse": {
         "dataType": "refObject",
         "properties": {

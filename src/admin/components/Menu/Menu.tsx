@@ -4,9 +4,8 @@ import styled from "@emotion/styled";
 import { TbCash, TbLogout } from "react-icons/tb";
 import { CategoriesList } from "../Categories/CategoriesList";
 import { Company } from "../Company/Company";
-import { DayStats } from "../DayStats/DayStats";
 import { ItemsList } from "../Items/ItemsList";
-import { PeriodStats } from "../PeriodStats/PeriodStats";
+import { Stats } from "../Stats/Stats";
 import { UsersList } from "../Users/UsersList";
 import { Map } from "../Map/Map";
 import { Kitchen } from "../Kitchen";
@@ -19,8 +18,6 @@ import { EUserTypes } from "../../../back/types";
 import {
   TbBasket,
   TbBuildingSkyscraper,
-  TbCalculator,
-  TbChartDonut,
   TbChartHistogram,
   TbLayoutList,
   TbMap,
@@ -28,7 +25,12 @@ import {
   TbToolsKitchen,
   TbUsers,
 } from "react-icons/tb";
-import { backgroundDefault, textDefaultColor, boxShadow, newBorderColor } from "../../styles";
+import {
+  backgroundDefault,
+  textDefaultColor,
+  boxShadow,
+  newBorderColor,
+} from "../../styles";
 
 export enum EPages {
   LOGIN = "LOGIN",
@@ -40,8 +42,7 @@ export enum EPages {
   POSITIONS = "POSITIONS",
   USERS = "USERS",
   BILLING = "BILLING",
-  DAY_STATS = "DAY_STATS",
-  PERIOD = "PERIOD",
+  STATS = "STATS",
   METHODS = "METHODS",
 }
 
@@ -110,16 +111,9 @@ export const CMenuItems: {
     group: "work",
   },
   {
-    id: EPages.DAY_STATS,
-    permissions: ["manager", "kitchen", "admin", "personal"],
-    component: <DayStats />,
-    icon: <TbChartDonut />,
-    group: "stats",
-  },
-  {
-    id: EPages.PERIOD,
+    id: EPages.STATS,
     permissions: ["admin"],
-    component: <PeriodStats />,
+    component: <Stats />,
     icon: <TbChartHistogram />,
     group: "stats",
   },
@@ -342,7 +336,9 @@ export function MenuProvider({ children }: { children: any }) {
               </span>
               <div>
                 <TbBuildingSkyscraper onClick={() => handleGoCompany()} />
-                <span onClick={() => handleGoCompany()}>{whoami?.company?.title}</span>
+                <span onClick={() => handleGoCompany()}>
+                  {whoami?.company?.title}
+                </span>
                 <p onClick={() => handleGoCompany()}>{whoami?.user?.name}</p>
               </div>
               <span
@@ -362,7 +358,9 @@ export function MenuProvider({ children }: { children: any }) {
               }}
             >
               <ul>
-                <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>{whoami?.company?.lang}</li>
+                <li onClick={() => i18n.changeLanguage(whoami?.company?.lang)}>
+                  {whoami?.company?.lang}
+                </li>
                 {whoami?.company?.langs?.map((lang) => (
                   <li onClick={() => i18n.changeLanguage(lang)} key={lang}>
                     {lang}
