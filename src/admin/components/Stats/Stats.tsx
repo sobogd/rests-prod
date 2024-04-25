@@ -21,9 +21,11 @@ import {
   StatisticSummaryCardValue,
 } from "./styled";
 import { StatsChart } from "./StatsChart";
-import { StatsDayPayments } from "./StatsDayPayments";
-import { StatsDayDetails } from "./StatsDayDetails";
+import { StatsPayments } from "./StatsPayments";
+import { StatsDetails } from "./StatsDetails";
 import { useOrderReturnMutation } from "./api";
+import { StatsProducts } from "./StatsProducts";
+import { StatsCookingTime } from "./StatsCookingTime";
 
 const getInitialDates = (): { startDate: Date; endDate: Date } => {
   const startDate = new Date();
@@ -188,11 +190,21 @@ export const Stats = () => {
             setSelectedDay={setSelectedDay}
           />
           <StatsHorisGrid>
-            <StatsDayPayments
+            <StatsPayments
               selectedDay={selectedDay}
               ordersByDays={ordersByDays}
             />
-            <StatsDayDetails
+            <StatsCookingTime
+              selectedDay={selectedDay}
+              ordersByDays={ordersByDays}
+            />
+          </StatsHorisGrid>
+          <StatsHorisGrid>
+            <StatsProducts
+              selectedDay={selectedDay}
+              ordersByDays={ordersByDays}
+            />
+            <StatsDetails
               selectedDay={selectedDay}
               onReturn={orderReturnHandler}
             />

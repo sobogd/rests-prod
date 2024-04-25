@@ -12,10 +12,14 @@ export const OrdersForTableModal: FC<{
   tableId: number | undefined;
 }> = ({ tableId, setTableId }) => {
   const i18n = useTranslation();
-  const [orderNumber, setOrderNumber] = useState<number | null | undefined>(undefined);
+  const [orderNumber, setOrderNumber] = useState<number | null | undefined>(
+    undefined
+  );
 
-  const [getOrdersForTable, { isLoading: isLoadingOrders, isFetching: isFetchingOrders, data: orders }] =
-    useLazyListOrdersForTableQuery();
+  const [
+    getOrdersForTable,
+    { isLoading: isLoadingOrders, isFetching: isFetchingOrders, data: orders },
+  ] = useLazyListOrdersForTableQuery();
 
   useEffect(() => {
     if (orderNumber === undefined && tableId !== undefined) {
@@ -51,7 +55,10 @@ export const OrdersForTableModal: FC<{
         {!orders?.length ? (
           <NoData pt text={i18n.t("orders.emptyOrders")} />
         ) : (
-          <OrdersForTableModalList orders={orders} setOrderNumber={setOrderNumber} />
+          <OrdersForTableModalList
+            orders={orders}
+            setOrderNumber={setOrderNumber}
+          />
         )}
       </ModalRests>
     </>

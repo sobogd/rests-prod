@@ -9,14 +9,20 @@ const ordersApi = API.injectEndpoints({
     listPositionsByCategories: b.query<IAllPositionsForKitchen[], void>({
       query: () => `k/list-positions-by-categories`,
     }),
-    donePosition: b.mutation<void, { orderNumber: number; positionIndex: number }>({
-      query: ({ orderNumber, positionIndex }) => ({
+    donePosition: b.mutation<
+      void,
+      { orderNumber: number; positionIndex: number; doneTime: number }
+    >({
+      query: ({ orderNumber, positionIndex, doneTime }) => ({
         url: `k/done-position`,
         method: "POST",
-        body: { orderNumber, positionIndex },
+        body: { orderNumber, positionIndex, doneTime },
       }),
     }),
-    restartPosition: b.mutation<void, { orderNumber: number; positionIndex: number }>({
+    restartPosition: b.mutation<
+      void,
+      { orderNumber: number; positionIndex: number }
+    >({
       query: ({ orderNumber, positionIndex }) => ({
         url: `k/restart-position`,
         method: "POST",

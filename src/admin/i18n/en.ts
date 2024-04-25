@@ -319,13 +319,25 @@ const i18nEn = {
     dayPayments: {
       title: "Payments",
       subtitle: "Statistics on payment methods",
-      allPeriod: "All period",
-      onlyDay: "Day",
+      allPeriod: "For all period",
+      onlyDay: "For day",
+    },
+    cookingTime: {
+      title: "Cooking time",
+      subtitle: "Average cooking time by categories",
+      allPeriod: "For all period",
+      onlyDay: "For day",
     },
     dayDetails: {
       title: "Orders",
       subtitle: "Statistics on orders",
       return: "Return order",
+    },
+    dayProducts: {
+      title: "Menu items",
+      subtitle: "Statistics on menu items",
+      allPeriod: "For all period",
+      onlyDay: "For day",
     },
   },
 };

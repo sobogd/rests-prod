@@ -23,6 +23,7 @@ import { getTimeFromUTCTimeStamp } from "../../utils/getUTCTimestamp";
 import getSummForOrder from "../../../utils/getSummForOrder";
 import { useAllTablesQuery } from "../Orders/api";
 import { useAuth } from "../Auth/Context";
+import { dateHHmm } from "../../utils/timeInFormat";
 
 type Props = {
   selectedDay?: DayWithOrders;
@@ -50,7 +51,6 @@ const Title = styled.div`
 const SubTitle = styled.div`
   color: ${blackText2};
   font-size: 16px;
-  margin-bottom: 20px;
 `;
 
 const List = styled.div`
@@ -62,6 +62,11 @@ const List = styled.div`
   max-height: 570px;
   padding-bottom: 30px;
   gap: 30px;
+  margin-top: 20px;
+  @media (max-width: 750px) {
+    max-height: 100%;
+    overflow-y: hidden;
+  },
 `;
 
 const Item = styled.div`
@@ -101,14 +106,6 @@ const Tab = styled.div`
   }
 `;
 
-const TabTime = styled(Tab)`
-  background: ${tab2};
-`;
-
-const TabNumber = styled(Tab)`
-  background: ${tab1};
-`;
-
 const ItemProducts = styled.div`
   display: flex;
   flex-direction: column;
@@ -140,12 +137,12 @@ const Return = styled.div`
   }
 `;
 
-export const StatsDayDetails = memo((props: Props) => {
+export const StatsDetails = memo((props: Props) => {
   const { selectedDay, onReturn } = props;
 
   const { t } = useTranslation();
 
-  const { data: tables, isFetching, isLoading } = useAllTablesQuery();
+  const { data: tables } = useAllTablesQuery();
 
   const symbol = useAuth()?.whoami?.company?.symbol;
 
@@ -162,10 +159,10 @@ export const StatsDayDetails = memo((props: Props) => {
           return (
             <Item key={`cell-${order.n}`}>
               <Tabs>
-                <TabNumber>
+                <Tab>
                   <TbNumber /> {order.n}
-                </TabNumber>
-                <TabTime>{getTimeFromUTCTimeStamp(order.crt ?? 0)}</TabTime>
+                </Tab>
+                <Tab>{dateHHmm(order.crt)}</Tab>
                 <Tab>
                   <TbMap />
                   <span>

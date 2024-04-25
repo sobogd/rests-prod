@@ -112,7 +112,7 @@ export const CMenuItems: {
   },
   {
     id: EPages.STATS,
-    permissions: ["admin"],
+    permissions: ["manager", "admin", "personal"],
     component: <Stats />,
     icon: <TbChartHistogram />,
     group: "stats",

@@ -2,13 +2,13 @@ import styled from "@emotion/styled";
 import i18n from "../i18n";
 import { getPositionPriceWithDiscount } from "./getPositionPriceWithDiscount";
 import { IPositionForOrder } from "../../back/types";
-import { utcToZonedTime } from "date-fns-tz";
 import { newPallet } from "../styles";
+import { dateDiffNowHHmm } from "./timeInFormat";
 
 const PosForOrderTitle = styled.div`
   display: flex;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: space-between;
   gap: 5px;
   width: 100%;
 `;
@@ -39,19 +39,22 @@ export const getPositionTitleForList = (
   symbol: string | undefined,
   type?: "time" | "price"
 ) => {
-  const discountInPercent = !position.d || position.d <= 0 ? discountForOrder ?? 0 : position.d ?? 0;
+  const discountInPercent =
+    !position.d || position.d <= 0 ? discountForOrder ?? 0 : position.d ?? 0;
   let langName = position?.t?.find((t) => t.l === i18n.language)?.t;
   if (!langName || langName === "") {
     langName = position.n;
   }
-  const utcTime = Number(utcToZonedTime(new Date(), "UTC").valueOf());
+
   return (
     <PosForOrderTitle>
       <PosForOrderTitleName>{langName}</PosForOrderTitleName>
       {type === "price" ? (
         <>
           {discountInPercent && Number(position.p) !== 0 ? (
-            <PosForOrderTitleDiscount>-{Math.round(discountInPercent)}%</PosForOrderTitleDiscount>
+            <PosForOrderTitleDiscount>
+              -{Math.round(discountInPercent)}%
+            </PosForOrderTitleDiscount>
           ) : null}
           <PosForOrderPricesDiscount>
             {getPositionPriceWithDiscount(position, discountInPercent)}
@@ -61,7 +64,7 @@ export const getPositionTitleForList = (
       ) : null}
       {type === "time" ? (
         <PosForOrderPricesDiscount>
-          {Math.round((utcTime - Number(position.crt)) / 60000)} min
+          {dateDiffNowHHmm(position.crt)}
         </PosForOrderPricesDiscount>
       ) : null}
     </PosForOrderTitle>
