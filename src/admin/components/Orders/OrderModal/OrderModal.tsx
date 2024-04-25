@@ -2,7 +2,6 @@ import { FC, useEffect, useMemo, useState } from "react";
 import { OrderPositionModal } from "../OrderPositionModal/OrderPositionModal";
 import { useTranslation } from "react-i18next";
 import { OrderModalList } from "./OrderModalList";
-import { utcToZonedTime } from "date-fns-tz";
 import { OrderModalDiscountForOrder } from "./OrderModalDiscountForOrder";
 import { OrderModalSplitting } from "./OrderModalSplitting";
 import { OrderModalComment } from "./OrderModalComment";
@@ -20,6 +19,7 @@ import {
 import NoData from "../../NoData";
 import { IPositionForOrder } from "../../../../back/types";
 import { OrderModalRemoving } from "./OrderModalRemoving";
+import { dateMs } from "../../../utils/timeInFormat";
 
 export const OrderModal: FC<{
   setOrderNumber: (orderId: number | null | undefined) => void;
@@ -28,10 +28,15 @@ export const OrderModal: FC<{
   setTableId: (tableId: number | undefined) => void;
 }> = ({ orderNumber, setOrderNumber, tableId, setTableId }) => {
   const i18n = useTranslation();
-  const [selectedPosition, setSelectedPosition] = useState<IPositionForOrder | null | undefined>(undefined);
+  const [selectedPosition, setSelectedPosition] = useState<
+    IPositionForOrder | null | undefined
+  >(undefined);
   const [positions, setPositions] = useState<IPositionForOrder[]>([]);
-  const [discountForOrder, setDiscountForOrder] = useState<number | null | undefined>(undefined);
-  const [isOpenDiscountForOrder, setIsOpenDiscountForOrder] = useState<boolean>(false);
+  const [discountForOrder, setDiscountForOrder] = useState<
+    number | null | undefined
+  >(undefined);
+  const [isOpenDiscountForOrder, setIsOpenDiscountForOrder] =
+    useState<boolean>(false);
   const [isOpenSplitting, setIsOpenSplitting] = useState<boolean>(false);
   const [isOpenRemoving, setIsOpenRemoving] = useState<boolean>(false);
   const [isOpenComment, setIsOpenComment] = useState<boolean>(false);
@@ -39,20 +44,34 @@ export const OrderModal: FC<{
   const [isOpenFinishing, setIsOpenFinishing] = useState<boolean>(false);
   const [isOpenTableChange, setIsOpenTableChange] = useState<boolean>(false);
 
-  const { isFetching: isFetchingCategoriesWithPositions, isLoading: isLoadingCategoriesWithPositions } =
-    useListCategoriesWithPositionsQuery();
+  const {
+    isFetching: isFetchingCategoriesWithPositions,
+    isLoading: isLoadingCategoriesWithPositions,
+  } = useListCategoriesWithPositionsQuery();
 
-  const [addOrUpdateOrder, { data: createdOrUpdatedOrder, isLoading: isLoadingOrderQuery }] =
-    useAddOrUpdateOrderMutation();
+  const [
+    addOrUpdateOrder,
+    { data: createdOrUpdatedOrder, isLoading: isLoadingOrderQuery },
+  ] = useAddOrUpdateOrderMutation();
 
-  const [removeOrderByNumber, { isLoading: isLoadingRemoving, isSuccess: isSuccessRemoving }] =
-    useRemoveOrderByNumberMutation();
+  const [
+    removeOrderByNumber,
+    { isLoading: isLoadingRemoving, isSuccess: isSuccessRemoving },
+  ] = useRemoveOrderByNumberMutation();
 
-  const [finishOrderByNumber, { isLoading: isLoadingFinish, isSuccess: isSuccessFinish }] =
-    useFinishOrderByNumberMutation();
+  const [
+    finishOrderByNumber,
+    { isLoading: isLoadingFinish, isSuccess: isSuccessFinish },
+  ] = useFinishOrderByNumberMutation();
 
-  const [loadOrder, { data: loadedOrder, isLoading: isLoadingOrder, isFetching: isFetchingOrder }] =
-    useLazyLoadOrderByNumberQuery();
+  const [
+    loadOrder,
+    {
+      data: loadedOrder,
+      isLoading: isLoadingOrder,
+      isFetching: isFetchingOrder,
+    },
+  ] = useLazyLoadOrderByNumberQuery();
 
   const prevSelectedPosition = usePrevious(selectedPosition);
 
@@ -63,6 +82,7 @@ export const OrderModal: FC<{
       t: tableId ?? 0,
       n: orderNumber ?? undefined,
       d: discountForOrder ?? undefined,
+      crt: loadedOrder?.crt ? loadedOrder.crt : dateMs(),
     });
   };
 
@@ -70,7 +90,7 @@ export const OrderModal: FC<{
     const newPositions = positions.concat([
       {
         ...positionForAdding,
-        crt: utcToZonedTime(new Date(), "UTC").valueOf(),
+        crt: dateMs(),
         i: positions.length,
       },
     ]);
@@ -82,7 +102,7 @@ export const OrderModal: FC<{
     const newPositions = positions.concat([
       {
         ...positionForCloning,
-        crt: utcToZonedTime(new Date(), "UTC").valueOf(),
+        crt: dateMs(),
         i: positions.length,
         f: undefined,
       },
@@ -195,7 +215,10 @@ export const OrderModal: FC<{
         }
       : null,
     {
-      title: comment !== "" ? i18n.t("orders.editComment") : i18n.t("orders.addComment"),
+      title:
+        comment !== ""
+          ? i18n.t("orders.editComment")
+          : i18n.t("orders.addComment"),
       onClick: () => setIsOpenComment(true),
     },
     {
@@ -203,7 +226,9 @@ export const OrderModal: FC<{
       onClick: () => setIsOpenTableChange(true),
     },
     {
-      title: discountForOrder ? i18n.t("orders.changeDiscount") : i18n.t("orders.addDiscount"),
+      title: discountForOrder
+        ? i18n.t("orders.changeDiscount")
+        : i18n.t("orders.addDiscount"),
       onClick: () => {
         setIsOpenDiscountForOrder(true);
       },
@@ -226,7 +251,11 @@ export const OrderModal: FC<{
   return (
     <>
       <ModalRests
-        title={orderNumber ? i18n.t("orders.editTitle", { orderNumber }) : i18n.t("orders.newTitle")}
+        title={
+          orderNumber
+            ? i18n.t("orders.editTitle", { orderNumber })
+            : i18n.t("orders.newTitle")
+        }
         onBack={() => setOrderNumber(undefined)}
         footerSticks={[
           {
@@ -348,6 +377,7 @@ export const OrderModal: FC<{
               finishOrderByNumber({
                 orderNumber,
                 paymentMethod,
+                finishTime: dateMs(),
               });
             }
           }}

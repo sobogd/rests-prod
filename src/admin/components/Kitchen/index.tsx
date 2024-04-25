@@ -9,16 +9,26 @@ import {
   useRestartPositionMutation,
 } from "./api";
 import styled from "@emotion/styled";
-import { utcToZonedTime } from "date-fns-tz";
 import { ModalRests } from "../ModalRests";
 import Loading from "../loading";
 import { useAllTablesQuery } from "../Orders/api";
-import { EUserTypes, IAllPositionsForKitchen, IPositionForOrder, ITable } from "../../../back/types";
+import {
+  EUserTypes,
+  IAllPositionsForKitchen,
+  IPositionForOrder,
+  ITable,
+} from "../../../back/types";
 import { useAuth } from "../Auth/Context";
 import { getPositionTitleForList } from "../../utils/getPositionTitleForList";
 import { getPositionDescriptionForList } from "../../utils/getPositionDescriptionForList";
 import List from "../List";
-import { backgroundDefault, newBorderColor, textDefaultColor, newPallet } from "../../styles";
+import {
+  backgroundDefault,
+  newBorderColor,
+  textDefaultColor,
+  newPallet,
+} from "../../styles";
+import { dateMs } from "../../utils/timeInFormat";
 
 const ListKitchenTables = styled.div`
   width: 100%;
@@ -114,16 +124,30 @@ export const Kitchen: React.FC = () => {
   } = useListCategoriesForFilterQuery();
   const [
     loadAllPositions,
-    { data: positions, isLoading: isLoadingPositions, isFetching: isFetchingPositions },
+    {
+      data: positions,
+      isLoading: isLoadingPositions,
+      isFetching: isFetchingPositions,
+    },
   ] = useLazyListPositionsByCategoriesQuery();
-  const [filter, setFilter] = useState<{ status: EFilterStatuses; categoryIds: number[] }>({
+  const [filter, setFilter] = useState<{
+    status: EFilterStatuses;
+    categoryIds: number[];
+  }>({
     status: EFilterStatuses.ALL,
     categoryIds: [],
   });
-  const { data: tables, isFetching: isFetchingTables, isLoading: isLoadingTables } = useAllTablesQuery();
-  const [donePosition, { isLoading: isLoadingDone, isSuccess: isSuccessDone }] = useDonePositionMutation();
-  const [restartPosition, { isLoading: isLoadingRestart, isSuccess: isSuccessRestart }] =
-    useRestartPositionMutation();
+  const {
+    data: tables,
+    isFetching: isFetchingTables,
+    isLoading: isLoadingTables,
+  } = useAllTablesQuery();
+  const [donePosition, { isLoading: isLoadingDone, isSuccess: isSuccessDone }] =
+    useDonePositionMutation();
+  const [
+    restartPosition,
+    { isLoading: isLoadingRestart, isSuccess: isSuccessRestart },
+  ] = useRestartPositionMutation();
 
   useEffect(() => {
     loadAllPositions();
@@ -157,7 +181,9 @@ export const Kitchen: React.FC = () => {
     positions?.forEach((position) => {
       tablesObject[`table${position.tab}`] = {
         table: tables?.find((t) => Number(t.id) === Number(position.tab)),
-        positions: (tablesObject[`table${position.tab}`]?.positions ?? []).concat([position]),
+        positions: (
+          tablesObject[`table${position.tab}`]?.positions ?? []
+        ).concat([position]),
       };
     });
 
@@ -198,7 +224,9 @@ export const Kitchen: React.FC = () => {
           }
         })
         .filter((position) =>
-          filter.categoryIds?.length ? filter.categoryIds.includes(Number(position.cat)) : true
+          filter.categoryIds?.length
+            ? filter.categoryIds.includes(Number(position.cat))
+            : true
         );
 
       return {
@@ -247,22 +275,47 @@ export const Kitchen: React.FC = () => {
               </ListKitchenTablesHeader>
               <List
                 items={table?.positions?.map((position) => ({
-                  title: getPositionTitleForList(position as IPositionForOrder, 0, "", "time"),
-                  description: getPositionDescriptionForList(position as IPositionForOrder),
+                  title: getPositionTitleForList(
+                    position as IPositionForOrder,
+                    0,
+                    "",
+                    "time"
+                  ),
+                  description: getPositionDescriptionForList(
+                    position as IPositionForOrder
+                  ),
                   buttonType: "primary",
                   onClick: () => {
-                    if (position.on && position.i !== undefined && position.i >= 0) {
+                    if (
+                      position.on &&
+                      position.i !== undefined &&
+                      position.i >= 0
+                    ) {
                       if (!position.f) {
-                        donePosition({ orderNumber: position.on, positionIndex: position.i });
+                        donePosition({
+                          orderNumber: position.on,
+                          positionIndex: position.i,
+                          doneTime: dateMs(),
+                        });
                       } else {
-                        restartPosition({ orderNumber: position.on, positionIndex: position.i });
+                        restartPosition({
+                          orderNumber: position.on,
+                          positionIndex: position.i,
+                        });
                       }
                     }
                   },
                   id: JSON.stringify(position),
-                  primaryButtonText: !position.f ? i18n.t("kitchen.done") : i18n.t("kitchen.restart"),
-                  primaryButtonColor: !position.f ? textDefaultColor : newPallet.gray2,
-                  opacity: position.f && filter.status !== EFilterStatuses.DONE ? 0.4 : 1,
+                  primaryButtonText: !position.f
+                    ? i18n.t("kitchen.done")
+                    : i18n.t("kitchen.restart"),
+                  primaryButtonColor: !position.f
+                    ? textDefaultColor
+                    : newPallet.gray2,
+                  opacity:
+                    position.f && filter.status !== EFilterStatuses.DONE
+                      ? 0.4
+                      : 1,
                 }))}
                 withPadding
                 withMargin={false}

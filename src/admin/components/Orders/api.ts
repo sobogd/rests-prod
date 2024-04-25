@@ -10,10 +10,18 @@ const ordersApi = API.injectEndpoints({
       query: (body) => ({ url: `o/add-or-update-order`, method: "POST", body }),
     }),
     listOrdersForTable: b.query<IOrder[], { tableId: number }>({
-      query: ({ tableId }) => ({ url: `o/list-orders-for-table`, method: "POST", body: { tableId } }),
+      query: ({ tableId }) => ({
+        url: `o/list-orders-for-table`,
+        method: "POST",
+        body: { tableId },
+      }),
     }),
     loadOrderByNumber: b.query<IOrder, { orderNumber: number }>({
-      query: ({ orderNumber }) => ({ url: `o/order-by-number`, method: "POST", body: { orderNumber } }),
+      query: ({ orderNumber }) => ({
+        url: `o/order-by-number`,
+        method: "POST",
+        body: { orderNumber },
+      }),
     }),
     removeOrderByNumber: b.mutation<void, { orderNumber: number }>({
       query: ({ orderNumber }) => ({
@@ -22,11 +30,14 @@ const ordersApi = API.injectEndpoints({
         body: { orderNumber },
       }),
     }),
-    finishOrderByNumber: b.mutation<void, { orderNumber: number; paymentMethod: string }>({
-      query: ({ orderNumber, paymentMethod }) => ({
+    finishOrderByNumber: b.mutation<
+      void,
+      { orderNumber: number; paymentMethod: string; finishTime: number }
+    >({
+      query: ({ orderNumber, paymentMethod, finishTime }) => ({
         url: `o/finish-order-by-number`,
         method: "POST",
-        body: { orderNumber, paymentMethod },
+        body: { orderNumber, paymentMethod, finishTime },
       }),
     }),
     tablesWithOrders: b.query<{ t: number; f?: boolean }[], void>({

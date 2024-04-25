@@ -350,7 +350,7 @@ const models: TsoaRoute.Models = {
     "IWhoAmI": {
         "dataType": "refObject",
         "properties": {
-            "company": {"dataType":"nestedObjectLiteral","nestedProperties":{"langs":{"dataType":"array","array":{"dataType":"string"}},"lang":{"dataType":"string","required":true},"symbol":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"title":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
+            "company": {"dataType":"nestedObjectLiteral","nestedProperties":{"timezone":{"dataType":"string","required":true},"langs":{"dataType":"array","array":{"dataType":"string"}},"lang":{"dataType":"string","required":true},"symbol":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"title":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
             "user": {"dataType":"nestedObjectLiteral","nestedProperties":{"login":{"dataType":"string","required":true},"type":{"dataType":"string","required":true},"name":{"dataType":"string","required":true},"id":{"dataType":"string","required":true}},"required":true},
         },
         "additionalProperties": false,
@@ -1002,7 +1002,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function KController_donePosition(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"positionIndex":{"dataType":"double","required":true},"orderNumber":{"dataType":"double","required":true}}},
+                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"doneTime":{"dataType":"double","required":true},"positionIndex":{"dataType":"double","required":true},"orderNumber":{"dataType":"double","required":true}}},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 
@@ -1324,7 +1324,7 @@ export function RegisterRoutes(app: express.Router) {
 
             function OController_finishOrderByNumber(request: any, response: any, next: any) {
             const args = {
-                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"paymentMethod":{"dataType":"string","required":true},"orderNumber":{"dataType":"double","required":true}}},
+                    body: {"in":"body","name":"body","required":true,"dataType":"nestedObjectLiteral","nestedProperties":{"finishTime":{"dataType":"double","required":true},"paymentMethod":{"dataType":"string","required":true},"orderNumber":{"dataType":"double","required":true}}},
                     req: {"in":"request","name":"req","required":true,"dataType":"object"},
             };
 

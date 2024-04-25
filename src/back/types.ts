@@ -96,6 +96,7 @@ export interface IWhoAmI {
     symbol: string;
     lang: string;
     langs?: string[];
+    timezone: string;
   };
   user: {
     id: string;

@@ -1,10 +1,10 @@
 import { FC } from "react";
 import styled from "@emotion/styled";
 import { useTranslation } from "react-i18next";
-import { getTimeFromUTCTimeStamp } from "../../../utils/getUTCTimestamp";
 import List from "../../List";
 import { IOrder } from "../../../../back/types";
 import { newPallet, textDefaultColor } from "../../../styles";
+import { dateHHmm } from "../../../utils/timeInFormat";
 
 const OrderForTableTitle = styled.div`
   display: flex;
@@ -46,13 +46,19 @@ export const OrdersForTableModalList: FC<{
                 {i18n.t("orders.tabModBeforeOrd")}
                 {order.n}
               </span>
-              <span>{getTimeFromUTCTimeStamp(order.crt ?? 0)}</span>
+              <span>{dateHHmm(order.crt)}</span>
               <span>
                 {i18n.t("orders.tabModItems")}: {order.p.length}
               </span>
             </OrderForTableTitle>
           ),
-          description: <span>{order.c && order.c !== "" ? order.c : i18n.t("orders.tabModNoComment")}</span>,
+          description: (
+            <span>
+              {order.c && order.c !== ""
+                ? order.c
+                : i18n.t("orders.tabModNoComment")}
+            </span>
+          ),
           buttonType: "next",
           onClick: () => setOrderNumber(order.n),
           id: order.id,

@@ -806,6 +806,9 @@
 				"properties": {
 					"company": {
 						"properties": {
+							"timezone": {
+								"type": "string"
+							},
 							"langs": {
 								"items": {
 									"type": "string"
@@ -829,6 +832,7 @@
 							}
 						},
 						"required": [
+							"timezone",
 							"lang",
 							"symbol",
 							"email",
@@ -1892,6 +1896,10 @@
 						"application/json": {
 							"schema": {
 								"properties": {
+									"doneTime": {
+										"type": "number",
+										"format": "double"
+									},
 									"positionIndex": {
 										"type": "number",
 										"format": "double"
@@ -1902,6 +1910,7 @@
 									}
 								},
 								"required": [
+									"doneTime",
 									"positionIndex",
 									"orderNumber"
 								],
@@ -2441,6 +2450,10 @@
 						"application/json": {
 							"schema": {
 								"properties": {
+									"finishTime": {
+										"type": "number",
+										"format": "double"
+									},
 									"paymentMethod": {
 										"type": "string"
 									},
@@ -2450,6 +2463,7 @@
 									}
 								},
 								"required": [
+									"finishTime",
 									"paymentMethod",
 									"orderNumber"
 								],

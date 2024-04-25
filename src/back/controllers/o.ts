@@ -1,4 +1,14 @@
-import { OperationId, Request, Route, Security, Tags, Response, Get, Body, Post } from "tsoa";
+import {
+  OperationId,
+  Request,
+  Route,
+  Security,
+  Tags,
+  Response,
+  Get,
+  Body,
+  Post,
+} from "tsoa";
 import listCategoriesWithPositions from "../services/o/listCategoriesWithPositions";
 import addOrUpdateOrder from "../services/o/addOrUpdateOrder";
 import listOrdersForTable from "../services/o/listOrdersForTable";
@@ -27,7 +37,10 @@ export class OController {
   @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Post("add-or-update-order")
-  public async addOrUpdateOrder(@Body() body: IOrder, @Request() req: IAuthRequest): Promise<number> {
+  public async addOrUpdateOrder(
+    @Body() body: IOrder,
+    @Request() req: IAuthRequest
+  ): Promise<number> {
     return addOrUpdateOrder(body, req.user.companyId);
   }
   @Tags("O")
@@ -73,10 +86,16 @@ export class OController {
   @Security("Bearer", ["AuthService"])
   @Post("finish-order-by-number")
   public async finishOrderByNumber(
-    @Body() body: { orderNumber: number; paymentMethod: string },
+    @Body()
+    body: { orderNumber: number; paymentMethod: string; finishTime: number },
     @Request() req: IAuthRequest
   ): Promise<void> {
-    return finishOrderByNumber(body.orderNumber, body.paymentMethod, req.user.companyId);
+    return finishOrderByNumber(
+      body.orderNumber,
+      body.paymentMethod,
+      req.user.companyId,
+      body.finishTime
+    );
   }
   @Tags("O")
   @OperationId("Tables with orders")
@@ -84,7 +103,9 @@ export class OController {
   @Response(401, "Unauthorized request response")
   @Security("Bearer", ["AuthService"])
   @Get("tables-with-orders")
-  public async tablesWithOrders(@Request() req: IAuthRequest): Promise<{ t: number; f?: boolean }[]> {
+  public async tablesWithOrders(
+    @Request() req: IAuthRequest
+  ): Promise<{ t: number; f?: boolean }[]> {
     return tablesWithOrders(req.user.companyId);
   }
 }

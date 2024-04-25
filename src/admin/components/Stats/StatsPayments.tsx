@@ -10,7 +10,7 @@ import {
 import { Cell, Pie, PieChart } from "recharts";
 import { DayWithOrders } from "./types";
 import { useTranslation } from "react-i18next";
-import { memo, useEffect, useMemo, useState } from "react";
+import { memo, useMemo, useState } from "react";
 import { useAuth } from "../Auth/Context";
 import { formatPrice } from "../../utils/priceFormatter";
 
@@ -50,7 +50,6 @@ const Title = styled.div`
 const SubTitle = styled.div`
   color: ${blackText2};
   font-size: 16px;
-  margin-bottom: 20px;
 `;
 
 const ChartLabel = styled.div`
@@ -93,7 +92,7 @@ const Tab = styled.div<{ active: boolean }>`
   }
 `;
 
-export const StatsDayPayments = memo((props: Props) => {
+export const StatsPayments = memo((props: Props) => {
   const { selectedDay, ordersByDays } = props;
 
   const { t } = useTranslation();

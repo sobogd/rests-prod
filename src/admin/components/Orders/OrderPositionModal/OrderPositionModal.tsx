@@ -7,11 +7,21 @@ import { OptionsSelect } from "./OptionsSelect";
 import { useTranslation } from "react-i18next";
 import { ModalRests } from "../../ModalRests";
 import { useLazyListCategoriesWithPositionsQuery } from "../api";
-import { utcToZonedTime } from "date-fns-tz";
-import { EPriority, IItem, IPositionForOrder, IVariantOrOptionForPosition } from "../../../../back/types";
+import {
+  EPriority,
+  IItem,
+  IPositionForOrder,
+  IVariantOrOptionForPosition,
+} from "../../../../back/types";
 import { errorColor, newPallet } from "../../../styles";
+import { dateMs } from "../../../utils/timeInFormat";
 
-type PositionStep = "category" | "position" | "summary" | "options" | "variants";
+type PositionStep =
+  | "category"
+  | "position"
+  | "summary"
+  | "options"
+  | "variants";
 
 export const OrderPositionModal: FC<{
   selectedPosition: IPositionForOrder | null | undefined;
@@ -21,8 +31,12 @@ export const OrderPositionModal: FC<{
 }> = ({ setSelectedPosition, selectedPosition, onClone, onRemove }) => {
   const [step, setStep] = useState<PositionStep | undefined>(undefined);
   const [comment, setComment] = useState<string | undefined>();
-  const [variant, setVariant] = useState<IVariantOrOptionForPosition | undefined>();
-  const [options, setOptions] = useState<IVariantOrOptionForPosition[] | undefined>();
+  const [variant, setVariant] = useState<
+    IVariantOrOptionForPosition | undefined
+  >();
+  const [options, setOptions] = useState<
+    IVariantOrOptionForPosition[] | undefined
+  >();
   const [categoryName, setCategoryName] = useState<string | undefined>();
   const [position, setPosition] = useState<IItem | undefined>();
   const [percent, setPercent] = useState<number>(0);
@@ -35,7 +49,11 @@ export const OrderPositionModal: FC<{
   }, []);
 
   useEffect(() => {
-    if (selectedPosition !== undefined && selectedPosition !== null && selectedPosition?.i !== undefined) {
+    if (
+      selectedPosition !== undefined &&
+      selectedPosition !== null &&
+      selectedPosition?.i !== undefined
+    ) {
       setStep("summary");
       if (selectedPosition?.v) {
         setVariant(selectedPosition?.v);
@@ -52,7 +70,10 @@ export const OrderPositionModal: FC<{
         ?.filter((d) => d.i.find((dd) => dd.n === selectedPosition?.n))?.[0]
         ?.i?.find((dd) => dd.n === selectedPosition?.n);
       setPosition(position);
-      setCategoryName(data?.filter((d) => d.i.find((dd) => dd.n === selectedPosition?.n))?.[0].c ?? "");
+      setCategoryName(
+        data?.filter((d) => d.i.find((dd) => dd.n === selectedPosition?.n))?.[0]
+          .c ?? ""
+      );
     } else if (selectedPosition === null) {
       setStep("category");
       setOptions(undefined);
@@ -224,7 +245,7 @@ export const OrderPositionModal: FC<{
                 c: comment,
                 i: selectedPosition?.i ?? undefined,
                 cat: Number(position?.c) ?? 0,
-                crt: utcToZonedTime(new Date(), "UTC").valueOf(),
+                crt: dateMs(),
                 pr: priority,
                 d: percent,
               });

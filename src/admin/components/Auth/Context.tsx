@@ -119,6 +119,9 @@ function useProvideAuth() {
     if (whoamiData?.company?.lang) {
       i18n.changeLanguage(whoamiData?.company?.lang);
     }
+    if (whoamiData?.company?.timezone) {
+      localStorage.setItem("restsTimezone", whoamiData?.company?.timezone);
+    }
   }, [whoamiData]);
 
   return {
