@@ -223,6 +223,34 @@ const models: TsoaRoute.Models = {
         "additionalProperties": false,
     },
     // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IVariant": {
+        "dataType": "refObject",
+        "properties": {
+            "n": {"dataType":"string"},
+            "p": {"dataType":"double"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "IOption": {
+        "dataType": "refObject",
+        "properties": {
+            "n": {"dataType":"string"},
+            "p": {"dataType":"double"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+    "ITranslation": {
+        "dataType": "refObject",
+        "properties": {
+            "l": {"dataType":"string"},
+            "t": {"dataType":"string"},
+            "n": {"dataType":"string"},
+        },
+        "additionalProperties": false,
+    },
+    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "IItem": {
         "dataType": "refObject",
         "properties": {
@@ -237,11 +265,11 @@ const models: TsoaRoute.Models = {
             "i": {"dataType":"string"},
             "a": {"dataType":"boolean"},
             "h": {"dataType":"boolean"},
-            "v": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"p":{"dataType":"double"},"n":{"dataType":"string"}}}},
-            "o": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"p":{"dataType":"double"},"n":{"dataType":"string"}}}},
-            "t": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"n":{"dataType":"string"},"t":{"dataType":"string"},"l":{"dataType":"string"}}}},
-            "vt": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"n":{"dataType":"string"},"t":{"dataType":"string"},"l":{"dataType":"string"}}}}},
-            "ot": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"n":{"dataType":"string"},"t":{"dataType":"string"},"l":{"dataType":"string"}}}}},
+            "v": {"dataType":"array","array":{"dataType":"refObject","ref":"IVariant"}},
+            "o": {"dataType":"array","array":{"dataType":"refObject","ref":"IOption"}},
+            "t": {"dataType":"array","array":{"dataType":"refObject","ref":"ITranslation"}},
+            "vt": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"ITranslation"}}},
+            "ot": {"dataType":"array","array":{"dataType":"array","array":{"dataType":"refObject","ref":"ITranslation"}}},
             "f": {"dataType":"string"},
             "fChanged": {"dataType":"boolean"},
         },

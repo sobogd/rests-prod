@@ -1,34 +1,5 @@
 import styled from "@emotion/styled";
-
 export const backgroundDefault = "#faf8f8";
-export const black1 = "rgb(17 21 38)";
-export const black2 = "rgb(23 28 48)";
-export const black3 = "#202538";
-export const blackDivider = "#262c41";
-export const blackText1 = "#ffffffbf";
-export const blackText2 = "#ffffff7a";
-export const blackText3 = "#ffffff57";
-
-export const tab1 = "#0e5862";
-export const tab2 = "#593a52";
-
-export const pink1 = "#d870f2";
-export const pink2 = "#a37ff8";
-export const blue1 = "#1cece7";
-export const blue2 = "#627cdb";
-export const pinkGradient = "linear-gradient(45deg, #d870f2, #a37ff8)";
-export const blueGradient = "linear-gradient(45deg, #1cece7, #627cdb)";
-
-export const diagramColors = [
-  "#D870F2",
-  "#CBF270",
-  "#8AF270",
-  "#70CBF2",
-  "#1CECE7",
-  "#7F1CEC",
-  "#EC1C21",
-  "#89EC1C",
-];
 
 export const newPallet = {
   black: "#3c414b",
@@ -238,7 +209,7 @@ export const UniversalListItemBordered = styled.div`
       font-weight: 400;
       color: #525252;
     }
-    :nth-child(1) {
+    :nth-of-type(1) {
       span {
         font-size: 17px;
         font-weight: 600;

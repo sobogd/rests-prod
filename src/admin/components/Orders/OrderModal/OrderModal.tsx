@@ -1,25 +1,27 @@
-import { FC, useEffect, useMemo, useState } from "react";
-import { OrderPositionModal } from "../OrderPositionModal/OrderPositionModal";
-import { useTranslation } from "react-i18next";
-import { OrderModalList } from "./OrderModalList";
-import { OrderModalDiscountForOrder } from "./OrderModalDiscountForOrder";
-import { OrderModalSplitting } from "./OrderModalSplitting";
-import { OrderModalComment } from "./OrderModalComment";
-import { OrderModalFinish } from "./OrderModalFinish";
-import { OrderModalTableChange } from "./OrderModalTableChange";
-import { usePrevious } from "../../../hooks/usePrevious";
-import { ModalRests } from "../../ModalRests";
+import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { IPositionForOrder } from '../../../../back/types';
+import { usePrevious } from '../../../hooks/usePrevious';
+import { dateMs } from '../../../utils/timeInFormat';
+import { ModalRests } from '../../ModalRests';
+import NoData from '../../NoData';
 import {
   useListCategoriesWithPositionsQuery,
   useAddOrUpdateOrderMutation,
   useRemoveOrderByNumberMutation,
   useFinishOrderByNumberMutation,
   useLazyLoadOrderByNumberQuery,
-} from "../api";
-import NoData from "../../NoData";
-import { IPositionForOrder } from "../../../../back/types";
-import { OrderModalRemoving } from "./OrderModalRemoving";
-import { dateMs } from "../../../utils/timeInFormat";
+} from '../api';
+import { OrderPositionModal } from '../OrderPositionModal/OrderPositionModal';
+
+import { OrderModalComment } from './OrderModalComment';
+import { OrderModalDiscountForOrder } from './OrderModalDiscountForOrder';
+import { OrderModalFinish } from './OrderModalFinish';
+import { OrderModalList } from './OrderModalList';
+import { OrderModalRemoving } from './OrderModalRemoving';
+import { OrderModalSplitting } from './OrderModalSplitting';
+import { OrderModalTableChange } from './OrderModalTableChange';
 
 export const OrderModal: FC<{
   setOrderNumber: (orderId: number | null | undefined) => void;
@@ -40,7 +42,7 @@ export const OrderModal: FC<{
   const [isOpenSplitting, setIsOpenSplitting] = useState<boolean>(false);
   const [isOpenRemoving, setIsOpenRemoving] = useState<boolean>(false);
   const [isOpenComment, setIsOpenComment] = useState<boolean>(false);
-  const [comment, setComment] = useState<string>("");
+  const [comment, setComment] = useState<string>('');
   const [isOpenFinishing, setIsOpenFinishing] = useState<boolean>(false);
   const [isOpenTableChange, setIsOpenTableChange] = useState<boolean>(false);
 
@@ -188,7 +190,7 @@ export const OrderModal: FC<{
     if (orderNumber != null) {
       loadOrder({ orderNumber });
     }
-    setComment("");
+    setComment('');
   }, [orderNumber]);
 
   useEffect(() => {
@@ -198,43 +200,43 @@ export const OrderModal: FC<{
       setDiscountForOrder(Number(loadedOrder?.d));
     } else {
       setPositions([]);
-      setComment("");
+      setComment('');
       setDiscountForOrder(undefined);
     }
   }, [loadedOrder, orderNumber]);
 
   const buttonsForOrder = [
     {
-      title: i18n.t("orders.finishOrder"),
+      title: i18n.t('orders.finishOrder'),
       onClick: () => setIsOpenFinishing(true),
     },
     positions?.length > 1
       ? {
-          title: i18n.t("orders.splitOrder"),
+          title: i18n.t('orders.splitOrder'),
           onClick: () => setIsOpenSplitting(true),
         }
       : null,
     {
       title:
-        comment !== ""
-          ? i18n.t("orders.editComment")
-          : i18n.t("orders.addComment"),
+        comment !== ''
+          ? i18n.t('orders.editComment')
+          : i18n.t('orders.addComment'),
       onClick: () => setIsOpenComment(true),
     },
     {
-      title: i18n.t("orders.tableChange"),
+      title: i18n.t('orders.tableChange'),
       onClick: () => setIsOpenTableChange(true),
     },
     {
       title: discountForOrder
-        ? i18n.t("orders.changeDiscount")
-        : i18n.t("orders.addDiscount"),
+        ? i18n.t('orders.changeDiscount')
+        : i18n.t('orders.addDiscount'),
       onClick: () => {
         setIsOpenDiscountForOrder(true);
       },
     },
     {
-      title: i18n.t("orders.removeOrder"),
+      title: i18n.t('orders.removeOrder'),
       onClick: () => setIsOpenRemoving(true),
     },
   ];
@@ -253,13 +255,13 @@ export const OrderModal: FC<{
       <ModalRests
         title={
           orderNumber
-            ? i18n.t("orders.editTitle", { orderNumber })
-            : i18n.t("orders.newTitle")
+            ? i18n.t('orders.editTitle', { orderNumber })
+            : i18n.t('orders.newTitle')
         }
         onBack={() => setOrderNumber(undefined)}
         footerSticks={[
           {
-            icon: "new",
+            icon: 'new',
             onClick: () => {
               setSelectedPosition(null);
             },
@@ -267,7 +269,7 @@ export const OrderModal: FC<{
         ]}
         withPadding
         moreButtons={orderNumber ? buttonsForOrder : undefined}
-        moreTitle={i18n.t("orders.orderDialogTitle")}
+        moreTitle={i18n.t('orders.orderDialogTitle')}
         isShow={orderNumber !== undefined ? true : false}
         isLoading={isLoading}
         isAdditionalForAdditional
@@ -384,7 +386,7 @@ export const OrderModal: FC<{
           isShow={isOpenFinishing}
         />
         {!positions?.length ? (
-          <NoData pt text={i18n.t("orders.emptyPositions")} />
+          <NoData pt text={i18n.t('orders.emptyPositions')} />
         ) : (
           <OrderModalList
             positions={positions}

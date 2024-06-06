@@ -1,6 +1,5 @@
-import React from "react";
-import styled from "@emotion/styled";
-import { TbFileOff } from "react-icons/tb";
+import styled from '@emotion/styled';
+import React from 'react';
 
 export const Container = styled.div`
   display: flex;
@@ -9,23 +8,15 @@ export const Container = styled.div`
   align-items: center;
   height: 100%;
   width: 100%;
-  padding-bottom: 60px;
-  color: rgb(168 168 168);
-  svg {
-    margin-bottom: 10px;
-  }
+  color: ${(p) => p.theme.text3};
 `;
 
 const NoData: React.FC<{
   text: string;
+  height?: number;
   pt?: boolean;
-}> = ({ text, pt }) => {
-  return (
-    <Container style={{ paddingTop: pt ? "65px" : undefined }}>
-      <TbFileOff size={100} color={"rgb(210 210 210)"} />
-      {text}
-    </Container>
-  );
+}> = ({ text }) => {
+  return <Container>{text}</Container>;
 };
 
 export default NoData;

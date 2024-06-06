@@ -1,13 +1,14 @@
-import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import shortid from "shortid";
-import { useFormikContext } from "formik";
-import styled from "@emotion/styled";
-import FormikInput from "../FormikInput";
-import { TbPlus, TbTrash } from "react-icons/tb";
-import { useAuth } from "../Auth/Context";
-import { textDefaultColor, newBorderColor, errorColor } from "../../styles";
-import { IOption } from "../../types";
+import styled from '@emotion/styled';
+import { useFormikContext } from 'formik';
+import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TbPlus, TbTrash } from 'react-icons/tb';
+import shortid from 'shortid';
+
+import { useAuth } from '../../providers/Auth';
+import { textDefaultColor, newBorderColor, errorColor } from '../../styles';
+import { IOption } from '../../types';
+import FormikInput from '../FormikInput';
 
 const AddButton = styled.div`
   display: flex;
@@ -68,7 +69,7 @@ const Option = styled.div`
       border: 0;
     }
     > div {
-      :nth-child(1) {
+      :nth-of-type(1) {
         width: 100%;
         input {
           border-radius: 0;
@@ -77,7 +78,7 @@ const Option = styled.div`
         }
         margin-right: 1px;
       }
-      :nth-child(2) {
+      :nth-of-type(2) {
         min-width: 100px;
         input {
           border-radius: 0;
@@ -113,50 +114,71 @@ export const ItemFormOptions: FC = () => {
   const { t } = useTranslation();
 
   const langs = useAuth()?.whoami?.company?.langs ?? [];
-  const lang = useAuth()?.whoami?.company?.lang ?? "en";
+  const lang = useAuth()?.whoami?.company?.lang ?? 'en';
 
   const handleAddOption = () => {
     setValues({
       ...values,
-      o: [...(values.o ?? []), { p: "", n: "", id: shortid.generate() }],
-      ot: [...(values.ot ?? []), langs.map((lang) => ({ l: lang, t: "" }))],
+      o: [...(values.o ?? []), { p: '', n: '', id: shortid.generate() }],
+      ot: [...(values.ot ?? []), langs.map((lang) => ({ l: lang, t: '' }))],
     });
   };
 
   const handleRemoveOption = (option_index: number) => () => {
     setValues({
       ...values,
-      o: values.o?.filter((_: unknown, index: number) => index !== option_index) ?? [],
-      ot: values.ot?.filter((_: unknown, index: number) => index !== option_index) ?? [],
+      o:
+        values.o?.filter(
+          (_: unknown, index: number) => index !== option_index,
+        ) ?? [],
+      ot:
+        values.ot?.filter(
+          (_: unknown, index: number) => index !== option_index,
+        ) ?? [],
     });
   };
 
   return (
     <>
-      {values.o?.map((option: { n?: string; p?: number; id?: string }, option_index: number) => (
-        <Option>
-          <div style={option_index === 0 ? { marginTop: 15 } : undefined}>
-            <FormikInput name={`o.[${option_index}].n`} label={t("items.form.options.name") + lang} />
-            <span onClick={handleRemoveOption(option_index)}>
-              <TbTrash />
-            </span>
-          </div>
-          {values.ot?.[option_index]?.map(
-            (translation: { n: string; l?: IOption; id?: string }, option_translation_index: number) => {
-              return (
-                <FormikInput
-                  name={`ot.[${option_index}].[${option_translation_index}].t`}
-                  label={t("items.form.options.translation") + translation.l}
-                />
-              );
-            }
-          )}
-          <FormikInput name={`o.[${option_index}].p`} type="number" label={t("items.form.options.price")} />
-        </Option>
-      ))}
+      {values.o?.map(
+        (
+          option: { n?: string; p?: number; id?: string },
+          option_index: number,
+        ) => (
+          <Option>
+            <div style={option_index === 0 ? { marginTop: 15 } : undefined}>
+              <FormikInput
+                name={`o.[${option_index}].n`}
+                label={t('items.form.options.name') + lang}
+              />
+              <span onClick={handleRemoveOption(option_index)}>
+                <TbTrash />
+              </span>
+            </div>
+            {values.ot?.[option_index]?.map(
+              (
+                translation: { n: string; l?: IOption; id?: string },
+                option_translation_index: number,
+              ) => {
+                return (
+                  <FormikInput
+                    name={`ot.[${option_index}].[${option_translation_index}].t`}
+                    label={t('items.form.options.translation') + translation.l}
+                  />
+                );
+              },
+            )}
+            <FormikInput
+              name={`o.[${option_index}].p`}
+              type="number"
+              label={t('items.form.options.price')}
+            />
+          </Option>
+        ),
+      )}
       <AddButton onClick={handleAddOption}>
         <TbPlus />
-        {t("items.form.options.addOption")}
+        {t('items.form.options.addOption')}
       </AddButton>
     </>
   );

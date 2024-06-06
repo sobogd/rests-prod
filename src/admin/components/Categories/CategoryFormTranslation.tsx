@@ -1,11 +1,17 @@
-import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import { useFormikContext } from "formik";
-import FormikInput from "../FormikInput";
-import styled from "@emotion/styled";
-import { TbPlus, TbTrash } from "react-icons/tb";
-import { useAuth } from "../Auth/Context";
-import { textDefaultColor, UniversalListCard, backgroundDefault, UniversalList } from "../../styles";
+import styled from '@emotion/styled';
+import { useFormikContext } from 'formik';
+import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TbPlus, TbTrash } from 'react-icons/tb';
+
+import { useAuth } from '../../providers/Auth';
+import {
+  textDefaultColor,
+  UniversalListCard,
+  backgroundDefault,
+  UniversalList,
+} from '../../styles';
+import FormikInput from '../FormikInput';
 
 const AddButton = styled.div`
   display: flex;
@@ -100,36 +106,41 @@ export const CategoryFormTranslation: FC = () => {
 
   const handleAddTranslation = () => {
     setFieldValue(
-      "translations",
-      langs.map((lang) => ({ l: lang, t: "" }))
+      'translations',
+      langs.map((lang) => ({ l: lang, t: '' })),
     );
   };
 
   const handleRemoveTranslation = () => {
-    setFieldValue("translations", []);
+    setFieldValue('translations', []);
   };
 
   return (
     <>
       <UniversalList>
-        {values.translations?.map((translation: { l?: string; p?: number }, idx: number) => (
-          <TranslationCard key={translation.l}>
-            <FormikInput
-              name={`translations.[${idx}].t`}
-              label={i18n.t("categories.form.translations.translation") + translation?.l}
-            />
-          </TranslationCard>
-        ))}
+        {values.translations?.map(
+          (translation: { l?: string; p?: number }, idx: number) => (
+            <TranslationCard key={translation.l}>
+              <FormikInput
+                name={`translations.[${idx}].t`}
+                label={
+                  i18n.t('categories.form.translations.translation') +
+                  translation?.l
+                }
+              />
+            </TranslationCard>
+          ),
+        )}
       </UniversalList>
       {values.translations?.length > 0 ? (
         <RemoveButton onClick={handleRemoveTranslation}>
           <TbTrash />
-          {i18n.t("categories.form.translations.removeTranslation")}
+          {i18n.t('categories.form.translations.removeTranslation')}
         </RemoveButton>
       ) : (
         <AddButton onClick={handleAddTranslation}>
           <TbPlus />
-          {i18n.t("categories.form.translations.addTranslation")}
+          {i18n.t('categories.form.translations.addTranslation')}
         </AddButton>
       )}
     </>

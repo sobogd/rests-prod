@@ -1,4 +1,4 @@
-import { IRate } from "./mappers/rates";
+import { IRate } from './mappers/rates';
 
 export interface IResponseStatusWithMessage {
   isSuccess: boolean;
@@ -12,6 +12,22 @@ export type IAuthRequest = {
   };
 };
 
+export interface IVariant {
+  n?: string;
+  p?: number;
+}
+
+export interface IOption {
+  n?: string;
+  p?: number;
+}
+
+export interface ITranslation {
+  l?: string;
+  t?: string;
+  n?: string;
+}
+
 export interface IItem {
   id?: number;
   company?: number;
@@ -24,29 +40,11 @@ export interface IItem {
   i?: string;
   a?: boolean;
   h?: boolean;
-  v?: {
-    n?: string;
-    p?: number;
-  }[];
-  o?: {
-    n?: string;
-    p?: number;
-  }[];
-  t?: {
-    l?: string;
-    t?: string;
-    n?: string;
-  }[];
-  vt?: {
-    l?: string;
-    t?: string;
-    n?: string;
-  }[][];
-  ot?: {
-    l?: string;
-    t?: string;
-    n?: string;
-  }[][];
+  v?: IVariant[];
+  o?: IOption[];
+  t?: ITranslation[];
+  vt?: ITranslation[][];
+  ot?: ITranslation[][];
   f?: string;
   fChanged?: boolean;
 }
@@ -107,10 +105,10 @@ export interface IWhoAmI {
 }
 
 export enum EUserTypes {
-  ADMIN = "admin",
-  PERSONAL = "personal",
-  MANAGER = "manager",
-  KITCHEN = "kitchen",
+  ADMIN = 'admin',
+  PERSONAL = 'personal',
+  MANAGER = 'manager',
+  KITCHEN = 'kitchen',
 }
 
 export interface IUser {
@@ -122,6 +120,11 @@ export interface IUser {
   company_id?: number;
 }
 
+export interface IUserAuth extends IUser {
+  token?: string;
+  loginHash?: string;
+}
+
 export interface IMethod {
   id?: number;
   title?: string;
@@ -129,25 +132,25 @@ export interface IMethod {
 }
 
 export enum ETableType {
-  TABLE_SQUARE = "table_s",
-  TABLE_CIRCLE = "table_c",
-  WALL = "wall",
-  FLOWER = "flower",
-  DOOR = "door",
-  WINDOW = "window",
-  KITCHEN = "kitchen",
-  GRASS = "grass",
-  PAVILION = "pavilion",
-  CHAIR = "chair",
-  INFO = "info",
-  TRASH = "trash",
-  WC = "wc",
-  BAR = "bar",
-  PLAY = "play",
-  MUSIC = "music",
-  TREE = "tree",
-  LIGHT = "light",
-  STORAGE = "storage",
+  TABLE_SQUARE = 'table_s',
+  TABLE_CIRCLE = 'table_c',
+  WALL = 'wall',
+  FLOWER = 'flower',
+  DOOR = 'door',
+  WINDOW = 'window',
+  KITCHEN = 'kitchen',
+  GRASS = 'grass',
+  PAVILION = 'pavilion',
+  CHAIR = 'chair',
+  INFO = 'info',
+  TRASH = 'trash',
+  WC = 'wc',
+  BAR = 'bar',
+  PLAY = 'play',
+  MUSIC = 'music',
+  TREE = 'tree',
+  LIGHT = 'light',
+  STORAGE = 'storage',
 }
 
 export interface ITable {
@@ -184,8 +187,8 @@ export interface IVariantOrOptionForPosition {
 }
 
 export enum EPriority {
-  FIRST = "FIRST",
-  SECOND = "SECOND",
+  FIRST = 'FIRST',
+  SECOND = 'SECOND',
 }
 
 export interface IPositionForOrder {
@@ -205,8 +208,8 @@ export interface IPositionForOrder {
 }
 
 export enum EPositionsStatuses {
-  WAITING = "w",
-  DONE = "d",
+  WAITING = 'w',
+  DONE = 'd',
 }
 
 export interface IOrder {

@@ -1,23 +1,14 @@
-import styled from "@emotion/styled";
-import {
-  black2,
-  blackDivider,
-  blackText1,
-  blackText2,
-  diagramColors,
-  tab1,
-  tab2,
-} from "../../styles";
-import { Cell, Pie, PieChart } from "recharts";
-import { DayWithOrders } from "./types";
-import { useTranslation } from "react-i18next";
-import { memo, useMemo, useState } from "react";
-import { useAuth } from "../Auth/Context";
-import { formatPrice } from "../../utils/priceFormatter";
+import styled from '@emotion/styled';
+import { memo, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { useAuth } from '../../providers/Auth';
+
+import { DayWithOrders } from './types';
 
 const Container = styled.div`
-  background: ${black2};
-  padding: 20px 30px 0px;
+  background: ${(props) => props.theme.background2};
+  padding: 20px 30px 30px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -30,10 +21,7 @@ const List = styled.div`
   font-size: 16px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   height: 100%;
-  max-height: 500px;
-  padding-bottom: 30px;
   margin-top: 20px;
   gap: 10px;
   @media (max-width: 750px) {
@@ -49,23 +37,23 @@ const Item = styled.div`
 
 const ItemQty = styled.div`
   display: flex;
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
 `;
 
 const ItemName = styled.div`
   display: flex;
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
 `;
 
 const Title = styled.div`
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
   font-weight: 600;
   font-size: 32px;
   line-height: 36px;
 `;
 
 const SubTitle = styled.div`
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
   font-size: 16px;
 `;
 
@@ -75,8 +63,9 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.div<{ active: boolean }>`
-  background: ${(p) => (p.active ? tab1 : tab2)};
-  color: ${blackText1};
+  background: ${(p) =>
+    p.active ? (props) => props.theme.tab1 : (props) => props.theme.tab2};
+  color: ${(props) => props.theme.white1};
   padding: 5px 20px;
   border-radius: 20px;
   cursor: pointer;
@@ -127,7 +116,7 @@ export const StatsProducts = memo((props: Props) => {
 
         return acc;
       },
-      {}
+      {},
     );
 
     return Object.values(summaryObject) ?? [];
@@ -143,12 +132,12 @@ export const StatsProducts = memo((props: Props) => {
               if (acc[id]) {
                 acc[id] = { ...acc[id], qty: acc[id].qty + 1 };
               } else {
-                acc[id] = { name: p.n ?? "", qty: 1 };
+                acc[id] = { name: p.n ?? '', qty: 1 };
               }
             });
 
             return acc;
-          }, {}) ?? []
+          }, {}) ?? [],
         ) as Product[]
       )?.sort((a, b) => b.qty - a.qty);
     }
@@ -162,32 +151,32 @@ export const StatsProducts = memo((props: Props) => {
               if (acc[id]) {
                 acc[id] = { ...acc[id], qty: acc[id].qty + 1 };
               } else {
-                acc[id] = { name: p.n ?? "", qty: 1 };
+                acc[id] = { name: p.n ?? '', qty: 1 };
               }
             });
           });
 
           return acc;
-        }, {})
+        }, {}),
       ) as Product[]
     )?.sort((a, b) => b.qty - a.qty);
   }, [selectedDay, ordersByDays, isFullPeriod]);
 
   return (
     <Container>
-      <Title>{t("newStats.dayProducts.title")}</Title>
-      <SubTitle>{t("newStats.dayProducts.subtitle")}</SubTitle>
+      <Title>{t('newStats.dayProducts.title')}</Title>
+      <SubTitle>{t('newStats.dayProducts.subtitle')}</SubTitle>
       <Tabs>
         <Tab onClick={() => setIsFullPeriod(true)} active={isFullPeriod}>
-          {t("newStats.dayProducts.allPeriod")}
+          {t('newStats.dayProducts.allPeriod')}
         </Tab>
         <Tab onClick={() => setIsFullPeriod(false)} active={!isFullPeriod}>
-          {t("newStats.dayProducts.onlyDay")}
+          {t('newStats.dayProducts.onlyDay')}
         </Tab>
       </Tabs>
       <List>
-        {products.map((p) => (
-          <Item>
+        {products.map((p, i) => (
+          <Item key={p.name + p.qty + i}>
             <ItemQty>{p.qty}x</ItemQty>
             <ItemName>{p.name}</ItemName>
           </Item>

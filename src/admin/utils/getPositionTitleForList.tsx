@@ -1,9 +1,11 @@
-import styled from "@emotion/styled";
-import i18n from "../i18n";
-import { getPositionPriceWithDiscount } from "./getPositionPriceWithDiscount";
-import { IPositionForOrder } from "../../back/types";
-import { newPallet } from "../styles";
-import { dateDiffNowHHmm } from "./timeInFormat";
+import styled from '@emotion/styled';
+
+import { IItem, IPositionForOrder } from '../../back/types';
+import i18n from '../i18n';
+import { newPallet } from '../styles';
+
+import { getPositionPriceWithDiscount } from './getPositionPriceWithDiscount';
+import { dateDiffNowHHmm } from './timeInFormat';
 
 const PosForOrderTitle = styled.div`
   display: flex;
@@ -33,23 +35,35 @@ const PosForOrderPricesDiscount = styled(PosForOrderTitleDiscount)`
   height: 25px;
 `;
 
+export const getPositionNameInLang = (
+  position: IPositionForOrder | IItem,
+): string => {
+  const langName = position?.t?.find((t) => t.l === i18n.language)?.t;
+
+  if (!langName || langName === '') {
+    return position.n ?? '';
+  }
+
+  return langName;
+};
+
 export const getPositionTitleForList = (
   position: IPositionForOrder,
   discountForOrder: number | undefined,
   symbol: string | undefined,
-  type?: "time" | "price"
+  type?: 'time' | 'price',
 ) => {
   const discountInPercent =
     !position.d || position.d <= 0 ? discountForOrder ?? 0 : position.d ?? 0;
   let langName = position?.t?.find((t) => t.l === i18n.language)?.t;
-  if (!langName || langName === "") {
+  if (!langName || langName === '') {
     langName = position.n;
   }
 
   return (
     <PosForOrderTitle>
       <PosForOrderTitleName>{langName}</PosForOrderTitleName>
-      {type === "price" ? (
+      {type === 'price' ? (
         <>
           {discountInPercent && Number(position.p) !== 0 ? (
             <PosForOrderTitleDiscount>
@@ -62,7 +76,7 @@ export const getPositionTitleForList = (
           </PosForOrderPricesDiscount>
         </>
       ) : null}
-      {type === "time" ? (
+      {type === 'time' ? (
         <PosForOrderPricesDiscount>
           {dateDiffNowHHmm(position.crt)}
         </PosForOrderPricesDiscount>

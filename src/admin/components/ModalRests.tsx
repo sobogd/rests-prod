@@ -1,5 +1,7 @@
-import styled from "@emotion/styled";
-import { FC, useState } from "react";
+import styled from '@emotion/styled';
+import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { AiOutlineClose } from 'react-icons/ai';
 import {
   TbAlignJustified,
   TbCheck,
@@ -11,19 +13,18 @@ import {
   TbCopy,
   TbTrash,
   TbPercentage,
-} from "react-icons/tb";
-import { AiOutlineClose } from "react-icons/ai";
-import Loading from "./loading";
-import { useMenu } from "../components/Menu/Menu";
+} from 'react-icons/tb';
+
+import { useAuth } from '../providers/Auth';
 import {
   boxShadowRight,
   textDefaultColor,
   backgroundDefault,
   boxShadow,
   newBorderColor,
-} from "../styles";
-import { useTranslation } from "react-i18next";
-import { useAuth } from "./Auth/Context";
+} from '../styles';
+
+import { Loading } from './Loading';
 
 const ModalRestsDiv = styled.div<{
   isShow?: boolean;
@@ -35,10 +36,10 @@ const ModalRestsDiv = styled.div<{
 }>`
   position: absolute;
   z-index: 200;
-  background: ${({ background }) => background ?? "white"};
+  background: ${({ background }) => background ?? 'white'};
   display: flex;
   flex-direction: column;
-  width: 100% ${({ isFullScreen }) => (isFullScreen ? "!important" : null)};
+  width: 100% ${({ isFullScreen }) => (isFullScreen ? '!important' : null)};
   height: 100%;
   padding: 0;
   box-sizing: border-box;
@@ -46,7 +47,7 @@ const ModalRestsDiv = styled.div<{
   overflow: hidden;
   transition: 0.3s;
   right: ${({ isShow }) =>
-    isShow === undefined || isShow === true ? "0" : "-100%"};
+    isShow === undefined || isShow === true ? '0' : '-100%'};
   .loading {
     position: absolute;
     width: 100%;
@@ -63,16 +64,16 @@ const ModalRestsDiv = styled.div<{
       isAdditionalForAdditional,
     }) => {
       if (isAdditionalForAdditional) {
-        return "100%";
+        return '100%';
       }
       if (!isGeneral && isShow) {
-        return "calc((100% - 320px) / 2)";
+        return 'calc((100% - 320px) / 2)';
       }
       if (isGeneral && !isShow) {
         if (isOpenAdditional) {
-          return "calc((100% - 320px) / 2)";
+          return 'calc((100% - 320px) / 2)';
         } else {
-          return "calc((100% - 320px))";
+          return 'calc((100% - 320px))';
         }
       }
     }};
@@ -83,25 +84,26 @@ const ModalRestsDiv = styled.div<{
       isFullScreen,
     }) => {
       if (isFullScreen) {
-        return "0";
+        return '0';
       }
       if (isAdditionalForAdditional) {
         if (isShow) {
-          return "0";
+          return '0';
         } else {
-          return "100%";
+          return '100%';
         }
       }
       if (!isGeneral && isShow) {
-        return "calc((100% - 320px) / 2 + 320px)";
+        return 'calc((100% - 320px) / 2 + 320px)';
       }
       if (!isGeneral && !isShow) {
-        return "100%";
+        return '100%';
       }
       if (isGeneral) {
-        return "320px";
+        return '320px';
       }
-      return "320px";
+
+      return '320px';
     }};
     pointer-events: inherit;
   }
@@ -242,9 +244,9 @@ const MoreButtons = styled.div<{ isOpenLang: boolean }>`
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: ${({ isOpenLang }) => (isOpenLang ? "1" : "0")};
+  opacity: ${({ isOpenLang }) => (isOpenLang ? '1' : '0')};
   transition: 0.3s;
-  pointer-events: ${({ isOpenLang }) => (isOpenLang ? "inherit" : "none")};
+  pointer-events: ${({ isOpenLang }) => (isOpenLang ? 'inherit' : 'none')};
   ul {
     position: absolute;
     top: 70px;
@@ -281,9 +283,9 @@ const MenuRestsHeaderLangs = styled.div<{ isOpenLang: boolean }>`
   width: 100%;
   height: 100%;
   z-index: 2;
-  opacity: ${({ isOpenLang }) => (isOpenLang ? "1" : "0")};
+  opacity: ${({ isOpenLang }) => (isOpenLang ? '1' : '0')};
   transition: 0.3s;
-  pointer-events: ${({ isOpenLang }) => (isOpenLang ? "inherit" : "none")};
+  pointer-events: ${({ isOpenLang }) => (isOpenLang ? 'inherit' : 'none')};
   ul {
     position: absolute;
     top: 70px;
@@ -314,19 +316,19 @@ const MenuRestsHeaderLangs = styled.div<{ isOpenLang: boolean }>`
   }
 `;
 
-type IFooterStickType = "new" | "save" | "copy" | "next" | "trash" | "discount";
+type IFooterStickType = 'new' | 'save' | 'copy' | 'next' | 'trash' | 'discount';
 
 const getIconForFooterStick = (icon: IFooterStickType) => {
   switch (icon) {
-    case "new":
+    case 'new':
       return <TbPlus />;
-    case "copy":
+    case 'copy':
       return <TbCopy />;
-    case "next":
+    case 'next':
       return <TbChevronRight />;
-    case "trash":
+    case 'trash':
       return <TbTrash />;
-    case "discount":
+    case 'discount':
       return <TbPercentage />;
     default:
       return <TbCheck />;
@@ -379,7 +381,6 @@ export const ModalRests: FC<{
 }) => {
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isOpenLang, setIsOpenLang] = useState<boolean>(false);
-  const { setIsOpenMenu } = useMenu();
   const { whoami } = useAuth();
   const { i18n } = useTranslation();
 
@@ -398,7 +399,7 @@ export const ModalRests: FC<{
             <TbChevronLeft />
           </ModalRestsHeaderBack>
         ) : !isFullScreen ? (
-          <ModalRestsHeaderMenu onClick={() => setIsOpenMenu(true)}>
+          <ModalRestsHeaderMenu onClick={() => {}}>
             <TbAlignJustified />
           </ModalRestsHeaderMenu>
         ) : null}
@@ -446,8 +447,8 @@ export const ModalRests: FC<{
       </ModalRestsHeader>
       <ModalRestsBody
         style={{
-          padding: withPadding ? "15px" : undefined,
-          paddingBottom: footerSticks?.length ? "65px" : undefined,
+          padding: withPadding ? '15px' : undefined,
+          paddingBottom: footerSticks?.length ? '65px' : undefined,
           background,
         }}
       >
@@ -455,7 +456,7 @@ export const ModalRests: FC<{
       </ModalRestsBody>
       {footerButton ? (
         <ModalRestsFooterButton
-          type={footerButton?.isSubmit ? "submit" : undefined}
+          type={footerButton?.isSubmit ? 'submit' : undefined}
           onClick={footerButton.onClick}
         >
           {footerButton.title}

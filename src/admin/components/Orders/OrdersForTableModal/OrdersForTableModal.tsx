@@ -1,11 +1,13 @@
-import { FC, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { OrderModal } from "../OrderModal/OrderModal";
-import { OrdersForTableModalList } from "./OrdersForTableModalList";
-import { ModalRests } from "../../ModalRests";
-import Loading from "../../loading";
-import { useLazyListOrdersForTableQuery } from "../api";
-import NoData from "../../NoData";
+import { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Loading } from '../../Loading';
+import { ModalRests } from '../../ModalRests';
+import NoData from '../../NoData';
+import { useLazyListOrdersForTableQuery } from '../api';
+import { OrderModal } from '../OrderModal/OrderModal';
+
+import { OrdersForTableModalList } from './OrdersForTableModalList';
 
 export const OrdersForTableModal: FC<{
   setTableId: (orderId: number | undefined) => void;
@@ -13,7 +15,7 @@ export const OrdersForTableModal: FC<{
 }> = ({ tableId, setTableId }) => {
   const i18n = useTranslation();
   const [orderNumber, setOrderNumber] = useState<number | null | undefined>(
-    undefined
+    undefined,
   );
 
   const [
@@ -32,11 +34,11 @@ export const OrdersForTableModal: FC<{
   return (
     <>
       <ModalRests
-        title={`${i18n.t("orders.tabModTitle")}`}
+        title={`${i18n.t('orders.tabModTitle')}`}
         onBack={() => setTableId(undefined)}
         footerSticks={[
           {
-            icon: "new",
+            icon: 'new',
             onClick: () => {
               setOrderNumber(null);
             },
@@ -53,7 +55,7 @@ export const OrdersForTableModal: FC<{
         />
         <Loading isLoading={isLoading} />
         {!orders?.length ? (
-          <NoData pt text={i18n.t("orders.emptyOrders")} />
+          <NoData pt text={i18n.t('orders.emptyOrders')} />
         ) : (
           <OrdersForTableModalList
             orders={orders}

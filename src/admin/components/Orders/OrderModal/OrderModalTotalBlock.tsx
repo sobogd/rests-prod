@@ -1,10 +1,11 @@
-import { FC, useMemo } from "react";
-import { useTranslation } from "react-i18next";
-import getSummForOrder from "../../../../utils/getSummForOrder";
-import { useAuth } from "../../Auth/Context";
-import styled from "@emotion/styled";
-import { IPositionForOrder } from "../../../../back/types";
-import { newPallet, boxShadow } from "../../../styles";
+import styled from '@emotion/styled';
+import { FC, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { IPositionForOrder } from '../../../../back/types';
+import getSummForOrder from '../../../../utils/getSummForOrder';
+import { useAuth } from '../../../providers/Auth';
+import { newPallet, boxShadow } from '../../../styles';
 
 const TotalContainer = styled.div`
   float: left;
@@ -43,21 +44,22 @@ export const OrderModalTotalBlock: FC<{
 
   const { summWithoutDiscount, summWithDiscount } = useMemo(
     () => getSummForOrder(positions, discountInPercent),
-    [positions, discountInPercent]
+    [positions, discountInPercent],
   );
 
-  const isWithoutDiscount = Number(summWithoutDiscount) === Number(summWithDiscount);
+  const isWithoutDiscount =
+    Number(summWithoutDiscount) === Number(summWithDiscount);
 
   return (
     <TotalContainer onClick={() => onClickTotalBlcok()}>
-      <span>{i18n.t("orders.totalTitle")}</span>
+      <span>{i18n.t('orders.totalTitle')}</span>
       <span>
         {summWithDiscount}
         {symbol}
       </span>
       <b
         style={{
-          display: isWithoutDiscount ? "none" : undefined,
+          display: isWithoutDiscount ? 'none' : undefined,
         }}
       >
         ({summWithDiscount - summWithoutDiscount}

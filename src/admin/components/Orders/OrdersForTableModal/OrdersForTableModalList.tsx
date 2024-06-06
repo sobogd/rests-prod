@@ -11,7 +11,7 @@ const OrderForTableTitle = styled.div`
   align-items: center;
   gap: 8px;
   span {
-    :nth-child(2) {
+    :nth-of-type(2) {
       background: ${newPallet.orange1};
       color: white !important;
       border-radius: 5px;
@@ -19,7 +19,7 @@ const OrderForTableTitle = styled.div`
       padding: 3px 5px;
       white-space: nowrap;
     }
-    :nth-child(3) {
+    :nth-of-type(3) {
       background: ${textDefaultColor};
       color: white !important;
       border-radius: 5px;

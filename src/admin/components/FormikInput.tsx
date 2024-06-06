@@ -1,7 +1,12 @@
 import React from "react";
 import styled from "@emotion/styled";
 import { useFormikContext } from "formik";
-import { backgroundDefault, newBorderColor, errorColor, textDefaultColor } from "../styles";
+import {
+  backgroundDefault,
+  newBorderColor,
+  errorColor,
+  textDefaultColor,
+} from "../styles";
 
 const Container = styled.div<{ mb?: boolean }>`
   ${({ mb }) => (mb ? `margin-bottom: 15px;` : null)}
@@ -74,7 +79,8 @@ const FormikInput: React.FC<{
   type?: string;
   mb?: boolean;
 }> = ({ name, label, mb, type }) => {
-  const { handleChange, handleBlur, errors, getFieldProps } = useFormikContext<any>();
+  const { handleChange, handleBlur, errors, getFieldProps } =
+    useFormikContext<any>();
 
   return (
     <Container mb={mb}>
@@ -91,7 +97,9 @@ const FormikInput: React.FC<{
           document.activeElement.blur();
         }}
       />
-      {!!errors?.[name] ? <Error mb={mb}>{errors[name] as string}</Error> : null}
+      {!!errors?.[name] ? (
+        <Error mb={mb}>{errors[name] as string}</Error>
+      ) : null}
     </Container>
   );
 };

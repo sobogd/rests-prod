@@ -1,17 +1,21 @@
-import { useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { ModalRests } from "../ModalRests";
-import Loading from "../loading";
-import { format } from "date-fns";
-import { useLazyPeriodStatsQuery } from "./api";
-import styled from "@emotion/styled";
-import { blueGradient, pinkGradient } from "../../styles";
-import { IOrder } from "../../../back/types";
-import getSummForOrder from "../../../utils/getSummForOrder";
-import { usePaymentMethodsQuery } from "../Orders/api";
-import { DayWithOrders } from "./types";
+import styled from '@emotion/styled';
+import { format } from 'date-fns';
+import { useEffect, useMemo, useState } from 'react';
 
-import { useAuth } from "../Auth/Context";
+import { IOrder } from '../../../back/types';
+import getSummForOrder from '../../../utils/getSummForOrder';
+import { useAuth } from '../../providers/Auth';
+import { useTheme } from '../../providers/Theme';
+import { Loading } from '../Loading';
+import { usePaymentMethodsQuery } from '../Orders/api';
+
+import { useLazyPeriodStatsQuery } from './api';
+import { useOrderReturnMutation } from './api';
+import { StatsChart } from './StatsChart';
+import { StatsCookingTime } from './StatsCookingTime';
+import { StatsDetails } from './StatsDetails';
+import { StatsPayments } from './StatsPayments';
+import { StatsProducts } from './StatsProducts';
 import {
   StatisticContainer,
   StatisticSummaryDates,
@@ -19,13 +23,8 @@ import {
   StatisticSummaryCard,
   StatisticSummaryCardTitle,
   StatisticSummaryCardValue,
-} from "./styled";
-import { StatsChart } from "./StatsChart";
-import { StatsPayments } from "./StatsPayments";
-import { StatsDetails } from "./StatsDetails";
-import { useOrderReturnMutation } from "./api";
-import { StatsProducts } from "./StatsProducts";
-import { StatsCookingTime } from "./StatsCookingTime";
+} from './styled';
+import { DayWithOrders } from './types';
 
 const getInitialDates = (): { startDate: Date; endDate: Date } => {
   const startDate = new Date();
@@ -48,16 +47,17 @@ const StatsHorisGrid = styled.div`
 `;
 
 export const Stats = () => {
-  const i18n = useTranslation();
+  const { theme } = useTheme();
+
   const [dayStart, setDayStart] = useState<string>(
-    format(getInitialDates().startDate, "yyyy-MM-dd")
+    format(getInitialDates().startDate, 'yyyy-MM-dd'),
   );
   const [dayEnd, setDayEnd] = useState<string>(
-    format(getInitialDates().endDate, "yyyy-MM-dd")
+    format(getInitialDates().endDate, 'yyyy-MM-dd'),
   );
 
   const symbol = useAuth()?.whoami?.company?.symbol;
-  const int = Intl.NumberFormat("en-US");
+  const int = Intl.NumberFormat('en-US');
 
   const [selectedDay, setSelectedDay] = useState<DayWithOrders | undefined>();
   const [load, { data, isLoading, isFetching }] = useLazyPeriodStatsQuery();
@@ -65,16 +65,17 @@ export const Stats = () => {
     data: paymentMethods,
     isLoading: isLoadingPaymentMethods,
     isFetching: isFetchingPaymentMethods,
+    isUninitialized,
   } = usePaymentMethodsQuery();
 
   const [orderReturn, { isLoading: isLoadingReturn }] =
     useOrderReturnMutation();
 
   useEffect(() => {
-    if (dayStart && dayStart !== "" && dayEnd && dayEnd !== "") {
+    if (dayStart && dayStart !== '' && dayEnd && dayEnd !== '') {
       load({ dayStart, dayEnd });
     }
-  }, [dayStart, dayEnd]);
+  }, [dayStart, dayEnd, load]);
 
   const ordersByDays: DayWithOrders[] = useMemo(() => {
     if (!paymentMethods) return [];
@@ -84,26 +85,27 @@ export const Stats = () => {
         if (order.crt) {
           const stringDate: string = format(
             new Date(Number(order.crt)),
-            "dd.MM-yyyy"
+            'dd.MM-yyyy',
           );
           acc[stringDate] = [...(acc[stringDate] ?? []), order];
         }
+
         return acc;
       },
-      {}
+      {},
     );
 
     if (!ordersByDaysObject) return [];
 
     return Object.keys(ordersByDaysObject).map((key) => {
       const summary = paymentMethods.map(({ title }) => ({
-        title: title ?? "",
+        title: title ?? '',
         total: ordersByDaysObject[key]
           .filter((order) => order.m === title)
           .reduce(
             (acc: number, order: IOrder) =>
               acc + getSummForOrder(order.p, order.d).summWithDiscount,
-            0
+            0,
           ),
       }));
 
@@ -124,12 +126,12 @@ export const Stats = () => {
 
   const totalPerPeriod = useMemo(
     () => ordersByDays.reduce((acc, day) => acc + day.total, 0),
-    [ordersByDays]
+    [ordersByDays],
   );
 
   const averageOrderTotal = useMemo(
     () => (data?.length ? totalPerPeriod / data.length : 0),
-    [totalPerPeriod, data]
+    [totalPerPeriod, data],
   );
 
   const orderReturnHandler = (id: number) => {
@@ -139,78 +141,63 @@ export const Stats = () => {
   };
 
   return (
-    <>
-      <ModalRests title={i18n.t("menu.names.STATS")} isGeneral={true}>
-        <StatisticContainer>
-          <Loading
-            isLoading={
-              isLoading ||
-              isFetching ||
-              isLoadingPaymentMethods ||
-              isFetchingPaymentMethods ||
-              isLoadingReturn
-            }
-            isDark
+    <StatisticContainer>
+      <Loading
+        isLoading={
+          isLoading ||
+          isFetching ||
+          isLoadingPaymentMethods ||
+          isFetchingPaymentMethods ||
+          isLoadingReturn ||
+          isUninitialized
+        }
+        isFullscreen
+      />
+      <StatsHorisGrid>
+        <StatisticSummaryDates>
+          <StatisticSummaryDatesInput
+            // defaultValue={dayStart}
+            value={dayStart}
+            type="date"
+            onChange={(e) => setDayStart(e.target.value)}
           />
-          <StatsHorisGrid>
-            <StatisticSummaryDates>
-              <StatisticSummaryDatesInput
-                defaultValue={dayStart}
-                value={dayStart}
-                type="date"
-                onChange={(e) => setDayStart(e.target.value)}
-              />
-              <StatisticSummaryDatesInput
-                defaultValue={dayEnd}
-                value={dayEnd}
-                type="date"
-                onChange={(e) => setDayEnd(e.target.value)}
-              />
-            </StatisticSummaryDates>
-            <StatisticSummaryCard background={pinkGradient}>
-              <StatisticSummaryCardTitle>
-                Total per period
-              </StatisticSummaryCardTitle>
-              <StatisticSummaryCardValue>
-                {int.format(totalPerPeriod)} {symbol}
-              </StatisticSummaryCardValue>
-            </StatisticSummaryCard>
-            <StatisticSummaryCard background={blueGradient}>
-              <StatisticSummaryCardTitle>
-                Average order cost
-              </StatisticSummaryCardTitle>
-              <StatisticSummaryCardValue>
-                {int.format(Math.ceil(averageOrderTotal))} {symbol} (
-                {data?.length ?? 0})
-              </StatisticSummaryCardValue>
-            </StatisticSummaryCard>
-          </StatsHorisGrid>
-          <StatsChart
-            ordersByDays={ordersByDays}
-            setSelectedDay={setSelectedDay}
+          <StatisticSummaryDatesInput
+            // defaultValue={dayEnd}
+            value={dayEnd}
+            type="date"
+            onChange={(e) => setDayEnd(e.target.value)}
           />
-          <StatsHorisGrid>
-            <StatsPayments
-              selectedDay={selectedDay}
-              ordersByDays={ordersByDays}
-            />
-            <StatsCookingTime
-              selectedDay={selectedDay}
-              ordersByDays={ordersByDays}
-            />
-          </StatsHorisGrid>
-          <StatsHorisGrid>
-            <StatsProducts
-              selectedDay={selectedDay}
-              ordersByDays={ordersByDays}
-            />
-            <StatsDetails
-              selectedDay={selectedDay}
-              onReturn={orderReturnHandler}
-            />
-          </StatsHorisGrid>
-        </StatisticContainer>
-      </ModalRests>
-    </>
+        </StatisticSummaryDates>
+        <StatisticSummaryCard background={theme.primaryGradient}>
+          <StatisticSummaryCardTitle>
+            Total per period
+          </StatisticSummaryCardTitle>
+          <StatisticSummaryCardValue>
+            {int.format(totalPerPeriod)} {symbol}
+          </StatisticSummaryCardValue>
+        </StatisticSummaryCard>
+        <StatisticSummaryCard background={theme.secondaryGradient}>
+          <StatisticSummaryCardTitle>
+            Average order cost
+          </StatisticSummaryCardTitle>
+          <StatisticSummaryCardValue>
+            {int.format(Math.ceil(averageOrderTotal))} {symbol} (
+            {data?.length ?? 0})
+          </StatisticSummaryCardValue>
+        </StatisticSummaryCard>
+      </StatsHorisGrid>
+      <StatsChart ordersByDays={ordersByDays} setSelectedDay={setSelectedDay} />
+      <StatsHorisGrid>
+        <StatsPayments selectedDay={selectedDay} ordersByDays={ordersByDays} />
+        <StatsCookingTime
+          selectedDay={selectedDay}
+          ordersByDays={ordersByDays}
+        />
+      </StatsHorisGrid>
+      <StatsHorisGrid>
+        <StatsProducts selectedDay={selectedDay} ordersByDays={ordersByDays} />
+        <StatsDetails selectedDay={selectedDay} onReturn={orderReturnHandler} />
+      </StatsHorisGrid>
+    </StatisticContainer>
   );
 };

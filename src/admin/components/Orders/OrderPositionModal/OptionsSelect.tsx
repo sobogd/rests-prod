@@ -1,11 +1,12 @@
-import { FC } from "react";
-import styled from "@emotion/styled";
-import { IItem } from "../../../../back/types";
-import { useAuth } from "../../Auth/Context";
-import { useTranslation } from "react-i18next";
-import List from "../../List";
-import { TbMinus, TbPlus } from "react-icons/tb";
-import { newPallet } from "../../../styles";
+import styled from '@emotion/styled';
+import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TbMinus, TbPlus } from 'react-icons/tb';
+
+import { IItem } from '../../../../back/types';
+import { useAuth } from '../../../providers/Auth';
+import { newPallet } from '../../../styles';
+import List from '../../List';
 
 type Option = { n?: string; p?: number; q?: number };
 
@@ -72,9 +73,10 @@ export const OptionsSelect: FC<{
     <List
       items={optionsWithTranslations.map((o, i) => {
         let langName = position?.ot?.[i]?.find((t) => t.l === i18n.language)?.t;
-        if (!langName || langName === "") {
+        if (!langName || langName === '') {
           langName = o?.n;
         }
+
         return {
           description: `+${o?.p} ${symbol}`,
           title: (
@@ -83,12 +85,18 @@ export const OptionsSelect: FC<{
               <OptionsSelectButtonsBlock>
                 <OptionsSelectButton
                   onClick={() => {
-                    const nowQuantity = options?.find((oi) => oi.n === o.n)?.q ?? 0;
+                    const nowQuantity =
+                      options?.find((oi) => oi.n === o.n)?.q ?? 0;
                     if (nowQuantity === 1) {
-                      handleChangeOptions((options ?? []).filter((oi) => oi.n !== o.n));
+                      handleChangeOptions(
+                        (options ?? []).filter((oi) => oi.n !== o.n),
+                      );
                     } else {
                       handleChangeOptions(
-                        (options ?? []).map((oi) => ({ ...oi, q: oi.n === o.n ? (oi.q ?? 1) - 1 : oi.q }))
+                        (options ?? []).map((oi) => ({
+                          ...oi,
+                          q: oi.n === o.n ? (oi.q ?? 1) - 1 : oi.q,
+                        })),
                       );
                     }
                   }}
@@ -101,7 +109,10 @@ export const OptionsSelect: FC<{
                     const isOptionAdded = !!options?.find((oi) => oi.n === o.n);
                     if (isOptionAdded) {
                       handleChangeOptions(
-                        (options ?? []).map((oi) => ({ ...oi, q: oi.n === o.n ? (oi.q ?? 1) + 1 : oi.q }))
+                        (options ?? []).map((oi) => ({
+                          ...oi,
+                          q: oi.n === o.n ? (oi.q ?? 1) + 1 : oi.q,
+                        })),
                       );
                     } else {
                       handleChangeOptions([...(options ?? []), { ...o, q: 1 }]);

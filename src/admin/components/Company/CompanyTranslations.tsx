@@ -47,7 +47,7 @@ const TranslationCard = styled(UniversalListCard)`
       background: white;
     }
   }
-  :nth-child(1) {
+  :nth-of-type(1) {
     border-top: 1px solid #ede7ff;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
@@ -71,7 +71,7 @@ const TranslationCard = styled(UniversalListCard)`
     border-bottom-right-radius: 0;
   }
   > div {
-    :nth-child(1) {
+    :nth-of-type(1) {
       margin-right: 1px;
       width: 100%;
     }
@@ -79,7 +79,7 @@ const TranslationCard = styled(UniversalListCard)`
   label {
     display: none;
   }
-  :nth-child(1) {
+  :nth-of-type(1) {
     label {
       display: flex;
     }
@@ -121,7 +121,9 @@ export const CompanyTranslation: FC = () => {
   const handleRemoveTranslation = (idx: number) => () => {
     setValues({
       ...values,
-      langs: (values.langs ?? []).filter((_: unknown, index: number) => index !== idx),
+      langs: (values.langs ?? []).filter(
+        (_: unknown, index: number) => index !== idx
+      ),
     });
   };
 

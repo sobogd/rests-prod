@@ -1,16 +1,6 @@
-import styled from "@emotion/styled";
-import {
-  black2,
-  black3,
-  blackDivider,
-  blackText1,
-  blackText2,
-  tab1,
-  tab2,
-} from "../../styles";
-import { DayWithOrders } from "./types";
-import { useTranslation } from "react-i18next";
-import { memo } from "react";
+import styled from '@emotion/styled';
+import { memo } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   TbCalculator,
   TbDeviceAnalytics,
@@ -18,12 +8,14 @@ import {
   TbMap,
   TbNumber,
   TbWriting,
-} from "react-icons/tb";
-import { getTimeFromUTCTimeStamp } from "../../utils/getUTCTimestamp";
-import getSummForOrder from "../../../utils/getSummForOrder";
-import { useAllTablesQuery } from "../Orders/api";
-import { useAuth } from "../Auth/Context";
-import { dateHHmm } from "../../utils/timeInFormat";
+} from 'react-icons/tb';
+
+import getSummForOrder from '../../../utils/getSummForOrder';
+import { useAuth } from '../../providers/Auth';
+import { dateHHmm } from '../../utils/timeInFormat';
+import { useAllTablesQuery } from '../Orders/api';
+
+import { DayWithOrders } from './types';
 
 type Props = {
   selectedDay?: DayWithOrders;
@@ -31,8 +23,8 @@ type Props = {
 };
 
 const Container = styled.div`
-  background: ${black2};
-  padding: 20px 30px 0px;
+  background: ${(props) => props.theme.background2};
+  padding: 20px 30px 30px;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -42,14 +34,14 @@ const Container = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
   font-weight: 600;
   font-size: 32px;
   line-height: 36px;
 `;
 
 const SubTitle = styled.div`
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
   font-size: 16px;
 `;
 
@@ -57,10 +49,7 @@ const List = styled.div`
   font-size: 16px;
   display: flex;
   flex-direction: column;
-  overflow-y: scroll;
   height: 100%;
-  max-height: 570px;
-  padding-bottom: 30px;
   gap: 30px;
   margin-top: 20px;
   @media (max-width: 750px) {
@@ -74,7 +63,12 @@ const Item = styled.div`
   flex-direction: column;
   gap: 20px;
   padding-bottom: 30px;
-  border-bottom: 1px solid ${blackDivider};
+  border-bottom: 1px solid ${(props) => props.theme.divider};
+
+  :last-of-type {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
 `;
 
 const Tabs = styled.div`
@@ -84,10 +78,10 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.div`
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
   padding: 5px 20px;
   border-radius: 20px;
-  background: ${black3};
+  background: ${(props) => props.theme.background3};
   display: flex;
   align-items: center;
   gap: 15px;
@@ -114,14 +108,14 @@ const ItemProducts = styled.div`
 
 const ItemProduct = styled.div`
   font-size: 16px;
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
 `;
 
 const Return = styled.div`
   font-size: 16px;
-  color: ${blackText1};
+  color: ${(props) => props.theme.white1};
   width: 100%;
-  background: ${tab2};
+  background: ${(props) => props.theme.tab2};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,14 +142,15 @@ export const StatsDetails = memo((props: Props) => {
 
   return (
     <Container>
-      <Title>{t("newStats.dayDetails.title")}</Title>
-      <SubTitle>{t("newStats.dayDetails.subtitle")}</SubTitle>
+      <Title>{t('newStats.dayDetails.title')}</Title>
+      <SubTitle>{t('newStats.dayDetails.subtitle')}</SubTitle>
       <List>
         {selectedDay?.orders?.map((order) => {
           const table = tables?.find((t) => Number(t.id) === Number(order.t));
           const totalOrder = Number(
-            getSummForOrder(order.p, order.d).summWithDiscount
+            getSummForOrder(order.p, order.d).summWithDiscount,
           );
+
           return (
             <Item key={`cell-${order.n}`}>
               <Tabs>
@@ -172,7 +167,7 @@ export const StatsDetails = memo((props: Props) => {
                 <Tab>
                   <TbCalculator /> {totalOrder} {symbol}
                 </Tab>
-                {!!order.d ? (
+                {order.d ? (
                   <Tab>
                     <TbDiscount2 /> {order.d}%
                   </Tab>
@@ -181,7 +176,7 @@ export const StatsDetails = memo((props: Props) => {
                   <TbDeviceAnalytics />
                   <span>{order.m}</span>
                 </Tab>
-                {!!order.c && order.c !== "" ? (
+                {!!order.c && order.c !== '' ? (
                   <Tab>
                     <TbWriting /> {order.c}
                   </Tab>
@@ -189,14 +184,14 @@ export const StatsDetails = memo((props: Props) => {
               </Tabs>
               <ItemProducts>
                 {order.p.map((p, i) => (
-                  <ItemProduct>
+                  <ItemProduct key={(p.id?.toString() ?? '') + i}>
                     {/** @ts-ignore for old names values */}
                     {i + 1}. {p.n ?? p.name}
                   </ItemProduct>
                 ))}
               </ItemProducts>
               <Return onClick={() => onReturn(order?.id ?? 0)}>
-                {t("newStats.dayDetails.return")}
+                {t('newStats.dayDetails.return')}
               </Return>
             </Item>
           );

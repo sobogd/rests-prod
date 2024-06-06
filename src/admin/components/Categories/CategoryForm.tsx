@@ -1,19 +1,21 @@
-import { FC, useEffect } from "react";
-import { useTranslation } from "react-i18next";
-import { ModalRests } from "../ModalRests";
-import Loading from "../loading";
-import { Form, Formik, FormikHelpers, useFormikContext } from "formik";
+import { Form, Formik, FormikHelpers, useFormikContext } from 'formik';
+import { FC, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Notice } from '../../hooks/useNotification';
+import { UniversalList } from '../../styles';
+import { Loading } from '../Loading';
+import { ModalRests } from '../ModalRests';
+
 import {
   useCategoriesQuery,
   useCreateCategoryMutation,
   useDeleteCategoryMutation,
   useLazyCategoryQuery,
   useUpdateCategoryMutation,
-} from "./api";
-import { CategoryFormGeneral } from "./CategoryFormGeneral";
-import { CategoryFormTranslation } from "./CategoryFormTranslation";
-import { Notice } from "../../hooks/useNotification";
-import { UniversalList } from "../../styles";
+} from './api';
+import { CategoryFormGeneral } from './CategoryFormGeneral';
+import { CategoryFormTranslation } from './CategoryFormTranslation';
 
 export interface Values {
   name?: string;
@@ -26,8 +28,8 @@ export interface Values {
 }
 
 const defaultValues = {
-  name: "",
-  description: "",
+  name: '',
+  description: '',
   sort: 10,
   translations: [],
 };
@@ -66,9 +68,9 @@ const CategoryFormComponent: FC<Props> = ({
   useEffect(() => {
     if (data && selectedCategoryId != null) {
       setValues({
-        name: data.name ?? "",
-        description: data.description ?? "",
-        sort: data.sort ?? "",
+        name: data.name ?? '',
+        description: data.description ?? '',
+        sort: data.sort ?? '',
         translations: data.translations ?? [],
       });
     } else {
@@ -81,18 +83,18 @@ const CategoryFormComponent: FC<Props> = ({
       <ModalRests
         title={
           selectedCategoryId === null
-            ? i18n.t("categories.form.new")
-            : i18n.t("categories.form.edit")
+            ? i18n.t('categories.form.new')
+            : i18n.t('categories.form.edit')
         }
         onBack={onBack}
-        footerSticks={[{ icon: "save" }]}
+        footerSticks={[{ icon: 'save' }]}
         isShow={selectedCategoryId !== undefined ? true : false}
         isLoading={isLoading || isFetching || isDeleting}
         moreButtons={
           selectedCategoryId != null
             ? [
                 {
-                  title: i18n.t("categories.form.remove"),
+                  title: i18n.t('categories.form.remove'),
                   onClick: () =>
                     deleteCategory(selectedCategoryId ?? 0).then(() => {
                       refetch();
@@ -105,7 +107,7 @@ const CategoryFormComponent: FC<Props> = ({
             : undefined
         }
       >
-        <UniversalList style={{ padding: "15px" }}>
+        <UniversalList style={{ padding: '15px' }}>
           <CategoryFormGeneral />
           <CategoryFormTranslation />
         </UniversalList>
@@ -127,31 +129,32 @@ export const CategoryForm: FC<Props> = (props) => {
       validateOnChange={false}
       validate={(values) => {
         const errors: any = {};
-        if (!values.name) errors.name = t("categories.form.nameReq");
+        if (!values.name) errors.name = t('categories.form.nameReq');
         if (!values.description)
-          errors.description = t("categories.form.descriptionReq");
-        if (!values.sort) errors.sort = t("categories.form.sortReq");
+          errors.description = t('categories.form.descriptionReq');
+        if (!values.sort) errors.sort = t('categories.form.sortReq');
+
         return errors;
       }}
       initialValues={{}}
       onSubmit={(
         values: Values,
-        { setSubmitting, resetForm, setValues }: FormikHelpers<Values>
+        { setSubmitting, resetForm, setValues }: FormikHelpers<Values>,
       ) => {
         const method = !props.selectedCategoryId
           ? createCategory
           : updateCategory;
         method({
           id: props.selectedCategoryId || undefined,
-          name: values?.name ?? "",
+          name: values?.name ?? '',
           description: values?.description,
           sort: values?.sort ?? 100,
           translations:
             values?.translations?.map((i) => ({ ...i, id: undefined })) ?? [],
         }).then((res) => {
           // @ts-expect-error
-          if (!!res.error) {
-            Notice.error(t("users.form.error"));
+          if (res.error) {
+            Notice.error(t('users.form.error'));
           } else {
             props.onBack();
             props.refetch();

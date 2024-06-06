@@ -360,6 +360,47 @@
 				"type": "object",
 				"additionalProperties": false
 			},
+			"IVariant": {
+				"properties": {
+					"n": {
+						"type": "string"
+					},
+					"p": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"IOption": {
+				"properties": {
+					"n": {
+						"type": "string"
+					},
+					"p": {
+						"type": "number",
+						"format": "double"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
+			"ITranslation": {
+				"properties": {
+					"l": {
+						"type": "string"
+					},
+					"t": {
+						"type": "string"
+					},
+					"n": {
+						"type": "string"
+					}
+				},
+				"type": "object",
+				"additionalProperties": false
+			},
 			"IItem": {
 				"properties": {
 					"id": {
@@ -410,66 +451,26 @@
 					},
 					"v": {
 						"items": {
-							"properties": {
-								"p": {
-									"type": "number",
-									"format": "double"
-								},
-								"n": {
-									"type": "string"
-								}
-							},
-							"type": "object"
+							"$ref": "#/components/schemas/IVariant"
 						},
 						"type": "array"
 					},
 					"o": {
 						"items": {
-							"properties": {
-								"p": {
-									"type": "number",
-									"format": "double"
-								},
-								"n": {
-									"type": "string"
-								}
-							},
-							"type": "object"
+							"$ref": "#/components/schemas/IOption"
 						},
 						"type": "array"
 					},
 					"t": {
 						"items": {
-							"properties": {
-								"n": {
-									"type": "string"
-								},
-								"t": {
-									"type": "string"
-								},
-								"l": {
-									"type": "string"
-								}
-							},
-							"type": "object"
+							"$ref": "#/components/schemas/ITranslation"
 						},
 						"type": "array"
 					},
 					"vt": {
 						"items": {
 							"items": {
-								"properties": {
-									"n": {
-										"type": "string"
-									},
-									"t": {
-										"type": "string"
-									},
-									"l": {
-										"type": "string"
-									}
-								},
-								"type": "object"
+								"$ref": "#/components/schemas/ITranslation"
 							},
 							"type": "array"
 						},
@@ -478,18 +479,7 @@
 					"ot": {
 						"items": {
 							"items": {
-								"properties": {
-									"n": {
-										"type": "string"
-									},
-									"t": {
-										"type": "string"
-									},
-									"l": {
-										"type": "string"
-									}
-								},
-								"type": "object"
+								"$ref": "#/components/schemas/ITranslation"
 							},
 							"type": "array"
 						},

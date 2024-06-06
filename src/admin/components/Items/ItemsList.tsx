@@ -1,21 +1,27 @@
-import { FC, useEffect, useMemo, useState } from "react";
-import { useLazyItemsQuery } from "./api";
-import { useTranslation } from "react-i18next";
-import { ModalRests } from "../ModalRests";
-import { ItemForm } from "./ItemForm";
-import InputWithClear from "../InputWithClear";
-import NoData from "../NoData";
-import { IItem } from "../../../back/types";
-import { useAuth } from "../Auth/Context";
-import List from "../List";
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { IItem } from '../../../back/types';
+import { useAuth } from '../../providers/Auth';
+import InputWithClear from '../InputWithClear';
+import List from '../List';
+import { ModalRests } from '../ModalRests';
+import NoData from '../NoData';
+
+import { useLazyItemsQuery } from './api';
+import { ItemForm } from './ItemForm';
 
 export const ItemsList: FC = () => {
   const i18n = useTranslation();
   const symbol = useAuth()?.whoami?.company?.symbol;
 
-  const [selectedItemId, setSelectedItemId] = useState<number | null | undefined>(undefined);
-  const [selectedCopyItemId, setSelectedCopyItemId] = useState<number | undefined>(undefined);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedItemId, setSelectedItemId] = useState<
+    number | null | undefined
+  >(undefined);
+  const [selectedCopyItemId, setSelectedCopyItemId] = useState<
+    number | undefined
+  >(undefined);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const [load, { data, isLoading, isFetching }] = useLazyItemsQuery(undefined);
 
@@ -26,46 +32,53 @@ export const ItemsList: FC = () => {
   const filteredItems: IItem[] = useMemo(
     () =>
       data?.filter((item: IItem) =>
-        searchQuery !== "" && !item?.n?.toLowerCase().includes(searchQuery.toLowerCase()) ? false : true
+        searchQuery !== '' &&
+        !item?.n?.toLowerCase().includes(searchQuery.toLowerCase())
+          ? false
+          : true,
       ) ?? [],
-    [data, searchQuery]
+    [data, searchQuery],
   );
 
   return (
     <>
       <ModalRests
-        title={i18n.t("menu.names.POSITIONS")}
+        title={i18n.t('menu.names.POSITIONS')}
         footerSticks={[
           {
-            icon: "new",
+            icon: 'new',
             onClick: () => {
               setSelectedItemId(null);
             },
           },
         ]}
         withPadding
-        moreButtons={[{ title: i18n.t("items.list.update"), onClick: () => load() }]}
-        isOpenAdditional={selectedItemId !== undefined || selectedCopyItemId !== undefined}
+        moreButtons={[
+          { title: i18n.t('items.list.update'), onClick: () => load() },
+        ]}
+        isOpenAdditional={
+          selectedItemId !== undefined || selectedCopyItemId !== undefined
+        }
         isGeneral
         isLoading={isLoading || isFetching}
       >
         <InputWithClear
-          placeholder={i18n.t("items.list.search")}
+          placeholder={i18n.t('items.list.search')}
           value={searchQuery}
           onChangeValue={(value) => setSearchQuery(value as string)}
         />
         {!filteredItems?.length ? (
-          <NoData text={i18n.t("items.list.empty")} />
+          <NoData text={i18n.t('items.list.empty')} />
         ) : (
           <List
             items={filteredItems.map((item) => ({
-              buttonType: "next",
+              buttonType: 'next',
               onClick: () => setSelectedItemId(item.id),
               id: item.id,
               title: item.n,
-              description: `${i18n.t("items.list.sort")}: ${item?.s} / ${i18n.t("items.list.price")}: ${
-                item?.p
-              } ${symbol}`,
+              description: `${i18n.t('items.list.sort')}: ${item?.s} / ${i18n.t(
+                'items.list.price',
+              )}: ${item?.p} ${symbol}`,
             }))}
           />
         )}

@@ -1,30 +1,35 @@
-import { FC, useEffect, useMemo, useState } from "react";
-import { useTranslation } from "react-i18next";
-import Loading from "../loading";
-import { ModalRests } from "../ModalRests";
-import InputWithClear from "../InputWithClear";
-import NoData from "../NoData";
-import { ICategory } from "../../../back/types";
-import { useLazyCategoriesQuery } from "./api";
-import { CategoryForm } from "./CategoryForm";
-import List from "../List";
+import { FC, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { ICategory } from '../../../back/types';
+import InputWithClear from '../InputWithClear';
+import List from '../List';
+import { Loading } from '../Loading';
+import { ModalRests } from '../ModalRests';
+import NoData from '../NoData';
+
+import { useLazyCategoriesQuery } from './api';
+import { CategoryForm } from './CategoryForm';
 
 export const CategoriesList: FC = () => {
   const i18n = useTranslation();
 
-  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null | undefined>(undefined);
-  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<
+    number | null | undefined
+  >(undefined);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   const [load, { data, isLoading, isFetching }] = useLazyCategoriesQuery();
 
   const filteredCategories: ICategory[] = useMemo(
     () =>
       data?.filter((category: ICategory) =>
-        searchQuery !== "" && !category?.name?.toLowerCase().includes(searchQuery.toLowerCase())
+        searchQuery !== '' &&
+        !category?.name?.toLowerCase().includes(searchQuery.toLowerCase())
           ? false
-          : true
+          : true,
       ) ?? [],
-    [data, searchQuery]
+    [data, searchQuery],
   );
 
   useEffect(() => {
@@ -34,34 +39,38 @@ export const CategoriesList: FC = () => {
   return (
     <>
       <ModalRests
-        title={i18n.t("menu.names.CATEGORIES")}
+        title={i18n.t('menu.names.CATEGORIES')}
         isHaveMenu={true}
         footerSticks={[
           {
-            icon: "new",
+            icon: 'new',
             onClick: () => setSelectedCategoryId(null),
           },
         ]}
         withPadding
         isGeneral
         isOpenAdditional={selectedCategoryId !== undefined}
-        moreButtons={[{ title: i18n.t("categories.list.update"), onClick: () => load() }]}
+        moreButtons={[
+          { title: i18n.t('categories.list.update'), onClick: () => load() },
+        ]}
       >
         <Loading isLoading={isLoading || isFetching} />
         <InputWithClear
-          placeholder={i18n.t("categories.list.search")}
+          placeholder={i18n.t('categories.list.search')}
           value={searchQuery}
           onChangeValue={(value) => setSearchQuery(value as string)}
         />
         {!filteredCategories?.length ? (
-          <NoData text={i18n.t("categories.list.empty")} />
+          <NoData text={i18n.t('categories.list.empty')} />
         ) : (
           <List
             items={filteredCategories.map((category) => ({
               id: category.id,
               title: category.name,
-              description: `${i18n.t("categories.list.sort")}: ${category?.sort}`,
-              buttonType: "next",
+              description: `${i18n.t('categories.list.sort')}: ${
+                category?.sort
+              }`,
+              buttonType: 'next',
               onClick: () => setSelectedCategoryId(category.id),
             }))}
           />

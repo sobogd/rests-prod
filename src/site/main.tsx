@@ -21,7 +21,13 @@ const Page: FC = () => {
   }, [params?.login]);
 
   const page = useMemo(() => {
-    if (params?.page && params?.page !== "" && data != null && !isLoading && !isFetching) {
+    if (
+      params?.page &&
+      params?.page !== "" &&
+      data != null &&
+      !isLoading &&
+      !isFetching
+    ) {
       switch (params.page) {
         case EPages.HOME:
           return <Layout page={EPages.MENU} data={data} />;

@@ -1,38 +1,22 @@
-import styled from "@emotion/styled";
-import {
-  black2,
-  black3,
-  blackText1,
-  blackText2,
-  blackText3,
-  blue2,
-  diagramColors,
-  pink1,
-  pink2,
-  tab1,
-  tab2,
-} from "../../styles";
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Area,
-  Bar,
-  BarChart,
   CartesianGrid,
-  Cell,
   ComposedChart,
   Line,
-  Pie,
-  PieChart,
   ResponsiveContainer,
   XAxis,
   YAxis,
-} from "recharts";
-import { DayWithOrders } from "./types";
-import { useTranslation } from "react-i18next";
-import { memo, useMemo, useState } from "react";
-import { useAuth } from "../Auth/Context";
-import { formatPrice } from "../../utils/priceFormatter";
-import { useCategoriesQuery } from "../Categories/api";
-import { dateDurationHHmm } from "../../utils/timeInFormat";
+} from 'recharts';
+
+import { useAuth } from '../../providers/Auth';
+import { dateDurationHHmm } from '../../utils/timeInFormat';
+import { useCategoriesQuery } from '../Categories/api';
+
+import { DayWithOrders } from './types';
 
 type Props = {
   selectedDay?: DayWithOrders;
@@ -40,7 +24,7 @@ type Props = {
 };
 
 const Container = styled.div`
-  background: ${black2};
+  background: ${(props) => props.theme.background2};
   padding: 20px 30px 30px;
   border-radius: 20px;
   display: flex;
@@ -50,48 +34,27 @@ const Container = styled.div`
   max-width: 100%;
 `;
 
-const ChartContainer = styled.div`
+const ChartContainer = styled(ResponsiveContainer)`
   width: 100%;
   display: flex;
   height: 400px;
+  min-height: 400px;
 
   > div {
     max-width: 100%;
-    margin: 0 -25px;
   }
 `;
 
 const Title = styled.div`
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
   font-weight: 600;
   font-size: 32px;
   line-height: 36px;
 `;
 
 const SubTitle = styled.div`
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
   font-size: 16px;
-`;
-
-const ChartLabel = styled.div`
-  display: flex;
-  gap: 10px;
-`;
-
-const ChartLabelTotal = styled.div`
-  font-weight: 600;
-  color: ${blackText1};
-`;
-
-const ChartLabelTitle = styled.div`
-  color: ${blackText2};
-`;
-
-const ChartLabelColor = styled.div<{ background: string }>`
-  background: ${(p) => p.background};
-  width: 25px;
-  height: 25px;
-  border-radius: 20px;
 `;
 
 const Tabs = styled.div`
@@ -100,8 +63,9 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.div<{ active: boolean }>`
-  background: ${(p) => (p.active ? tab1 : tab2)};
-  color: ${blackText1};
+  background: ${(p) =>
+    p.active ? (props) => props.theme.tab1 : (props) => props.theme.tab2};
+  color: ${(props) => props.theme.white1};
   padding: 5px 20px;
   border-radius: 20px;
   cursor: pointer;
@@ -117,6 +81,7 @@ export const StatsCookingTime = memo((props: Props) => {
   const { selectedDay, ordersByDays } = props;
 
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const symbol = useAuth()?.whoami?.company?.symbol;
 
@@ -134,18 +99,22 @@ export const StatsCookingTime = memo((props: Props) => {
           name: c.name,
           avg: [],
         };
+
       return acc;
     }, []);
 
     if (!isFullPeriod) {
       selectedDay?.orders.forEach((order) => {
         order?.p?.forEach((position) => {
-          const id = position.cat;
-          const time = Number(position.f) - Number(position.crt);
+          const id = position?.cat;
+          const cookingTime = position?.f
+            ? Number(position?.f) - Number(position?.crt)
+            : undefined;
+
           if (id)
             categoriesObject[id] = {
               ...categoriesObject[id],
-              avg: [...categoriesObject[id]?.avg, time],
+              avg: [...categoriesObject[id]?.avg, cookingTime],
             };
         });
       });
@@ -173,18 +142,21 @@ export const StatsCookingTime = memo((props: Props) => {
     const averageByCategories = Object.values(categoriesObject)
       ?.filter((item: any) => item?.avg?.length > 0)
       ?.map((item: any) => {
+        const avgArray =
+          item.avg?.filter((avg: number) => Number(avg) > 0) ?? [];
+
         const averageTime =
-          item.avg?.reduce((acc: number, time: number) => acc + time, 0) /
-          item.avg?.length;
+          avgArray.reduce((acc: number, time: number) => acc + time, 0) /
+          avgArray.length;
 
         const maxTime = item.avg?.reduce(
           (acc: number, time: number) => (time >= acc ? time : acc),
-          0
+          0,
         );
 
         const minTime = item.avg.reduce(
           (acc: number, time: number) => (time <= acc ? time : acc),
-          9999999999999
+          9999999999999,
         );
 
         return {
@@ -201,7 +173,7 @@ export const StatsCookingTime = memo((props: Props) => {
 
         return {
           name: item.name,
-          categoryId: item.id,
+          categoryId: item.categoryId,
           averageTime: item.averageTime,
           maxTime:
             item.maxTime - item.averageTime >= hourInMs
@@ -218,18 +190,29 @@ export const StatsCookingTime = memo((props: Props) => {
     return averageByCategories ?? [];
   }, [ordersByDays, isFullPeriod, selectedDay, categories]);
 
-  const tickFormatter = (value: number) => dateDurationHHmm(value);
+  const dateFormatter = (value: number) => dateDurationHHmm(value);
+  const nameFormatter = useCallback(
+    (id: number) => {
+      const categoryName = categories?.find((c) => c.id === id)?.name;
+      if (Number(categoryName?.length) > 18) {
+        return `${categoryName?.slice(0, 18)}..`;
+      }
+
+      return categoryName;
+    },
+    [categories],
+  );
 
   return (
     <Container>
-      <Title>{t("newStats.cookingTime.title")}</Title>
-      <SubTitle>{t("newStats.cookingTime.subtitle")}</SubTitle>
+      <Title>{t('newStats.cookingTime.title')}</Title>
+      <SubTitle>{t('newStats.cookingTime.subtitle')}</SubTitle>
       <Tabs>
         <Tab onClick={() => setIsFullPeriod(true)} active={isFullPeriod}>
-          {t("newStats.cookingTime.allPeriod")}
+          {t('newStats.cookingTime.allPeriod')}
         </Tab>
         <Tab onClick={() => setIsFullPeriod(false)} active={!isFullPeriod}>
-          {t("newStats.cookingTime.onlyDay")}
+          {t('newStats.cookingTime.onlyDay')}
         </Tab>
       </Tabs>
       <ChartContainer>
@@ -239,31 +222,64 @@ export const StatsCookingTime = memo((props: Props) => {
           data={summary}
           margin={{
             top: 20,
-            right: 20,
+            right: 0,
             bottom: 20,
-            left: 20,
+            left: -30,
           }}
         >
-          <XAxis dataKey="name" />
-          <YAxis dataKey="maxTime" tickFormatter={tickFormatter} />
-          <Line
-            dataKey="averageTime"
-            stroke={pink1}
-            strokeWidth={3}
-            dot={false}
-            type="monotone"
+          <CartesianGrid strokeDasharray="3 3" stroke={theme.background3} />
+          <XAxis
+            dataKey="categoryId"
+            stroke={theme.text3}
+            axisLine={false}
+            fontSize={10}
+            width={10}
+            height={100}
+            tickLine={{ stroke: theme.background3 }}
+            tickCount={20}
+            allowDataOverflow={true}
+            type="category"
+            minTickGap={0}
+            tick={({ x, y, payload }) => (
+              <g transform={`translate(${x},${y})`}>
+                <text
+                  x={0}
+                  y={0}
+                  dy={2}
+                  textAnchor="end"
+                  fill={theme.text3}
+                  transform="rotate(-90)"
+                  fontSize={10}
+                  width={100}
+                >
+                  {nameFormatter(payload.value)}
+                </text>
+              </g>
+            )}
+          />
+          <YAxis
+            dataKey="maxTime"
+            tickFormatter={dateFormatter}
+            tickCount={6}
+            stroke={theme.text3}
+            axisLine={false}
+            fontSize={10}
+            tickLine={{
+              stroke: theme.background3,
+            }}
           />
           <Area
             type="monotone"
             dataKey="maxTime"
-            fill={black3}
-            stroke={blackText3}
+            fill={theme.background3}
+            stroke={theme.text3}
           />
-          <Area
+          <Line
+            dataKey="averageTime"
+            stroke={theme.primary1}
+            strokeWidth={3}
+            dot={false}
             type="monotone"
-            dataKey="minTime"
-            fill={black2}
-            stroke={blackText3}
           />
         </ComposedChart>
       </ChartContainer>

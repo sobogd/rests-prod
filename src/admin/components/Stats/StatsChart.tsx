@@ -1,14 +1,23 @@
-import { memo, useMemo } from "react";
-import { black2, blackText1, blackText2, blue1, pink1 } from "../../styles";
-import { DayWithOrders } from "./types";
-import { LineChart, Line, XAxis, YAxis, ResponsiveContainer } from "recharts";
-import { useAuth } from "../Auth/Context";
-import { formatPrice } from "../../utils/priceFormatter";
-import styled from "@emotion/styled";
-import { useTranslation } from "react-i18next";
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { memo, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  ResponsiveContainer,
+  CartesianGrid,
+} from 'recharts';
+
+import { useAuth } from '../../providers/Auth';
+import { formatPrice } from '../../utils/priceFormatter';
+
+import { DayWithOrders } from './types';
 
 const Chart = styled.div`
-  background: ${black2};
+  background: ${(props) => props.theme.background2};
   padding: 20px 30px 30px;
   border-radius: 20px;
   display: flex;
@@ -34,14 +43,14 @@ const ChartContainer = styled(ResponsiveContainer)`
 `;
 
 const ChartTitle = styled.div`
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
   font-weight: 600;
   font-size: 32px;
   line-height: 36px;
 `;
 
 const ChartText = styled.div`
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
   font-size: 16px;
 `;
 
@@ -65,6 +74,7 @@ export const StatsChart = memo((props: Props) => {
   const { ordersByDays, setSelectedDay } = props;
 
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const symbol = useAuth()?.whoami?.company?.symbol;
 
@@ -73,9 +83,10 @@ export const StatsChart = memo((props: Props) => {
       (acc, day) => {
         if (day.total <= acc[0]) return [day.total, acc[1]];
         if (day.total >= acc[1]) return [acc[0], day.total];
+
         return acc;
       },
-      [1000000000, 0]
+      [1000000000, 0],
     );
 
     const maxBorder = Math.round(borders[1]);
@@ -98,8 +109,8 @@ export const StatsChart = memo((props: Props) => {
 
   return ordersByDays?.length > 1 ? (
     <Chart>
-      <ChartTitle>{t("newStats.chart.title")}</ChartTitle>
-      <ChartText>{t("newStats.chart.subtitle")}</ChartText>
+      <ChartTitle>{t('newStats.chart.title')}</ChartTitle>
+      <ChartText>{t('newStats.chart.subtitle')}</ChartText>
       <ChartScroll>
         <ChartContainer width={widthForContainer} height="100%">
           <LineChart
@@ -108,15 +119,16 @@ export const StatsChart = memo((props: Props) => {
             data={ordersByDays}
             margin={{ top: 50, right: 100, bottom: 20, left: 5 }}
           >
+            <CartesianGrid strokeDasharray="3 3" stroke={theme.background3} />
             <XAxis axisLine={false} tickLine={false} hide />
             <YAxis domain={totalBorders} hide />
             <Line
               type="monotone"
               dataKey="total"
-              stroke={pink1}
+              stroke={theme.primary1}
               strokeWidth={2}
               dot={{
-                stroke: blue1,
+                stroke: theme.secondary1,
                 strokeWidth: 4,
               }}
               label={(p) => (
@@ -125,7 +137,7 @@ export const StatsChart = memo((props: Props) => {
                     onClick={() => clickDayHandler(p.index)}
                     x={p.x + 15}
                     y={p.y - 20}
-                    fill={blackText1}
+                    fill={theme.text1}
                     fontSize={20}
                     fontWeight={600}
                   >
@@ -138,7 +150,7 @@ export const StatsChart = memo((props: Props) => {
                     onClick={() => clickDayHandler(p.index)}
                     x={p.x + 15}
                     y={p.y}
-                    fill={blackText2}
+                    fill={theme.text2}
                     fontSize={14}
                   >
                     {ordersByDays?.[p?.index]?.date}
@@ -149,7 +161,7 @@ export const StatsChart = memo((props: Props) => {
           </LineChart>
         </ChartContainer>
       </ChartScroll>
-      <ChartText>{t("newStats.chart.description")}</ChartText>
+      <ChartText>{t('newStats.chart.description')}</ChartText>
     </Chart>
   ) : null;
 });

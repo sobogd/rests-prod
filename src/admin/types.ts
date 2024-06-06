@@ -8,3 +8,5 @@ export interface IOption {
   name: string;
   code: string | number;
 }
+
+export type TLang = "en" | "ru" | "tr";

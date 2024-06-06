@@ -1,18 +1,13 @@
-import styled from "@emotion/styled";
-import {
-  black2,
-  blackText1,
-  blackText2,
-  diagramColors,
-  tab1,
-  tab2,
-} from "../../styles";
-import { Cell, Pie, PieChart } from "recharts";
-import { DayWithOrders } from "./types";
-import { useTranslation } from "react-i18next";
-import { memo, useMemo, useState } from "react";
-import { useAuth } from "../Auth/Context";
-import { formatPrice } from "../../utils/priceFormatter";
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { memo, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Cell, Pie, PieChart } from 'recharts';
+
+import { useAuth } from '../../providers/Auth';
+import { formatPrice } from '../../utils/priceFormatter';
+
+import { DayWithOrders } from './types';
 
 type Props = {
   selectedDay?: DayWithOrders;
@@ -20,7 +15,7 @@ type Props = {
 };
 
 const Container = styled.div`
-  background: ${black2};
+  background: ${(props) => props.theme.background2};
   padding: 20px 30px 30px;
   border-radius: 20px;
   display: flex;
@@ -28,6 +23,10 @@ const Container = styled.div`
   gap: 10px;
   flex: 1;
   max-width: 100%;
+
+  @media (min-width: 550px) {
+    max-width: 320px;
+  }
 `;
 
 const ChartContainer = styled.div`
@@ -41,14 +40,14 @@ const ChartContainer = styled.div`
 `;
 
 const Title = styled.div`
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
   font-weight: 600;
   font-size: 32px;
   line-height: 36px;
 `;
 
 const SubTitle = styled.div`
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
   font-size: 16px;
 `;
 
@@ -59,11 +58,11 @@ const ChartLabel = styled.div`
 
 const ChartLabelTotal = styled.div`
   font-weight: 600;
-  color: ${blackText1};
+  color: ${(props) => props.theme.text1};
 `;
 
 const ChartLabelTitle = styled.div`
-  color: ${blackText2};
+  color: ${(props) => props.theme.text2};
 `;
 
 const ChartLabelColor = styled.div<{ background: string }>`
@@ -79,8 +78,9 @@ const Tabs = styled.div`
 `;
 
 const Tab = styled.div<{ active: boolean }>`
-  background: ${(p) => (p.active ? tab1 : tab2)};
-  color: ${blackText1};
+  background: ${(p) =>
+    p.active ? (props) => props.theme.tab1 : (props) => props.theme.tab2};
+  color: ${(props) => props.theme.white1};
   padding: 5px 20px;
   border-radius: 20px;
   cursor: pointer;
@@ -96,6 +96,7 @@ export const StatsPayments = memo((props: Props) => {
   const { selectedDay, ordersByDays } = props;
 
   const { t } = useTranslation();
+  const theme = useTheme();
 
   const symbol = useAuth()?.whoami?.company?.symbol;
 
@@ -124,7 +125,7 @@ export const StatsPayments = memo((props: Props) => {
 
         return acc;
       },
-      {}
+      {},
     );
 
     return Object.values(summaryObject) ?? [];
@@ -132,14 +133,14 @@ export const StatsPayments = memo((props: Props) => {
 
   return (
     <Container>
-      <Title>{t("newStats.dayPayments.title")}</Title>
-      <SubTitle>{t("newStats.dayPayments.subtitle")}</SubTitle>
+      <Title>{t('newStats.dayPayments.title')}</Title>
+      <SubTitle>{t('newStats.dayPayments.subtitle')}</SubTitle>
       <Tabs>
         <Tab onClick={() => setIsFullPeriod(true)} active={isFullPeriod}>
-          {t("newStats.dayPayments.allPeriod")}
+          {t('newStats.dayPayments.allPeriod')}
         </Tab>
         <Tab onClick={() => setIsFullPeriod(false)} active={!isFullPeriod}>
-          {t("newStats.dayPayments.onlyDay")}
+          {t('newStats.dayPayments.onlyDay')}
         </Tab>
       </Tabs>
       <ChartContainer>
@@ -155,7 +156,7 @@ export const StatsPayments = memo((props: Props) => {
             {summary.map((s, index) => (
               <Cell
                 key={`cell-${s.title}-${s.total}`}
-                fill={diagramColors[index]}
+                fill={theme.diagramColors[index]}
               />
             ))}
           </Pie>
@@ -163,7 +164,7 @@ export const StatsPayments = memo((props: Props) => {
       </ChartContainer>
       {summary.map((s, index) => (
         <ChartLabel key={`cell-${s.title}-${s.total}`}>
-          <ChartLabelColor background={diagramColors[index]} />
+          <ChartLabelColor background={theme.diagramColors[index]} />
           <ChartLabelTotal>
             {formatPrice({ price: s.total, symbol })}
           </ChartLabelTotal>

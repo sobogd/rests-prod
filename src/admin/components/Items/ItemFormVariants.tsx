@@ -1,12 +1,13 @@
-import { FC } from "react";
-import { useTranslation } from "react-i18next";
-import shortid from "shortid";
-import styled from "@emotion/styled";
-import { useFormikContext } from "formik";
-import { TbPlus, TbTrash } from "react-icons/tb";
-import FormikInput from "../FormikInput";
-import { useAuth } from "../Auth/Context";
-import { textDefaultColor, newBorderColor, errorColor } from "../../styles";
+import styled from '@emotion/styled';
+import { useFormikContext } from 'formik';
+import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+import { TbPlus, TbTrash } from 'react-icons/tb';
+import shortid from 'shortid';
+
+import { useAuth } from '../../providers/Auth';
+import { textDefaultColor, newBorderColor, errorColor } from '../../styles';
+import FormikInput from '../FormikInput';
 
 const AddButton = styled.div`
   display: flex;
@@ -67,7 +68,7 @@ const Variant = styled.div`
       border: 0;
     }
     > div {
-      :nth-child(1) {
+      :nth-of-type(1) {
         width: 100%;
         input {
           border-radius: 0;
@@ -76,7 +77,7 @@ const Variant = styled.div`
         }
         margin-right: 1px;
       }
-      :nth-child(2) {
+      :nth-of-type(2) {
         min-width: 100px;
         input {
           border-radius: 0;
@@ -112,50 +113,71 @@ export const ItemFormVariants: FC = () => {
   const { t } = useTranslation();
 
   const langs = useAuth()?.whoami?.company?.langs ?? [];
-  const lang = useAuth()?.whoami?.company?.lang ?? "en";
+  const lang = useAuth()?.whoami?.company?.lang ?? 'en';
 
   const handleAddVariant = () => {
     setValues({
       ...values,
-      v: [...(values.v ?? []), { p: "", n: "", id: shortid.generate() }],
-      vt: [...(values.vt ?? []), langs.map((lang) => ({ l: lang, t: "" }))],
+      v: [...(values.v ?? []), { p: '', n: '', id: shortid.generate() }],
+      vt: [...(values.vt ?? []), langs.map((lang) => ({ l: lang, t: '' }))],
     });
   };
 
   const handleRemoveVariant = (variant_index: number) => () => {
     setValues({
       ...values,
-      v: values.v?.filter((_: unknown, index: number) => index !== variant_index) ?? [],
-      vt: values.vt?.filter((_: unknown, index: number) => index !== variant_index) ?? [],
+      v:
+        values.v?.filter(
+          (_: unknown, index: number) => index !== variant_index,
+        ) ?? [],
+      vt:
+        values.vt?.filter(
+          (_: unknown, index: number) => index !== variant_index,
+        ) ?? [],
     });
   };
 
   return (
     <>
-      {values.v?.map((variant: { n?: string; p?: number; id?: string }, variant_index: number) => (
-        <Variant>
-          <div style={variant_index === 0 ? { marginTop: 15 } : undefined}>
-            <FormikInput name={`v.${variant_index}.n`} label={t("items.form.variants.name") + lang} />
-            <span onClick={handleRemoveVariant(variant_index)}>
-              <TbTrash />
-            </span>
-          </div>
-          {values.vt?.[variant_index]?.map(
-            (translation: { l: string; t: string }, variant_translation_index: number) => {
-              return (
-                <FormikInput
-                  name={`vt.[${variant_index}].[${variant_translation_index}].t`}
-                  label={t("items.form.variants.translation") + translation.l}
-                />
-              );
-            }
-          )}
-          <FormikInput name={`v.[${variant_index}].p`} type="number" label={t("items.form.variants.price")} />
-        </Variant>
-      ))}
+      {values.v?.map(
+        (
+          variant: { n?: string; p?: number; id?: string },
+          variant_index: number,
+        ) => (
+          <Variant>
+            <div style={variant_index === 0 ? { marginTop: 15 } : undefined}>
+              <FormikInput
+                name={`v.${variant_index}.n`}
+                label={t('items.form.variants.name') + lang}
+              />
+              <span onClick={handleRemoveVariant(variant_index)}>
+                <TbTrash />
+              </span>
+            </div>
+            {values.vt?.[variant_index]?.map(
+              (
+                translation: { l: string; t: string },
+                variant_translation_index: number,
+              ) => {
+                return (
+                  <FormikInput
+                    name={`vt.[${variant_index}].[${variant_translation_index}].t`}
+                    label={t('items.form.variants.translation') + translation.l}
+                  />
+                );
+              },
+            )}
+            <FormikInput
+              name={`v.[${variant_index}].p`}
+              type="number"
+              label={t('items.form.variants.price')}
+            />
+          </Variant>
+        ),
+      )}
       <AddButton onClick={handleAddVariant}>
         <TbPlus />
-        {t("items.form.variants.addVariant")}
+        {t('items.form.variants.addVariant')}
       </AddButton>
     </>
   );

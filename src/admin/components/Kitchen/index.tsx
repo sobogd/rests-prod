@@ -1,34 +1,36 @@
-import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
-import { KitchenFilter } from "./KitchenFilter";
-import { EFilterStatuses } from "./types";
-import {
-  useDonePositionMutation,
-  useLazyListPositionsByCategoriesQuery,
-  useListCategoriesForFilterQuery,
-  useRestartPositionMutation,
-} from "./api";
-import styled from "@emotion/styled";
-import { ModalRests } from "../ModalRests";
-import Loading from "../loading";
-import { useAllTablesQuery } from "../Orders/api";
+import styled from '@emotion/styled';
+import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
 import {
   EUserTypes,
   IAllPositionsForKitchen,
   IPositionForOrder,
   ITable,
-} from "../../../back/types";
-import { useAuth } from "../Auth/Context";
-import { getPositionTitleForList } from "../../utils/getPositionTitleForList";
-import { getPositionDescriptionForList } from "../../utils/getPositionDescriptionForList";
-import List from "../List";
+} from '../../../back/types';
+import { useAuth } from '../../providers/Auth';
 import {
   backgroundDefault,
   newBorderColor,
   textDefaultColor,
   newPallet,
-} from "../../styles";
-import { dateMs } from "../../utils/timeInFormat";
+} from '../../styles';
+import { getPositionDescriptionForList } from '../../utils/getPositionDescriptionForList';
+import { getPositionTitleForList } from '../../utils/getPositionTitleForList';
+import { dateMs } from '../../utils/timeInFormat';
+import List from '../List';
+import { Loading } from '../Loading';
+import { ModalRests } from '../ModalRests';
+import { useAllTablesQuery } from '../Orders/api';
+
+import {
+  useDonePositionMutation,
+  useLazyListPositionsByCategoriesQuery,
+  useListCategoriesForFilterQuery,
+  useRestartPositionMutation,
+} from './api';
+import { KitchenFilter } from './KitchenFilter';
+import { EFilterStatuses } from './types';
 
 const ListKitchenTables = styled.div`
   width: 100%;
@@ -103,7 +105,7 @@ const ListKitchenTablesPosition = styled.div`
 const PositionAction = styled.button<{ isDone: boolean }>`
   background: ${({ isDone }) => (isDone ? newBorderColor : textDefaultColor)};
   width: 100%;
-  color: ${({ isDone }) => (isDone ? textDefaultColor : "white")};
+  color: ${({ isDone }) => (isDone ? textDefaultColor : 'white')};
   font-weight: 600;
   font-size: 17px;
   border: 0;
@@ -114,7 +116,7 @@ const PositionAction = styled.button<{ isDone: boolean }>`
 
 export const Kitchen: React.FC = () => {
   const i18n = useTranslation();
-  const { whoami, logout } = useAuth();
+  const { whoami } = useAuth();
   const isKitchen = whoami?.user?.type === EUserTypes.KITCHEN;
   const [isOpenFilter, setIsOpenFilter] = useState<boolean>(false);
   const {
@@ -171,6 +173,7 @@ export const Kitchen: React.FC = () => {
         loadAllPositions();
       }
     }, 30000);
+
     return () => {
       clearInterval(timer);
     };
@@ -201,6 +204,7 @@ export const Kitchen: React.FC = () => {
           if ((a.crt ?? 0) < (b.crt ?? 0)) {
             return -1;
           }
+
           return 0;
         })
         .sort((a, b) => {
@@ -210,6 +214,7 @@ export const Kitchen: React.FC = () => {
           if (!a.f && !!b.f) {
             return -1;
           }
+
           return 0;
         });
 
@@ -226,7 +231,7 @@ export const Kitchen: React.FC = () => {
         .filter((position) =>
           filter.categoryIds?.length
             ? filter.categoryIds.includes(Number(position.cat))
-            : true
+            : true,
         );
 
       return {
@@ -236,7 +241,7 @@ export const Kitchen: React.FC = () => {
     });
 
     const tableSortedByHavingPositions = positionsByTablesSorted.filter(
-      (table) => table.positions.length > 0
+      (table) => table.positions.length > 0,
     );
 
     return tableSortedByHavingPositions;
@@ -245,11 +250,11 @@ export const Kitchen: React.FC = () => {
   return (
     <>
       <ModalRests
-        title={i18n.t("menu.names.KITCHEN")}
+        title={i18n.t('menu.names.KITCHEN')}
         isFullScreen={isKitchen}
         isGeneral={true}
         onFilter={() => setIsOpenFilter(true)}
-        onBack={isKitchen ? () => logout() : undefined}
+        onBack={isKitchen ? () => {} : undefined}
         isOpenAdditional={isOpenFilter}
         isHaveLangs={isKitchen}
       >
@@ -269,7 +274,7 @@ export const Kitchen: React.FC = () => {
           {getTablesWithPositions()?.map((table) => (
             <ListKitchenTablesItem>
               <ListKitchenTablesHeader>
-                {i18n.t("kitchen.tableNo")}
+                {i18n.t('kitchen.tableNo')}
                 {table?.table?.number}
                 <span>{table?.table?.name}</span>
               </ListKitchenTablesHeader>
@@ -278,13 +283,13 @@ export const Kitchen: React.FC = () => {
                   title: getPositionTitleForList(
                     position as IPositionForOrder,
                     0,
-                    "",
-                    "time"
+                    '',
+                    'time',
                   ),
                   description: getPositionDescriptionForList(
-                    position as IPositionForOrder
+                    position as IPositionForOrder,
                   ),
-                  buttonType: "primary",
+                  buttonType: 'primary',
                   onClick: () => {
                     if (
                       position.on &&
@@ -307,8 +312,8 @@ export const Kitchen: React.FC = () => {
                   },
                   id: JSON.stringify(position),
                   primaryButtonText: !position.f
-                    ? i18n.t("kitchen.done")
-                    : i18n.t("kitchen.restart"),
+                    ? i18n.t('kitchen.done')
+                    : i18n.t('kitchen.restart'),
                   primaryButtonColor: !position.f
                     ? textDefaultColor
                     : newPallet.gray2,

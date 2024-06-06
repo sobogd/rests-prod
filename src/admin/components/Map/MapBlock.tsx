@@ -1,6 +1,5 @@
-import { FC } from "react";
-import { ITableWithOrders } from "./types";
-import styled from "@emotion/styled";
+import styled from '@emotion/styled';
+import { memo, useCallback, useMemo } from 'react';
 import {
   MdBalcony,
   MdCountertops,
@@ -20,195 +19,205 @@ import {
   MdTableRestaurant,
   MdVolumeUp,
   MdWc,
-} from "react-icons/md";
-import { ETableType, ITable } from "../../../back/types";
-import { TbChecks, TbClock } from "react-icons/tb";
-import { newPallet, newBorderColor, textDefaultColor, backgroundDefault, boxShadow } from "../../styles";
+} from 'react-icons/md';
+import { TbChecks, TbClock } from 'react-icons/tb';
 
-const getColorForTableSvg = (
-  table: ITableWithOrders,
-  selectedTableId?: number,
-  colored?: boolean
-): string => {
-  if (colored) {
-    return newPallet.orange1;
-  } else if (!table.for_order) {
-    return newBorderColor;
-  } else if (selectedTableId && Number(table?.id) === Number(selectedTableId)) {
-    return textDefaultColor;
-  } else if (!selectedTableId && !table?.isHaveOrders) {
-    return newPallet.gray2;
-  } else if (!selectedTableId && table?.isHaveOrders) {
-    return textDefaultColor;
-  } else {
-    return newPallet.gray2;
-  }
+import { ETableType, ITable } from '../../../back/types';
+import { useTheme } from '../../providers/Theme';
+
+import { ITableWithOrders } from './types';
+
+const CTableTypesIcons = {
+  [ETableType.TABLE_SQUARE]: <MdTableRestaurant />,
+  [ETableType.TABLE_CIRCLE]: <MdTableBar />,
+  [ETableType.WALL]: null,
+  [ETableType.FLOWER]: <MdLocalFlorist />,
+  [ETableType.DOOR]: <MdMeetingRoom />,
+  [ETableType.WINDOW]: <MdBalcony />,
+  [ETableType.KITCHEN]: <MdCountertops />,
+  [ETableType.GRASS]: <MdGrass />,
+  [ETableType.PAVILION]: <MdDeck />,
+  [ETableType.CHAIR]: <MdEventSeat />,
+  [ETableType.INFO]: <MdInfo />,
+  [ETableType.TRASH]: <MdDeleteOutline />,
+  [ETableType.WC]: <MdWc />,
+  [ETableType.BAR]: <MdLocalBar />,
+  [ETableType.PLAY]: <MdSportsEsports />,
+  [ETableType.MUSIC]: <MdVolumeUp />,
+  [ETableType.TREE]: <MdPark />,
+  [ETableType.STORAGE]: <MdStorage />,
+  [ETableType.LIGHT]: <MdLightbulb />,
 };
 
 const Map = styled.div`
   width: 100%;
-  max-width: calc(100vh - 55px);
-  position: absolute;
-  height: 0;
-  padding-bottom: 100%;
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: 55px;
-  border: 0;
-  > div {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 100%;
-    overflow: hidden;
-    background: ${backgroundDefault};
-  }
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  background: ${(p) => p.theme.background1};
 `;
 
-export const Icon = styled.div<{
-  forOrder?: boolean;
+const Icon = styled.div<{
   type?: ETableType;
   x: number;
   y: number;
   w: number;
   h: number;
-  selectedTableId?: number;
-  table: ITableWithOrders;
-  colored?: boolean;
-  isHaveOrders?: boolean;
 }>`
   position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: ${(p) => {
-    if (p.colored) return "3";
-    if (p.forOrder) return "2";
-    return "1";
-  }};
+  z-index: 1;
   transition: none !important;
-  background: ${(p) =>
-    p.type !== ETableType.WALL ? "none" : getColorForTableSvg(p.table, p.selectedTableId, p.colored)};
-  svg {
-    color: ${(p) => getColorForTableSvg(p.table, p.selectedTableId, p.colored)};
-    width: 100%;
-    height: 100%;
-  }
+  background: ${(p) => (p.type !== ETableType.WALL ? 'none' : p.theme.divider)};
   left: ${(p) => p.x}%;
   top: ${(p) => p.y}%;
   width: ${(p) => p.w}%;
   height: ${(p) => p.h}%;
-  ::before {
-    content: "${(p) => (p.table.for_order ? p.table.number : "")}";
-    display: ${(p) => (!p.table.for_order ? "none" : "flex")};
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    background: ${(p) => getColorForTableSvg(p.table, p.selectedTableId, p.colored)};
-    border-radius: 10px;
-    box-shadow: ${boxShadow};
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 13px;
-    opacity: 1;
-  }
-  span {
-    display: flex;
-    position: absolute;
-    top: 0px;
-    right: 35px;
-    background: ${newPallet.orange1};
-    border-radius: 10px;
-    box-shadow: ${boxShadow};
-    width: 30px;
-    height: 30px;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 13px;
-    opacity: 1;
-    svg {
-      color: white;
-      width: 17px;
-    }
+`;
+
+const IconContainer = styled.div<{
+  selectedTableId?: number;
+  table: ITableWithOrders;
+  colored?: boolean;
+  isVertical: boolean;
+}>`
+  position: absolute;
+  ${(p) => (p.isVertical ? 'width: 100%;' : 'height: 100%;')}
+  container-name: object;
+
+  svg {
+    color: ${(p) => {
+      if (p.colored) {
+        return p.theme.secondary1;
+      } else if (!p.table.for_order) {
+        return p.theme.divider;
+      } else if (
+        p.selectedTableId &&
+        Number(p.table?.id) === Number(p.selectedTableId)
+      ) {
+        return p.theme.primary1;
+      } else if (!p.selectedTableId && !p.table?.isHaveOrders) {
+        return p.theme.primary2;
+      } else if (!p.selectedTableId && p.table?.isHaveOrders) {
+        return p.theme.primary2;
+      } else {
+        return p.theme.primary2;
+      }
+    }};
+    width: 100%;
+    height: 100%;
   }
 `;
 
-export const MapBlock: FC<{
+const IconStatus = styled.div<{
+  ifAllReady?: boolean;
+}>`
+  display: flex;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: ${(p) => p.theme.primary1};
+  border-radius: 100%;
+  width: 30%;
+  height: 30%;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 13px;
+  opacity: 1;
+  svg {
+    color: ${(p) => p.theme.white1} !important;
+    width: 50% !important;
+  }
+`;
+
+// const IconNumber = styled.div`
+//   display: flex;
+//   position: absolute;
+//   bottom: 0;
+//   right: 0;
+//   background: ${(p) => p.theme.background2};
+//   color: ${(p) => p.theme.text3};
+//   border-radius: 15px;
+//   width: 20px;
+//   height: 20px;
+//   align-items: center;
+//   justify-content: center;
+//   font-weight: 600;
+//   font-size: 8px;
+// `;
+
+type Props = {
   items: ITableWithOrders[];
   onClickTable?: (t: ITableWithOrders) => void;
   selectedTableId?: number;
   tableForEdition?: ITable;
-}> = ({ items, onClickTable, selectedTableId, tableForEdition }) => {
-  const handleClickTable = (t: ITableWithOrders) => () => {
-    if (t && onClickTable) onClickTable(t);
-  };
+};
 
-  const CTableTypesIcons: any = {
-    [ETableType.TABLE_SQUARE]: <MdTableRestaurant />,
-    [ETableType.TABLE_CIRCLE]: <MdTableBar />,
-    [ETableType.WALL]: null,
-    [ETableType.FLOWER]: <MdLocalFlorist />,
-    [ETableType.DOOR]: <MdMeetingRoom />,
-    [ETableType.WINDOW]: <MdBalcony />,
-    [ETableType.KITCHEN]: <MdCountertops />,
-    [ETableType.GRASS]: <MdGrass />,
-    [ETableType.PAVILION]: <MdDeck />,
-    [ETableType.CHAIR]: <MdEventSeat />,
-    [ETableType.INFO]: <MdInfo />,
-    [ETableType.TRASH]: <MdDeleteOutline />,
-    [ETableType.WC]: <MdWc />,
-    [ETableType.BAR]: <MdLocalBar />,
-    [ETableType.PLAY]: <MdSportsEsports />,
-    [ETableType.MUSIC]: <MdVolumeUp />,
-    [ETableType.TREE]: <MdPark />,
-    [ETableType.STORAGE]: <MdStorage />,
-    [ETableType.LIGHT]: <MdLightbulb />,
-  };
+export const MapBlock = memo((props: Props) => {
+  const { items, onClickTable, selectedTableId, tableForEdition } = props;
+
+  const { isVertical } = useTheme();
+
+  const handleClickTable = useCallback(
+    (t: ITableWithOrders) => () => {
+      if (t && onClickTable) onClickTable(t);
+    },
+    [onClickTable],
+  );
+
+  const mapItems = useMemo(() => (items?.length ? items : []), [items]);
+
+  const mapObjects = useMemo(
+    () => mapItems?.filter((item) => !item.for_order),
+    [mapItems],
+  );
+  const mapTables = useMemo(
+    () => mapItems?.filter((item) => item.for_order),
+    [mapItems],
+  );
+
+  const renderMapElement = useCallback(
+    (table?: ITableWithOrders) => {
+      if (!table) return null;
+
+      return (
+        <Icon
+          onClick={handleClickTable(table)}
+          x={table.x}
+          y={table.y}
+          w={table.w}
+          h={table.h}
+          type={table.type ?? ETableType.TABLE_CIRCLE}
+        >
+          <IconContainer
+            isVertical={isVertical}
+            onClick={handleClickTable(table)}
+            table={table}
+            selectedTableId={selectedTableId}
+          >
+            {table.isHaveOrders && (
+              <IconStatus ifAllReady={table.ifAllReady}>
+                {table.ifAllReady ? <TbChecks /> : <TbClock />}
+              </IconStatus>
+            )}
+            {/*{table.for_order && <IconNumber>{table.number}</IconNumber>}*/}
+            {CTableTypesIcons[table.type]}
+          </IconContainer>
+        </Icon>
+      );
+    },
+    [handleClickTable, isVertical, selectedTableId],
+  );
 
   return (
     <Map>
-      <div>
-        {(items ?? [])?.map((table) => (
-          <Icon
-            onClick={handleClickTable(table)}
-            x={table.x}
-            y={table.y}
-            w={table.w}
-            h={table.h}
-            type={table.type ?? ETableType.TABLE_CIRCLE}
-            forOrder={table.for_order}
-            table={table}
-            selectedTableId={selectedTableId}
-            isHaveOrders={table.isHaveOrders}
-          >
-            {CTableTypesIcons[table.type]}
-            {table.isHaveOrders ? <span>{table.ifAllReady ? <TbChecks /> : <TbClock />}</span> : null}
-          </Icon>
-        ))}
-        {tableForEdition ? (
-          <Icon
-            x={tableForEdition.x}
-            y={tableForEdition.y}
-            w={tableForEdition.w}
-            h={tableForEdition.h}
-            type={tableForEdition.type ?? ETableType.TABLE_CIRCLE}
-            table={tableForEdition}
-            selectedTableId={tableForEdition.id}
-            colored
-          >
-            {CTableTypesIcons[tableForEdition.type]}
-          </Icon>
-        ) : null}
-      </div>
+      {mapObjects.map((t) => renderMapElement(t))}
+      {mapTables.map((t) => renderMapElement(t))}
+      {renderMapElement(tableForEdition)}
     </Map>
   );
-};
+});

@@ -1,11 +1,12 @@
-import React, { FC, useEffect, useState } from "react";
-import { OrdersForTableModal } from "../OrdersForTableModal/OrdersForTableModal";
-import { useLazyAllTablesQuery, useLazyTablesWithOrdersQuery } from "../api";
-import Loading from "../../loading";
-import { MapBlock } from "../../Map/MapBlock";
-import { ITableWithOrders } from "../../Map/types";
-import { ModalRests } from "../../ModalRests";
-import { useTranslation } from "react-i18next";
+import React, { FC, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+
+import { Loading } from '../../Loading';
+import { MapBlock } from '../../Map/MapBlock';
+import { ITableWithOrders } from '../../Map/types';
+import { ModalRests } from '../../ModalRests';
+import { useLazyAllTablesQuery, useLazyTablesWithOrdersQuery } from '../api';
+import { OrdersForTableModal } from '../OrdersForTableModal/OrdersForTableModal';
 
 export const TablesMap: FC = () => {
   const { i18n } = useTranslation();
@@ -13,9 +14,14 @@ export const TablesMap: FC = () => {
 
   const [
     loadTablesWithOrders,
-    { data: tablesWidthOrders, isLoading: isLoadingTablesWithOrders, isFetching: isFetchingTablesWithOrders },
+    {
+      data: tablesWidthOrders,
+      isLoading: isLoadingTablesWithOrders,
+      isFetching: isFetchingTablesWithOrders,
+    },
   ] = useLazyTablesWithOrdersQuery();
-  const [loadTables, { data: allTables, isLoading, isFetching }] = useLazyAllTablesQuery();
+  const [loadTables, { data: allTables, isLoading, isFetching }] =
+    useLazyAllTablesQuery();
 
   useEffect(() => {
     loadTables();
@@ -27,6 +33,7 @@ export const TablesMap: FC = () => {
         loadTablesWithOrders();
       }
     }, 30000);
+
     return () => {
       clearInterval(timer);
     };
@@ -39,14 +46,17 @@ export const TablesMap: FC = () => {
   const tableListWithReadyStatus = React.useMemo(
     () =>
       allTables?.map((table) => {
-        const ordersForTable = tablesWidthOrders?.find((t) => Number(t.t) === Number(table.id));
+        const ordersForTable = tablesWidthOrders?.find(
+          (t) => Number(t.t) === Number(table.id),
+        );
+
         return {
           ...table,
           isHaveOrders: !!ordersForTable,
           ifAllReady: !!ordersForTable?.f,
         };
       }) || [],
-    [allTables, tablesWidthOrders]
+    [allTables, tablesWidthOrders],
   );
 
   const handleClickTable = (table: ITableWithOrders) => {
@@ -57,14 +67,23 @@ export const TablesMap: FC = () => {
 
   return (
     <>
-      <ModalRests title={i18n.t("menu.names.ORDERS")} isGeneral={true} isOpenAdditional={tableId != null}>
+      <ModalRests
+        title={i18n.t('menu.names.ORDERS')}
+        isGeneral={true}
+        isOpenAdditional={tableId != null}
+      >
         <MapBlock
           items={tableListWithReadyStatus}
           onClickTable={handleClickTable}
           selectedTableId={tableId}
         />
         <Loading
-          isLoading={isFetching || isLoading || isLoadingTablesWithOrders || isFetchingTablesWithOrders}
+          isLoading={
+            isFetching ||
+            isLoading ||
+            isLoadingTablesWithOrders ||
+            isFetchingTablesWithOrders
+          }
         />
       </ModalRests>
       <OrdersForTableModal setTableId={setTableId} tableId={tableId} />
