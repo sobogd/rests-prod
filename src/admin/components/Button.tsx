@@ -4,16 +4,20 @@ import { ButtonHTMLAttributes, memo, ReactNode } from 'react';
 import { Loading } from './Loading';
 
 const ButtonStyled = styled.button<{
-  color?: 'primary' | 'disabled' | 'secondary';
+  color?: 'primary' | 'disabled' | 'secondary' | 'error';
   size?: 'default' | 'small';
+  fullWidth?: boolean;
+  isLoading?: boolean;
 }>`
   background: ${(p) => {
     if (p.color === 'disabled') return p.theme.disabledGradient;
     if (p.color === 'secondary') return p.theme.secondaryGradient;
+    if (p.color === 'error') return p.theme.errorGradient;
 
     return p.theme.primaryGradient;
   }};
   color: ${(p) => {
+    if (p.isLoading) return 'transparent';
     if (p.color === 'disabled') return p.theme.text1;
     if (p.color === 'secondary') return p.theme.white1;
 
@@ -33,9 +37,10 @@ const ButtonStyled = styled.button<{
   cursor: ${(p) => (p.disabled ? 'not-allowed' : 'pointer')};
   transition: 0.2s;
   outline: none !important;
-  width: 100%;
+  width: ${(p) => (p.fullWidth ? '100%' : 'auto')};
   line-height: 14px;
   padding: 0 30px;
+  white-space: nowrap;
 
   svg {
     font-size: ${(p) => (p.size === 'small' ? '20px' : '22px')};
@@ -46,28 +51,38 @@ const ButtonStyled = styled.button<{
   }
 `;
 
-type Props = {
+export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   label: string | ReactNode;
   isSubmit?: boolean;
   isLoading?: boolean;
-  color?: 'primary' | 'disabled' | 'secondary';
+  color?: 'primary' | 'disabled' | 'secondary' | 'error';
   size?: 'default' | 'small';
+  fullWidth?: boolean;
 };
 
-export const Button = memo(
-  (props: ButtonHTMLAttributes<HTMLButtonElement> & Props) => {
-    const { label, isSubmit, onClick, isLoading, size, disabled } = props;
+export const Button = memo((props: ButtonProps) => {
+  const {
+    label,
+    isSubmit,
+    onClick,
+    isLoading,
+    size,
+    disabled,
+    fullWidth = true,
+  } = props;
 
-    return (
-      <ButtonStyled
-        {...props}
-        type={isSubmit ? 'submit' : 'button'}
-        onClick={!isSubmit ? onClick : undefined}
-        disabled={disabled ?? isLoading}
-        size={size}
-      >
-        {isLoading ? <Loading isLoading={true} /> : label}
-      </ButtonStyled>
-    );
-  },
-);
+  return (
+    <ButtonStyled
+      {...props}
+      type={isSubmit ? 'submit' : 'button'}
+      onClick={!isSubmit ? onClick : undefined}
+      disabled={disabled ?? isLoading}
+      size={size}
+      fullWidth={fullWidth}
+      isLoading={isLoading}
+    >
+      {label}
+      {isLoading && <Loading isLoading={true} />}
+    </ButtonStyled>
+  );
+});

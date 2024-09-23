@@ -1,4 +1,4 @@
-import { Theme, ThemeProvider as EmotionThemeProvider } from '@emotion/react';
+import { ThemeProvider as EmotionThemeProvider, Theme } from '@emotion/react';
 import {
   createContext,
   PropsWithChildren,
@@ -81,6 +81,7 @@ export function ThemeProvider(props: PropsWithChildren) {
         primary2Gradient: 'linear-gradient(45deg, #f0d7f7, #d0c0f7)',
         secondaryGradient: 'linear-gradient(45deg, #4bfdf8, #8aa0f0)',
         disabledGradient: 'linear-gradient(45deg, #4b3364, #2e2c50)',
+        errorGradient: 'linear-gradient(45deg, #d57575, #f68989)',
         loading: '#ffffff66',
       };
     } else {
@@ -120,6 +121,7 @@ export function ThemeProvider(props: PropsWithChildren) {
         primary2Gradient: 'linear-gradient(45deg, #f0d7f7, #d0c0f7)',
         secondaryGradient: 'linear-gradient(45deg, #1cece7, #627cdb)',
         disabledGradient: 'linear-gradient(45deg, #4b3364, #2e2c50)',
+        errorGradient: 'linear-gradient(45deg, #841313, #a72d2d)',
         loading: '#ffffff66',
       };
     }

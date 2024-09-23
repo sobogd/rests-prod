@@ -3,17 +3,16 @@ import { useMemo } from 'react';
 
 import { useAuth } from '../providers/Auth';
 
-import { CategoriesList } from './Categories/CategoriesList';
-import { Company } from './Company/Company';
+import { Categories } from './Categories';
+import { Company } from './Company';
 import { ItemsList } from './Items/ItemsList';
 import { Kitchen } from './Kitchen';
 import { Map } from './Map/Map';
 import { Menu } from './Menu';
-import { MethodsList } from './Methods/MethodsList';
 import { Orders } from './Orders';
 import { Settings } from './Settings';
 import { Stats } from './Stats/Stats';
-import { UsersList } from './Users/UsersList';
+import { Users } from './Users';
 
 export enum EPages {
   LOGIN = 'LOGIN',
@@ -39,19 +38,17 @@ export type TPages =
   | 'POSITIONS'
   | 'USERS'
   | 'STATS'
-  | 'SETTINGS'
-  | 'METHODS';
+  | 'SETTINGS';
 
 export const PageComponents: { [key in TPages]: any } = {
   STATS: <Stats />,
   COMPANY: <Company />,
   ORDERS: <Orders />,
   TABLES: <Map />,
-  CATEGORIES: <CategoriesList />,
+  CATEGORIES: <Categories />,
   KITCHEN: <Kitchen />,
   POSITIONS: <ItemsList />,
-  USERS: <UsersList />,
-  METHODS: <MethodsList />,
+  USERS: <Users />,
   SETTINGS: <Settings />,
 };
 

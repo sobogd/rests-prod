@@ -84,6 +84,12 @@ export interface ICompany {
   instagram?: string;
   google_maps_link?: string;
   address?: string;
+  password?: string;
+  repeat_password?: string;
+  pm?: {
+    n: string;
+    t: { [key: string]: string };
+  }[];
 }
 
 export interface IWhoAmI {

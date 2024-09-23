@@ -67,11 +67,9 @@ import { TableUpdateController } from './controllers/table-update';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { TablesController } from './controllers/tables';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UserCreateController } from './controllers/user-create';
+import { UserCreateOrUpdateController } from './controllers/user-create-or-update';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserDeleteController } from './controllers/user-delete';
-// WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { UserUpdateController } from './controllers/user-update';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 import { UserController } from './controllers/user';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
@@ -121,6 +119,9 @@ const models: TsoaRoute.Models = {
             "instagram": {"dataType":"string"},
             "google_maps_link": {"dataType":"string"},
             "address": {"dataType":"string"},
+            "password": {"dataType":"string"},
+            "repeat_password": {"dataType":"string"},
+            "pm": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"t":{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"string"},"required":true},"n":{"dataType":"string","required":true}}}},
         },
         "additionalProperties": false,
     },
@@ -330,6 +331,9 @@ const models: TsoaRoute.Models = {
             "instagram": {"dataType":"string"},
             "google_maps_link": {"dataType":"string"},
             "address": {"dataType":"string"},
+            "password": {"dataType":"string"},
+            "repeat_password": {"dataType":"string"},
+            "pm": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"t":{"dataType":"nestedObjectLiteral","nestedProperties":{},"additionalProperties":{"dataType":"string"},"required":true},"n":{"dataType":"string","required":true}}}},
             "categoriesWithPositions": {"dataType":"array","array":{"dataType":"nestedObjectLiteral","nestedProperties":{"i":{"dataType":"array","array":{"dataType":"refObject","ref":"IItem"},"required":true},"t":{"dataType":"array","array":{"dataType":"refObject","ref":"ITranslate"}},"c":{"dataType":"string","required":true}}}},
         },
         "additionalProperties": false,
@@ -1608,12 +1612,12 @@ export function RegisterRoutes(app: express.Router) {
             }
         });
         // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/user-create',
+        app.post('/user-create-or-update',
             authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(UserCreateController)),
-            ...(fetchMiddlewares<RequestHandler>(UserCreateController.prototype.userCreate)),
+            ...(fetchMiddlewares<RequestHandler>(UserCreateOrUpdateController)),
+            ...(fetchMiddlewares<RequestHandler>(UserCreateOrUpdateController.prototype.userCreateOrUpdate)),
 
-            function UserCreateController_userCreate(request: any, response: any, next: any) {
+            function UserCreateOrUpdateController_userCreateOrUpdate(request: any, response: any, next: any) {
             const args = {
                     request: {"in":"body","name":"request","required":true,"ref":"IUser"},
                     auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
@@ -1625,10 +1629,10 @@ export function RegisterRoutes(app: express.Router) {
             try {
                 validatedArgs = getValidatedArgs(args, request, response);
 
-                const controller = new UserCreateController();
+                const controller = new UserCreateOrUpdateController();
 
 
-              const promise = controller.userCreate.apply(controller, validatedArgs as any);
+              const promise = controller.userCreateOrUpdate.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);
@@ -1656,33 +1660,6 @@ export function RegisterRoutes(app: express.Router) {
 
 
               const promise = controller.userDelete.apply(controller, validatedArgs as any);
-              promiseHandler(controller, promise, response, undefined, next);
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-        app.post('/user-update',
-            authenticateMiddleware([{"Bearer":["AuthService"]}]),
-            ...(fetchMiddlewares<RequestHandler>(UserUpdateController)),
-            ...(fetchMiddlewares<RequestHandler>(UserUpdateController.prototype.userUpdate)),
-
-            function UserUpdateController_userUpdate(request: any, response: any, next: any) {
-            const args = {
-                    request: {"in":"body","name":"request","required":true,"ref":"IUser"},
-                    auth: {"in":"request","name":"auth","required":true,"dataType":"object"},
-            };
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = getValidatedArgs(args, request, response);
-
-                const controller = new UserUpdateController();
-
-
-              const promise = controller.userUpdate.apply(controller, validatedArgs as any);
               promiseHandler(controller, promise, response, undefined, next);
             } catch (err) {
                 return next(err);

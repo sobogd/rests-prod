@@ -3,7 +3,6 @@ import { memo, ReactElement, useCallback, useEffect, useRef } from 'react';
 import {
   TbBasket,
   TbBuildingSkyscraper,
-  TbCash,
   TbChartHistogram,
   TbLayoutList,
   TbMap,
@@ -28,7 +27,6 @@ export const PagePermissions: { [key in TPages]: TPermissions[] } = {
   KITCHEN: ['manager', 'kitchen', 'admin', 'personal'],
   POSITIONS: ['admin'],
   USERS: ['admin'],
-  METHODS: ['admin'],
   SETTINGS: ['manager', 'kitchen', 'admin', 'personal'],
 };
 
@@ -41,7 +39,6 @@ export const PageIcons: { [key in TPages]: ReactElement<any, any> } = {
   KITCHEN: <TbToolsKitchen />,
   POSITIONS: <TbLayoutList />,
   USERS: <TbUsers />,
-  METHODS: <TbCash />,
   SETTINGS: <TbSettings />,
 };
 
@@ -156,7 +153,6 @@ export const Menu = memo(() => {
         {renderMenuItem('POSITIONS')}
         {renderMenuItem('USERS')}
         {renderMenuItem('STATS')}
-        {renderMenuItem('METHODS')}
         {renderMenuItem('SETTINGS')}
       </MenuScrollable>
     </MenuContainer>

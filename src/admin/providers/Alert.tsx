@@ -1,19 +1,22 @@
-import { PropsWithChildren, useState } from 'react';
-import { createContext } from 'react';
+import { createContext, PropsWithChildren, useState } from 'react';
 
 import { AlertComponent } from '../components/Alert';
 
 export let Alert: {
-  error: (message: string) => void;
-  success: (message: string) => void;
+  error: (message: string, onClose?: () => void) => void;
+  success: (message: string, onClose?: () => void) => void;
+  ask: (message: string, onYes?: () => void, onNo?: () => void) => void;
 };
 
 const AlertContext = createContext({});
 
-type AlertState =
+export type AlertState =
   | {
       message: string;
-      type: 'error' | 'success';
+      type: 'error' | 'success' | 'ask';
+      onClose?: () => void;
+      onYes?: () => void;
+      onNo?: () => void;
     }
   | undefined;
 
@@ -23,16 +26,26 @@ export function AlertProvider(props: PropsWithChildren) {
   const [alertState, setAlertState] = useState<AlertState>(undefined);
 
   Alert = {
-    error(message: string) {
+    error(message: string, onClose?: () => void) {
       setAlertState({
         type: 'error',
         message,
+        onClose,
       });
     },
-    success(message: string) {
+    success(message: string, onClose?: () => void) {
       setAlertState({
         type: 'success',
         message,
+        onClose,
+      });
+    },
+    ask(message: string, onYes?: () => void, onNo?: () => void) {
+      setAlertState({
+        type: 'ask',
+        message,
+        onYes,
+        onNo,
       });
     },
   };
@@ -43,7 +56,8 @@ export function AlertProvider(props: PropsWithChildren) {
         <AlertComponent
           type={alertState.type}
           message={alertState.message}
-          onClickSubmit={() => setAlertState(undefined)}
+          alertState={alertState}
+          setAlertState={setAlertState}
         />
       ) : null}
       {children}

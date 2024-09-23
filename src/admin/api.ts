@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
-import { IUserAuth } from '../back/types';
+import { ICategory, ICompany, IUser, IUserAuth } from '../back/types';
 
 import { API_URL } from './config';
 import { Notice } from './hooks/useNotification';
@@ -52,6 +52,84 @@ export const API = createApi({
         url: 'registration',
         method: 'POST',
         body,
+      }),
+    }),
+    company: b.query<ICompany, void>({
+      query: () => ({
+        url: `company`,
+        method: 'POST',
+      }),
+    }),
+    updateCompany: b.mutation<void, ICompany>({
+      query: (company) => ({
+        url: `company-update`,
+        method: 'POST',
+        body: company,
+      }),
+    }),
+    users: b.query<IUser[], undefined>({
+      query: () => ({
+        url: `users`,
+        method: 'POST',
+      }),
+    }),
+    user: b.query<IUser, number>({
+      query: (id) => ({
+        url: `user`,
+        method: 'POST',
+        body: { id },
+      }),
+    }),
+    userCreateOrUpdate: b.mutation<void, IUser>({
+      query: (body) => ({
+        url: `user-create-or-update`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    userDelete: b.mutation<void, number>({
+      query: (id) => ({
+        url: `user-delete`,
+        method: 'POST',
+        body: {
+          id,
+        },
+      }),
+    }),
+    categories: b.query<ICategory[], void>({
+      query: () => ({
+        url: `categories`,
+        method: 'POST',
+      }),
+    }),
+    category: b.query<ICategory, number>({
+      query: (id) => ({
+        url: `category`,
+        method: 'POST',
+        body: { id },
+      }),
+    }),
+    updateCategory: b.mutation<void, ICategory>({
+      query: (body) => ({
+        url: `category-update`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    createCategory: b.mutation<void, ICategory>({
+      query: (body) => ({
+        url: `category-create`,
+        method: 'POST',
+        body,
+      }),
+    }),
+    deleteCategory: b.mutation<void, number>({
+      query: (id) => ({
+        url: `category-remove`,
+        method: 'POST',
+        body: {
+          id,
+        },
       }),
     }),
   }),

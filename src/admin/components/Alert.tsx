@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import { memo } from 'react';
 
+import { AlertState } from '../providers/Alert';
 import { Button } from './Button';
 
 const AlertBackground = styled.div`
@@ -14,9 +15,8 @@ const AlertBackground = styled.div`
   justify-content: center;
 `;
 
-const AlertContainer = styled.div<{ type: 'error' | 'success' }>`
+const AlertContainer = styled.div<{ type: 'error' | 'success' | 'ask' }>`
   background: ${(p) => p.theme.background1};
-  border: 1px solid ${(p) => p.theme.divider};
   border-radius: 25px;
   padding: 30px;
   display: flex;
@@ -26,6 +26,8 @@ const AlertContainer = styled.div<{ type: 'error' | 'success' }>`
   max-width: 320px;
   width: 100%;
   margin: 30px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const AlertTitle = styled.div`
@@ -33,28 +35,69 @@ const AlertTitle = styled.div`
   line-height: 30px;
   font-weight: 600;
   color: ${(p) => p.theme.text1};
+  text-align: center;
+  width: 100%;
 `;
 
 const AlertText = styled.div`
-  margin-bottom: 50px;
+  margin-bottom: 20px;
   color: ${(p) => p.theme.text2};
+  text-align: center;
+  width: 100%;
 `;
 
 type Props = {
-  type: 'success' | 'error';
+  type: 'success' | 'error' | 'ask';
   message: string;
-  onClickSubmit: () => void;
+  alertState: AlertState;
+  setAlertState: (alertState: AlertState) => void;
 };
 
 export const AlertComponent = memo((props: Props) => {
-  const { type, message, onClickSubmit } = props;
+  const { type, message, alertState, setAlertState } = props;
 
   return (
     <AlertBackground>
       <AlertContainer type={type}>
-        <AlertTitle>{type === 'error' ? 'Error' : 'Success'}</AlertTitle>
+        <AlertTitle>
+          {type === 'error'
+            ? 'Error'
+            : type === 'ask'
+            ? 'Are you sure?'
+            : 'Success'}
+        </AlertTitle>
         <AlertText>{message}</AlertText>
-        <Button label="Close" onClick={onClickSubmit} />
+        {!!alertState?.onClose && (
+          <Button
+            label="Close"
+            onClick={() => {
+              alertState?.onClose?.();
+              setAlertState(undefined);
+            }}
+            fullWidth={false}
+          />
+        )}
+        {!!alertState?.onYes && (
+          <Button
+            label="Yes"
+            onClick={() => {
+              alertState?.onYes?.();
+              setAlertState(undefined);
+            }}
+            fullWidth={false}
+          />
+        )}
+        {!!alertState?.onNo && (
+          <Button
+            label="No"
+            onClick={() => {
+              alertState?.onNo?.();
+              setAlertState(undefined);
+            }}
+            fullWidth={false}
+            color="secondary"
+          />
+        )}
       </AlertContainer>
     </AlertBackground>
   );

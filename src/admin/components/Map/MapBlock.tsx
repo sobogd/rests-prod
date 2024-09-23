@@ -57,6 +57,15 @@ const Map = styled.div`
   background: ${(p) => p.theme.background1};
 `;
 
+const MapEmpty = styled(Map)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: ${(p) => p.theme.text3};
+`;
+
 const Icon = styled.div<{
   type?: ETableType;
   x: number;
@@ -212,6 +221,10 @@ export const MapBlock = memo((props: Props) => {
     },
     [handleClickTable, isVertical, selectedTableId],
   );
+
+  if (!mapTables?.length) {
+    return <MapEmpty>Сначала добавьте столы</MapEmpty>;
+  }
 
   return (
     <Map>

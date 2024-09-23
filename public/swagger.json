@@ -100,6 +100,34 @@
 					},
 					"address": {
 						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"repeat_password": {
+						"type": "string"
+					},
+					"pm": {
+						"items": {
+							"properties": {
+								"t": {
+									"properties": {},
+									"additionalProperties": {
+										"type": "string"
+									},
+									"type": "object"
+								},
+								"n": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"t",
+								"n"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					}
 				},
 				"required": [
@@ -642,6 +670,34 @@
 					},
 					"address": {
 						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"repeat_password": {
+						"type": "string"
+					},
+					"pm": {
+						"items": {
+							"properties": {
+								"t": {
+									"properties": {},
+									"additionalProperties": {
+										"type": "string"
+									},
+									"type": "object"
+								},
+								"n": {
+									"type": "string"
+								}
+							},
+							"required": [
+								"t",
+								"n"
+							],
+							"type": "object"
+						},
+						"type": "array"
 					},
 					"categoriesWithPositions": {
 						"items": {
@@ -2869,9 +2925,9 @@
 				"parameters": []
 			}
 		},
-		"/user-create": {
+		"/user-create-or-update": {
 			"post": {
-				"operationId": "UserCreate",
+				"operationId": "UserCreateOrUpdate",
 				"responses": {
 					"204": {
 						"description": "No content"
@@ -2940,40 +2996,6 @@
 									"id"
 								],
 								"type": "object"
-							}
-						}
-					}
-				}
-			}
-		},
-		"/user-update": {
-			"post": {
-				"operationId": "UserUpdate",
-				"responses": {
-					"204": {
-						"description": "No content"
-					},
-					"401": {
-						"description": "Unauthorized request response"
-					},
-					"500": {
-						"description": "Response with error"
-					}
-				},
-				"security": [
-					{
-						"Bearer": [
-							"AuthService"
-						]
-					}
-				],
-				"parameters": [],
-				"requestBody": {
-					"required": true,
-					"content": {
-						"application/json": {
-							"schema": {
-								"$ref": "#/components/schemas/IUser"
 							}
 						}
 					}

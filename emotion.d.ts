@@ -37,6 +37,7 @@ declare module '@emotion/react' {
     primary2Gradient: string;
     secondaryGradient: string;
     disabledGradient: string;
+    errorGradient: string;
 
     diagramColors: string[];
 

@@ -1,6 +1,5 @@
 import styled from '@emotion/styled';
 import { useFormikContext } from 'formik';
-import React from 'react';
 
 import { newBorderColor, textDefaultColor } from '../styles';
 
@@ -18,47 +17,35 @@ const SelectField = styled.select<{ isHaveError: boolean }>`
   width: 100%;
   height: 50px;
   border: 1px solid ${(p) => (p.isHaveError ? p.theme.error : p.theme.divider)};
-  color: ${(p) => p.theme.text1};
+  color: ${(p) => (p.disabled ? p.theme.text3 : p.theme.text1)};
   outline: none;
   background: ${(p) => p.theme.textBackground};
   border-radius: 25px;
-  padding: 0 30px;
+  padding: 0 20px;
 `;
 
-export const SelectError = styled.span`
-  display: flex;
-  color: ${(p) => p.theme.error};
-  position: absolute;
-  line-height: 14px;
-  height: 14px;
-  max-height: 14px;
-  min-height: 14px;
-  max-width: calc(100% - 50px);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  left: 25px;
-  padding: 0 5px;
+const SelectLabel = styled.label`
+  padding: 0 20px;
+  color: gray;
   font-size: 14px;
-  top: -7px;
-  background: ${(p) => p.theme.background1};
-  z-index: 1;
+  width: 100%;
+  color: ${(p) => p.theme.text2};
+`;
 
-  ::after {
-    content: '';
-    width: 100%;
-    height: 7px;
-    position: absolute;
-    background: ${(p) => p.theme.textBackground};
-    z-index: -1;
-    bottom: 0;
-    left: 0;
-  }
+const SelectError = styled.span`
+  padding: 0 20px;
+  color: gray;
+  font-size: 14px;
+  width: 100%;
+  color: ${(p) => p.theme.error};
 `;
 
 export const SelectContainer = styled.div`
   display: flex;
   position: relative;
   width: 100%;
+  flex-direction: column;
+  gap: 5px;
 
   select:-webkit-autofill,
   select:-webkit-autofill:focus {
@@ -72,11 +59,12 @@ export const SelectContainer = styled.div`
 type Props = {
   name: string;
   label: string;
+  disabled?: boolean;
   options: { value: string | number; label: string }[];
 };
 
 export const Select = (props: Props) => {
-  const { name, label, options } = props;
+  const { name, label, options, disabled } = props;
   const { handleChange, handleBlur, errors, getFieldProps } =
     useFormikContext<never>();
 
@@ -84,7 +72,9 @@ export const Select = (props: Props) => {
     <SelectContainer>
       {errors?.[name] ? (
         <SelectError>{errors[name] as string}</SelectError>
-      ) : null}
+      ) : (
+        <SelectLabel>{label}:</SelectLabel>
+      )}
       <SelectField
         name={name}
         isHaveError={!!errors?.[name]}
@@ -92,10 +82,9 @@ export const Select = (props: Props) => {
         onChange={handleChange}
         onBlur={handleBlur}
         placeholder={label}
+        disabled={disabled}
       >
-        <option value={undefined} disabled selected>
-          {label}
-        </option>
+        <option value={undefined} disabled selected></option>
         {options.map((option, index) => (
           <option key={option.value + '-' + index} value={option.value}>
             {option.label}
