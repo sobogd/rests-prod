@@ -32,14 +32,13 @@ const ButtonStyled = styled.button<{
   align-items: center;
   justify-content: center;
   font-size: ${(p) => (p.size === 'small' ? '14px' : '16px')};
-  border-radius: 100px;
+  border-radius: 10px;
   opacity: ${(p) => (p.disabled ? '0.4' : '1')};
   cursor: ${(p) => (p.disabled ? 'not-allowed' : 'pointer')};
-  transition: 0.2s;
   outline: none !important;
   width: ${(p) => (p.fullWidth ? '100%' : 'auto')};
   line-height: 14px;
-  padding: 0 30px;
+  padding: 0 15px;
   white-space: nowrap;
 
   svg {

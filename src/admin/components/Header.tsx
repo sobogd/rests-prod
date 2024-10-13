@@ -19,14 +19,14 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  gap: 20px;
+  gap: 25px;
   align-items: center;
 `;
 
 const HeaderBody = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 4px;
   width: 100%;
 `;
 

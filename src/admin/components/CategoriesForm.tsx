@@ -3,11 +3,8 @@ import { memo, useCallback, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { API } from '../api';
 import { Alert } from '../providers/Alert';
-import { languages } from '../utils/timezones';
-import { Button, ButtonProps } from './Button';
+import { ButtonProps } from './Button';
 import { Card } from './Card';
-import { CardScrollable } from './CardScrollable';
-import { Input } from './Input';
 import { Wrapper, WrapperForm } from './Wrapper';
 
 type Props = {
@@ -185,7 +182,7 @@ export const CategoriesForm = memo((props: Props) => {
                 subTitle: i18n.t('categories.langsDescription'),
               }}
             >
-              <CardScrollable
+              {/* <CardScrollable
                 elements={
                   props.values.translations?.map((translation, idx) => (
                     <>
@@ -243,7 +240,7 @@ export const CategoriesForm = memo((props: Props) => {
                       })) ?? [],
                   });
                 }}
-              />
+              /> */}
             </Card>
           </Wrapper>
         </WrapperForm>

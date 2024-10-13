@@ -12,7 +12,7 @@ const Container = styled.div`
   gap: 30px;
 `;
 
-const Item = styled.div`
+const Item = styled.div<{ onClick?: () => void }>`
   display: flex;
   align-items: center;
   background: ${(p) => p.theme.background3};
@@ -23,10 +23,7 @@ const Item = styled.div`
   max-width: 230px;
   min-width: 230px;
   min-height: 150px;
-
-  > button {
-    margin-top: 10px;
-  }
+  cursor: ${(p) => (p.onClick ? 'pointer' : 'default')};
 `;
 
 const Plus = styled(TbPlus)`

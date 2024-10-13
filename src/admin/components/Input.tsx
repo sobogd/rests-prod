@@ -1,7 +1,9 @@
 import styled from '@emotion/styled';
 import { useFormikContext } from 'formik';
+import { SyntheticEvent, useCallback } from 'react';
+import { v4 as uuidv4 } from 'uuid';
 
-export const InputField = styled.input<{ isHaveError: boolean }>`
+const InputStyled = styled.input<{ isHaveError: boolean }>`
   display: flex;
   width: 100%;
   height: 50px;
@@ -9,39 +11,20 @@ export const InputField = styled.input<{ isHaveError: boolean }>`
   color: ${(p) => (p.disabled ? p.theme.text3 : p.theme.text1)};
   outline: none;
   background: ${(p) => p.theme.textBackground};
-  border-radius: 25px;
-  padding: 0 20px;
-`;
+  border-radius: 10px;
+  padding: 0 15px;
 
-const InputLabel = styled.label`
-  padding: 0 20px;
-  color: gray;
-  font-size: 14px;
-  width: 100%;
-  color: ${(p) => p.theme.text2};
-`;
-
-const InputError = styled.span`
-  padding: 0 20px;
-  color: gray;
-  font-size: 14px;
-  width: 100%;
-  color: ${(p) => p.theme.error};
-`;
-
-export const InputContainer = styled.div`
-  display: flex;
-  position: relative;
-  width: 100%;
-  flex-direction: column;
-  gap: 5px;
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:focus {
-    transition: background-color 0s 6000000000s, color 0s 600000000000s;
+  :-webkit-autofill {
+    -webkit-box-shadow: 0 0 0 100px ${(p) => p.theme.textBackground} inset;
+    -webkit-text-fill-color: ${(p) =>
+      p.disabled ? p.theme.text3 : p.theme.text1};
+    -webkit-background-fill-color: ${(p) => p.theme.textBackground};
   }
-  input:-internal-autofill-selected {
-    background-color: white !important;
+
+  :-webkit-autofill:focus {
+    -webkit-box-shadow: 0 0 0 100px ${(p) => p.theme.textBackground} inset;
+    -webkit-text-fill-color: ${(p) =>
+      p.disabled ? p.theme.text3 : p.theme.text1};
   }
 `;
 
@@ -54,31 +37,34 @@ type Props = {
 
 export const Input = (props: Props) => {
   const { name, label, type, disabled } = props;
-  const { handleChange, handleBlur, errors, getFieldProps } =
+  const { handleBlur, errors, getFieldProps, setFieldValue } =
     useFormikContext<never>();
 
+  const handleChange = useCallback(
+    (e: SyntheticEvent<HTMLInputElement>) => {
+      setFieldValue(name, (e.target as HTMLInputElement).value);
+    },
+    [name, setFieldValue],
+  );
+
   return (
-    <InputContainer>
-      {errors?.[name] ? (
-        <InputError>{errors[name] as string}</InputError>
-      ) : (
-        <InputLabel>{label}:</InputLabel>
-      )}
-      <InputField
-        name={name}
-        type={type}
-        isHaveError={!!errors?.[name]}
-        value={getFieldProps(name).value}
-        onChange={handleChange}
-        onBlur={handleBlur}
-        disabled={disabled}
-        autoComplete="off"
-        onWheel={() => {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-expect-error
-          document.activeElement.blur();
-        }}
-      />
-    </InputContainer>
+    <InputStyled
+      name={uuidv4()}
+      type={type}
+      isHaveError={!!errors?.[name]}
+      value={getFieldProps(name).value}
+      onChange={handleChange}
+      onBlur={handleBlur}
+      disabled={disabled}
+      placeholder={errors?.[name] ?? label}
+      autoComplete="false"
+      readOnly={true}
+      onFocus={(e) => e.target.removeAttribute('readonly')}
+      onWheel={() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-expect-error
+        document.activeElement.blur();
+      }}
+    />
   );
 };
